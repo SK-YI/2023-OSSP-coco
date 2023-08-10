@@ -60,9 +60,9 @@ const defaultStyles = StyleSheet.create({
   },
   title: {
     color: WHITE,
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '700',
-    lineHeight: 20,
+    lineHeight: 25,
   },
 });
 

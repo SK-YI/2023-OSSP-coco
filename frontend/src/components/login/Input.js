@@ -7,6 +7,17 @@ import { GRAY, PRIMARY } from '../../colors';
 export const InputTypes = {
   EMAIL: 'EMAIL',
   PASSWORD: 'PASSWORD',
+  PASSWORD_CONFIRM: 'PASSWORD_CONFIRM',
+  NICKNAME: 'NICKNAME',
+  AGE: 'AGE',
+  // 성별 추가하기
+  // 장애 유형 추가하기
+};
+
+const PasswordProps = {
+  keyboardType: 'default',
+  secureTextEntry: true,
+  iconName: { active: 'lock', inactive: 'lock-outline' },
 };
 
 const InputTypeProps = {
@@ -20,9 +31,26 @@ const InputTypeProps = {
   PASSWORD: {
     title: '비밀번호',
     placeholder: '비밀번호를 입력해주세요.',
+    ...PasswordProps,
+  },
+  PASSWORD_CONFIRM: {
+    title: '비밀번호 확인',
+    placeholder: '비밀번호를 입력해주세요.',
+    ...PasswordProps,
+  },
+  NICKNAME: {
+    title: '닉네임',
+    placeholder: '닉네임을 입력해주세요.',
     keyboardType: 'default',
-    secureTextEntry: true,
-    iconName: { active: 'lock', inactive: 'lock-outline' },
+    secureTextEntry: false,
+    iconName: { active: 'account', inactive: 'account-outline' },
+  },
+  AGE: {
+    title: '나이',
+    placeholder: '나이를 입력해주세요.',
+    keyboardType: 'numeric',
+    secureTextEntry: false,
+    iconName: { active: 'numeric-0-box', inactive: 'numeric-0-box-outline' },
   },
 };
 

@@ -25,7 +25,7 @@ const defaultStyles = StyleSheet.create({
   title: {
     color: PRIMARY.DARK,
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 20,
   },
 });
 
