@@ -1,15 +1,11 @@
-import { Text, View } from 'react-native';
-import Navigation from './navigations';
+import { NavigationContainer } from '@react-navigation/native';
+import TabNavigation from './navigations/Tap';
 
 const App = () => {
-  return (
-    <View>
-      <View>
-        <Text>대성공!!!!!!!!!!!!!!!!!!!!!</Text>
-      </View>
-      <Navigation />
-    </View>
-  );
-};
-
+    return (
+        <NavigationContainer>
+            <TabNavigation />
+        </NavigationContainer>
+    )
+}
 export default App;

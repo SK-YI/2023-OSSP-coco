@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.7",
     "expo": "~49.0.6",
     "expo-status-bar": "~1.6.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "babel-eslint": "^10.1.0",
     "eslint": "^8.46.0",
     "eslint-plugin-react": "^7.33.1",
     "eslint-plugin-react-hooks": "^4.6.0"
