@@ -1,10 +1,14 @@
-export const WHITE = '#ffffff'
-export const BLACK = '#000000'
+export const WHITE = '#ffffff';
+export const BLACK = '#000000';
 
 export const PRIMARY = {
-  DEFAULT: '#79bd9a'
-}
+  LIGHT: '#a8dba8',
+  DEFAULT: '#79bd9a',
+  DARK: '#3b8686',
+};
 
 export const GRAY = {
-  DEFAULT: '#a3a3a3'
-}
+  LIGHT: '#e5e7eb',
+  DEFAULT: '#d1d5db',
+  DARK: '#6b7280',
+};

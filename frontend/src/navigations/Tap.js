@@ -12,10 +12,11 @@ const Tab = createBottomTabNavigator();
 const TabNavigation = () => {
   return (
     <Tab.Navigator 
-    /* tabBarOptions={{
+    tabBarOptions={{
       activeTintColor: '#79bd9a',
       inactiveTintColor: '#a3a3a3'
-    }} */
+    }}
+    screenOptions={ {headerShown : false} }
     initialRouteName="startPage"
     >
       <Tab.Screen
