@@ -16,10 +16,38 @@ const MyPageScreen = () => {
         userEmail={'User@email.com'}
       ></UserProfile>
       <View style={styles.MyPageMenuContainter}>
+        <Text style={styles.MyPageTitle}>계정</Text>
         <Pressable
           onPress={() => navigation.navigate('계정 정보')}
         >
-          <Text>계정 정보</Text>
+          <Text style={styles.MyPageMenu}>계정 정보</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.navigate('계정 정보')}
+        >
+          <Text style={styles.MyPageMenu}>로그아웃</Text>
+        </Pressable>
+        <Text style={styles.MyPageTitle}>커뮤니티</Text>
+        <Pressable
+          onPress={() => navigation.navigate('계정 정보')}
+        >
+          <Text style={styles.MyPageMenu}>내가 작성한 글</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.navigate('계정 정보')}
+        >
+          <Text style={styles.MyPageMenu}>내가 작성한 댓글</Text>
+        </Pressable>
+        <Text style={styles.MyPageTitle}>시설</Text>
+        <Pressable
+          onPress={() => navigation.navigate('계정 정보')}
+        >
+          <Text style={styles.MyPageMenu}>내가 좋아요한 시설</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.navigate('계정 정보')}
+        >
+          <Text style={styles.MyPageMenu}>내가 작성한 리뷰</Text>
         </Pressable>
       </View>
     </View>
@@ -34,9 +62,18 @@ const styles = StyleSheet.create({
   MyPageMenuContainter: {
     flex: 6,
     backgroundColor: '#fff',
+    paddingHorizontal: 30,
+    flexDirection: 'column',
+  },
+  MyPageTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    paddingVertical:15
   },
   MyPageMenu: {
-    
+    fontSize: 18,
+    paddingVertical:10
+
   }
 });
 
