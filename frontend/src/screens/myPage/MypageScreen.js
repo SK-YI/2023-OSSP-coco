@@ -16,7 +16,7 @@ const MyPageScreen = () => {
         userEmail={'User@email.com'}
       ></UserProfile>
       <View style={styles.MyPageMenuContainter}>
-        <Text style={styles.MyPageTitle}>계정</Text>
+        <Text style={{ ...styles.MyPageTitle, paddingTop: 25}}>계정</Text>
         <Pressable
           onPress={() => navigation.navigate('계정 정보')}
         >
@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
   MyPageMenu: {
     fontSize: 18,
     paddingVertical:10
-
   }
 });
 
