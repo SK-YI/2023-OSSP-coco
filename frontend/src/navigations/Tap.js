@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CommunityScreen from '../screens/community/CommunityScreen';
 import FacilityScreen from '../screens/facility/FacilityScreen';
 import MapScreen from '../screens/map/MapScreen';
-import MyPageScreen from '../screens/myPage/MypageScreen';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import {  PRIMARY, GRAY  } from "../colors";
+import MyPageStackNavigation from './MyPageStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +47,7 @@ const TabNavigation = () => {
       }} />
       <Tab.Screen 
       name="마이페이지" 
-      component={MyPageScreen}
+      component={MyPageStackNavigation}
       options={{
         tabBarIcon: ({ focused }) => 
         focused ? (<AntDesign name="user" size={24} color={PRIMARY.DEFAULT} /> ) :
