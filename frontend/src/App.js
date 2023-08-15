@@ -1,5 +1,5 @@
-// import Navigation from './navigations';
-import PostScreen from './screens/community/PostScreen';
+import Navigation from './navigations';
+// import PostScreen from './screens/community/PostScreen';
 
 const App = () => {
   return (
