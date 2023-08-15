@@ -1,11 +1,11 @@
-import{ useState } from 'react';
+import { useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { PRIMARY } from '../../colors';
 import PropTypes from 'prop-types';
 
 const options = [
   { label: 'Apple', value: 'apple' },
-  { label: 'Banana', value: 'banana' }
+  { label: 'Banana', value: 'banana' },
 ];
 
 const FacilityDropdown = ({ onItemSelected }) => {
@@ -33,16 +33,16 @@ const FacilityDropdown = ({ onItemSelected }) => {
         backgroundColor: '#fafafa',
         borderColor: PRIMARY.DARK,
       }}
-      dropDownStyle={{ 
+      dropDownStyle={{
         borderColor: PRIMARY.DARK,
-        backgroundColor: '#fafafa'
+        backgroundColor: '#fafafa',
       }}
     />
   );
 };
 
 FacilityDropdown.propTypes = {
-  onItemSelected: PropTypes.func
+  onItemSelected: PropTypes.func,
 };
 
 export default FacilityDropdown;

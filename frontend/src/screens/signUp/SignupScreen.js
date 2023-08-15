@@ -1,11 +1,4 @@
-import {
-  Keyboard,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Keyboard, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Input, {
   InputTypes,
   ReturnKeyTypes,
@@ -18,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import TextButton from '../../components/login/TextButton';
 import { AuthRoutes } from '../../navigations/routes';
 import HR from '../../components/login/HR';
+import CheckButton from '../../components/login/CheckButton';
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState('');
@@ -27,7 +21,7 @@ const SignUpScreen = () => {
   const [age, setAge] = useState(null);
   // const passwordRef = useRef();
   // const passwordConfirmRef = useRef();
-  // const
+
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
@@ -42,7 +36,7 @@ const SignUpScreen = () => {
     Keyboard.dismiss();
     if (!disabled && !isLoading) {
       setIsLoading(true);
-      console.log(email, password);
+      // console.log(email, password);
       setIsLoading(false);
     }
   };
@@ -51,6 +45,7 @@ const SignUpScreen = () => {
       <View style={{ height: '100%', width: '100%', paddingTop: top }}>
         <ScrollView
           style={[styles.container]}
+          keyboardShouldPersistTaps={'always'}
           // contentContainerStyle={{ height: '100%' }}
         >
           <View
@@ -73,13 +68,7 @@ const SignUpScreen = () => {
                 styles={{ container: { marginBottom: 20 } }}
                 returnKeyType={ReturnKeyTypes.NEXT}
               />
-              {/* <Pressable
-              style={styles.checkbutton}
-              hitSlop={10}
-              onPress={() => {}}
-            >
-              <Text>중복 확인</Text>
-            </Pressable> */}
+              <CheckButton title={'중복 확인'} onPress={() => {}} />
             </View>
             <Input
               // ref={passwordRef}
@@ -150,8 +139,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   inputContainer: {
-    // flex: 1,
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 45,
   },
   checkButton: {
     borderColor: 'black',

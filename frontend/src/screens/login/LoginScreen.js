@@ -1,10 +1,10 @@
 import { Image, Keyboard, StyleSheet, View } from 'react-native';
 import Input, { InputTypes } from '../../components/login/Input';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Button from '../../components/login/Button';
 import SafeInputView from '../../components/login/SafeInputView';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import TextButton from '../../components/login/TextButton';
 import { AuthRoutes } from '../../navigations/routes';
 import HR from '../../components/login/HR';
@@ -18,6 +18,17 @@ const LoginScreen = () => {
 
   const { top } = useSafeAreaInsets();
   const { navigate } = useNavigation();
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setEmail('');
+        setPassword('');
+        setIsLoading(false);
+        setDisabled(true);
+      };
+    }, [])
+  );
 
   useEffect(() => {
     setDisabled(!email || !password);

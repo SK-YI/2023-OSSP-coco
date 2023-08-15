@@ -1,4 +1,4 @@
-import { View, Text,  StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 const Badge = ({ selectedItems }) => {
@@ -19,7 +19,7 @@ Badge.propTypes = {
   selectedItems: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string,
-      value: PropTypes.string
+      value: PropTypes.string,
     })
   ).isRequired,
 };
