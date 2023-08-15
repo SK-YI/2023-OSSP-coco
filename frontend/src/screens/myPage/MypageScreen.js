@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     backgroundColor: '#000',
+    flex: 1
   },
   MyPageMenuContainter: {
     flex: 6,

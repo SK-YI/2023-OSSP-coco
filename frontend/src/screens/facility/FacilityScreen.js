@@ -4,23 +4,22 @@ import {
   Text,
   Pressable /* Dimensions */,
 } from 'react-native';
-/* import { useState } from 'react'; */
+import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native'; // 내비게이션 객체를 가져오기 위해 추가
 import { PRIMARY, WHITE } from '../../colors';
 import { TextInput } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
-/* import DropDownPicker from 'react-native-dropdown-picker'; */
+import FacilityDropdown from '../../components/facility/facilityDropdown';
+import Badge from '../../components/facility/facilitybadge';
 
 const FacilityScreen = () => {
   const navigation = useNavigation(); // 내비게이션 객체를 가져옴
-  /* const width = Dimensions.get('window').width; */
-/* 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: '보기1', value: '1' },
-    { label: '보기2', value: '2' },
-  ]); */
+
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleAddItem = (item) => {
+    setSelectedItems([...selectedItems, item]);
+  };
 
   return (
     <View style={styles.container}>
@@ -35,23 +34,12 @@ const FacilityScreen = () => {
           />
         </View>
         <View style={styles.searchDropdown}>
-          <TextInput/>
-          
+          <FacilityDropdown 
+          onItemSelected={handleAddItem}></FacilityDropdown>
         </View>
-        {/* <DropDownPicker
-          open={open}
-          value={value}
-          items={items}
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems}
-          placeholder="카테고리"
-          listMode="MODAL"
-          modalProps={{
-            animationType: 'fade',
-          }}
-          modalTitle="선택해주세요."
-        /> */}
+        <View>
+          <Badge selectedItems={selectedItems} ></Badge>
+        </View>
       </View>
       <View style={styles.faciltyContainer}>
         <Pressable onPress={() => navigation.navigate('시설 정보')}>
@@ -88,11 +76,11 @@ const styles = StyleSheet.create({
   searchDropdown: {
     backgroundColor: WHITE,
     marginHorizontal: 40,
-    padding: 10,
     borderRadius: 10,
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
+    zIndex: 1
   },
   searchIcon: {
     right: 1,
@@ -101,12 +89,13 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     flex: 1,
     borderRadius: 10,
+    ZIndex: 0
   },
   facilityTitle: {
     fontSize: 18,
-    paddingVertical:10,
-    padding: 20
-  }
+    paddingVertical: 10,
+    padding: 20,
+  },
 });
 
 export default FacilityScreen;
