@@ -13,7 +13,9 @@ const FacilityDetailScreen = () => {
   const [items, setItems] = useState(options);
 
   const handleItemSelect = (item) => {
-    setSelectedItems((prevSelectedItems) => [...prevSelectedItems, item.label]);
+    // console.log(item);
+    setItems(item);
+    setSelectedItems((prevSelectedItems) => [item, ...prevSelectedItems]);
   };
 
   return (
@@ -42,7 +44,7 @@ const FacilityDetailScreen = () => {
             key={index}
             style={{ backgroundColor: 'lightblue', padding: 5, marginRight: 5 }}
           >
-            {item}
+            {item.label}
           </Text>
         ))}
       </View>
