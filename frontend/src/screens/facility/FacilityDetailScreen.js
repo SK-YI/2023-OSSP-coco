@@ -22,7 +22,9 @@ const FacilityDetailScreen = () => {
         open={open}
         items={items}
         setOpen={setOpen}
-        setValue={handleItemSelect}
+        setValue={(value) => {
+          handleItemSelect(value); // Call your custom handler with the selected value
+        }}
         setItems={setItems}
         defaultValue={null}
         placeholder="Select an item"
@@ -32,13 +34,12 @@ const FacilityDetailScreen = () => {
           justifyContent: 'flex-start',
         }}
         dropDownStyle={{ backgroundColor: '#fafafa' }}
-        onChangeItem={(item) => handleItemSelect(item)}
       />
 
       <View style={{ marginTop: 20 }}>
-        {selectedItems.map((item, label) => (
+        {selectedItems.map((item, index) => (
           <Text
-            key={label}
+            key={index}
             style={{ backgroundColor: 'lightblue', padding: 5, marginRight: 5 }}
           >
             {item}
