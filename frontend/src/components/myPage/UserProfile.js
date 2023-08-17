@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { PRIMARY } from '../../colors';
+import { GRAY, PRIMARY } from '../../colors';
 import PropTypes from 'prop-types';
 
 const UserProfile = ({ userName, userEmail }) => {
@@ -29,10 +29,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    /* backgroundColor: '#283742', */
+    backgroundColor: GRAY.LIGHT,
     alignItems: 'center',
     flexDirection: 'row',
     padding: 20,
+    paddingTop: 50
   },
   userName: {
     fontSize: 20,

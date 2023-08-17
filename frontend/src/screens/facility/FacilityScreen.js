@@ -1,7 +1,7 @@
-import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Image, Platform, } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { PRIMARY, WHITE } from '../../colors';
+import { GRAY, PRIMARY, WHITE } from '../../colors';
 import { TextInput } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import FacilityDropdown from '../../components/facility/facilityDropdown';
@@ -109,7 +109,21 @@ const styles = StyleSheet.create({
     flex: 6,
     backgroundColor: WHITE,
     flexDirection: 'column',
-    zIndex: 0
+    zIndex: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: GRAY.DARK,
+        shadowOffset: {
+          width: 3,
+          height: 3,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
   },
   FacilityTitle: {
     fontSize: 22,

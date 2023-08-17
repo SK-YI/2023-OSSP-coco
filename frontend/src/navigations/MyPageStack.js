@@ -6,9 +6,11 @@ const MyPageStack = createStackNavigator();
 
 const MyPageStackNavigation = () => {
     return (
-        <MyPageStack.Navigator initialRouteName="마이페이지">
+        <MyPageStack.Navigator initialRouteName="마이페이지"  screenOptions={{
+            cardStyle: { backgroundColor: 'white' }
+        }}>
             <MyPageStack.Screen name='계정 정보' component={MyPageDetailScreen} />
-            <MyPageStack.Screen name='마이페이지' component={MyPageScreen} />
+            <MyPageStack.Screen options={{headerShown: false}} name='마이페이지' component={MyPageScreen} />
         </MyPageStack.Navigator>  
     );
 };
