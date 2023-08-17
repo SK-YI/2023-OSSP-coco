@@ -59,7 +59,7 @@ export const ReturnKeyTypes = {
   NEXT: 'next',
 };
 
-const Input = forwardRef(({ inputType, styles, ...props }, ref) => {
+const Input = forwardRef(({ inputType, styles, star, ...props }, ref) => {
   const {
     title,
     placeholder,
@@ -80,6 +80,7 @@ const Input = forwardRef(({ inputType, styles, ...props }, ref) => {
         ]}
       >
         {title}
+        {star && <Text style={{ color: 'red' }}>*</Text>}
       </Text>
 
       <View>
@@ -117,8 +118,13 @@ const Input = forwardRef(({ inputType, styles, ...props }, ref) => {
 });
 Input.displayName = 'Input';
 
+Input.defaultProps = {
+  star: false,
+};
+
 Input.propTypes = {
   inputType: PropTypes.oneOf(Object.values(InputTypes)),
+  star: PropTypes.bool,
   value: PropTypes.string,
   styles: PropTypes.object,
 };

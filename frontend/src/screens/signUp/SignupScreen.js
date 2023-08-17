@@ -12,6 +12,8 @@ import TextButton from '../../components/login/TextButton';
 import { AuthRoutes } from '../../navigations/routes';
 import HR from '../../components/login/HR';
 import CheckButton from '../../components/login/CheckButton';
+import RadioButton from '../../components/signup/RadioButton';
+import SignupDropdown from '../../components/signup/SignupDropDown';
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState('');
@@ -19,6 +21,8 @@ const SignUpScreen = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
   const [age, setAge] = useState(null);
+  const [gender, setGender] = useState(0); // 0: 남자, 1: 여자
+  const [disability, setDisability] = useState([]);
   // const passwordRef = useRef();
   // const passwordConfirmRef = useRef();
 
@@ -67,6 +71,7 @@ const SignUpScreen = () => {
                 // onSubmitEditing={() => passwordRef.current.focus()}
                 styles={{ container: { marginBottom: 20 } }}
                 returnKeyType={ReturnKeyTypes.NEXT}
+                star={true}
               />
               <CheckButton title={'중복 확인'} onPress={() => {}} />
             </View>
@@ -78,6 +83,7 @@ const SignUpScreen = () => {
               // onSubmitEditing={() => passwordConfirmRef.current.focus()}
               styles={{ container: { marginBottom: 20 } }}
               returnKeyType={ReturnKeyTypes.NEXT}
+              star={true}
             />
             <Input
               // ref={passwordConfirmRef}
@@ -87,6 +93,7 @@ const SignUpScreen = () => {
               onSubmitEditing={onSubmit}
               styles={{ container: { marginBottom: 20 } }}
               returnKeyType={ReturnKeyTypes.NEXT}
+              star={true}
             />
             <Input
               inputType={InputTypes.NICKNAME}
@@ -95,6 +102,7 @@ const SignUpScreen = () => {
               onSubmitEditing={onSubmit}
               styles={{ container: { marginBottom: 20 } }}
               returnKeyType={ReturnKeyTypes.NEXT}
+              star={true}
             />
             <Input
               inputType={InputTypes.AGE}
@@ -103,6 +111,11 @@ const SignUpScreen = () => {
               onSubmitEditing={onSubmit}
               styles={{ container: { marginBottom: 20 } }}
               returnKeyType={ReturnKeyTypes.NEXT}
+            />
+            <RadioButton gender={gender} setGender={setGender} />
+            <SignupDropdown
+              disability={disability}
+              setDisability={setDisability}
             />
             <Button
               title={'회원가입'}

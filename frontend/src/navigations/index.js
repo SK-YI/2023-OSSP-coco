@@ -5,7 +5,7 @@ import TabNavigation from './Tap';
 
 const Navigation = () => {
   // const [user, setUser] = useState(true);
-  const user = true;
+  const user = false;
   return (
     <NavigationContainer>
       {user ? <TabNavigation /> : <AuthStack />}
