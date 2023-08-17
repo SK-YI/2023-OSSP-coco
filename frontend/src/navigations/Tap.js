@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import PostListScreen from '../screens/community/PostListScreen';
 import MapScreen from '../screens/map/MapScreen';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { PRIMARY, GRAY } from '../colors';
 import MyPageStackNavigation from './MyPageStack';
 import FaciltyStackNavigation from './FacilityStack';
+import CommunityStackNavigation from './CommunityStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -49,7 +49,7 @@ const TabNavigation = () => {
       />
       <Tab.Screen
         name="커뮤니티"
-        component={PostListScreen}
+        component={CommunityStackNavigation}
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (

@@ -1,9 +1,11 @@
 import { FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
-import { GRAY, PRIMARY } from '../../colors';
+import { GRAY, PRIMARY, WHITE } from '../../colors';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PostItem from '../../components/community/PostItem';
 import { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // 더미데이터
 const postData = [
@@ -90,11 +92,13 @@ const postData = [
 ];
 
 const PostListScreen = () => {
-  // const { top } = useSafeAreaInsets();
+  const navigation = useNavigation();
+
+  const { top } = useSafeAreaInsets();
   const [text, setText] = useState('');
 
   return (
-    <View style={[styles.container, { paddingTop: 100 }]}>
+    <View style={[styles.container, { paddingTop: top }]}>
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.search}
@@ -102,7 +106,7 @@ const PostListScreen = () => {
           onChange={(text) => setText(text)}
           placeholder={'검색어를 입력해주세요.'}
         />
-        <Pressable>
+        <Pressable onPress={() => navigation.navigate('글쓰기')}>
           <MaterialCommunityIcons
             style={styles.icon}
             name={'lead-pencil'}
@@ -133,6 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 5,
+    backgroundColor: WHITE,
   },
   searchContainer: {
     width: '100%',

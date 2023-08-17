@@ -1,12 +1,25 @@
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { GRAY, PRIMARY } from '../../colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const PostItem = ({ post }) => {
+  const navigation = useNavigation();
   const windowWidth = Dimensions.get('window').width;
+
   return (
-    <View style={[styles.container, { width: windowWidth - 50 }]}>
+    <Pressable
+      style={[styles.container, { width: windowWidth - 50 }]}
+      onPress={() => navigation.navigate('상세보기')}
+    >
       <View style={styles.textContainer}>
         <Text style={styles.title}>{post.title}</Text>
         <Text style={styles.content}>{post.name}</Text>
@@ -42,12 +55,13 @@ const PostItem = ({ post }) => {
           // resizeMode={'cover'}
         />
       </View>
-    </View>
+    </Pressable>
   );
 };
 
 PostItem.propTypes = {
   post: PropTypes.object,
+  onPress: PropTypes.func,
 };
 
 const styles = StyleSheet.create({

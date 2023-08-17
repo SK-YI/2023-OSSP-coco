@@ -7,10 +7,11 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { GRAY, PRIMARY } from '../../colors';
+import { GRAY, PRIMARY, WHITE } from '../../colors';
 import Comment from '../../components/community/Comment';
 import { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ScrollView } from 'react-native-gesture-handler';
 
 // 더미데이터
 const post = {
@@ -48,52 +49,54 @@ const PostScreen = () => {
   const [text, setText] = useState('');
 
   return (
-    <View style={styles.container}>
-      <View style={styles.postContainer}>
-        <Text style={styles.nickname}>{post.nickname}</Text>
-        <Text style={styles.date}>{post.date}</Text>
-        <View style={styles.imageContainer}>
-          <Image
-            source={require('../../../assets/comap.png')}
-            style={styles.image}
-            // resizeMode={'cover'}
-          />
+    <ScrollView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.postContainer}>
+          <Text style={styles.nickname}>{post.nickname}</Text>
+          <Text style={styles.date}>{post.date}</Text>
+          <View style={styles.imageContainer}>
+            <Image
+              source={require('../../../assets/comap.png')}
+              style={styles.image}
+              // resizeMode={'cover'}
+            />
+          </View>
+          <Text style={styles.content}>{post.content}</Text>
+          <Pressable style={styles.button}>
+            <Text style={styles.buttonText}>좋아요</Text>
+            <MaterialCommunityIcons
+              style={styles.icon}
+              name={'cards-heart-outline'}
+              size={25}
+            />
+          </Pressable>
         </View>
-        <Text style={styles.content}>{post.content}</Text>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>좋아요</Text>
-          <MaterialCommunityIcons
-            style={styles.icon}
-            name={'cards-heart-outline'}
-            size={25}
-          />
-        </Pressable>
-      </View>
-      <FlatList
-        style={styles.commentContainer}
-        data={post.comment}
-        renderItem={({ item }) => <Comment data={item} />}
-        ItemSeparatorComponent={() => <View style={styles.separator}></View>}
-      />
-      <View style={styles.searchContainer}>
-        <TextInput
-          value={text}
-          onChangeText={(text) => setText(text)}
-          style={styles.search}
-          placeholder={'댓글을 작성해주세요.'}
-          returnKeyType={'done'}
-          autoCapitalize={'none'}
-          autoCorrect={false}
-          textContentType={'none'}
-          keyboardAppearance={'light'}
-          blurOnSubmit={true}
-          multiline
+        <FlatList
+          style={styles.commentContainer}
+          data={post.comment}
+          renderItem={({ item }) => <Comment data={item} />}
+          ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         />
-        <Pressable style={styles.searchButton}>
-          <Text style={styles.searchButtonText}>등록</Text>
-        </Pressable>
+        <View style={styles.searchContainer}>
+          <TextInput
+            value={text}
+            onChangeText={(text) => setText(text)}
+            style={styles.search}
+            placeholder={'댓글을 작성해주세요.'}
+            returnKeyType={'done'}
+            autoCapitalize={'none'}
+            autoCorrect={false}
+            textContentType={'none'}
+            keyboardAppearance={'light'}
+            blurOnSubmit={true}
+            multiline
+          />
+          <Pressable style={styles.searchButton}>
+            <Text style={styles.searchButtonText}>등록</Text>
+          </Pressable>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -104,7 +107,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50, // 지우기
+    paddingTop: 10, // 지우기
+    backgroundColor: WHITE,
   },
   postContainer: {
     // flex: 1,
