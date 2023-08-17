@@ -1,21 +1,13 @@
 import { StyleSheet, View, Text, Pressable, Image, Platform, } from 'react-native';
-import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 import { TextInput } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
-import FacilityDropdown from '../../components/facility/facilityDropdown';
-import Badge from '../../components/facility/facilitybadge';
 import facilityData from '../../sample/facilitySampledata';
+import FacilityDropdown from '../../components/facility/facilityDropdown';
 
 const FacilityScreen = () => {
   const navigation = useNavigation();
-
-  const [selectedItems, setSelectedItems] = useState([]);
-
-  const handleAddItem = (item) => {
-    setSelectedItems([...selectedItems, item]);
-  };
 
   const handleFacilityDetail = (facilityId) => {
     navigation.navigate('시설 정보', { facilityId });
@@ -33,12 +25,7 @@ const FacilityScreen = () => {
             color={PRIMARY.DARK}
           />
         </View>
-        <View style={styles.searchDropdown}>
-          <FacilityDropdown onItemSelected={handleAddItem}></FacilityDropdown>
-        </View>
-        <View>
-          <Badge selectedItems={selectedItems}></Badge>
-        </View>
+        <FacilityDropdown></FacilityDropdown>
       </View>
       <View style={styles.faciltyContainer}>
         <View style={styles.recommendFacilityContainer}>
@@ -79,28 +66,20 @@ const styles = StyleSheet.create({
     backgroundColor: PRIMARY.LIGHT,
   },
   searchContainer: {
-    height: 230,
+    height: 180,
     backgroundColor: PRIMARY.LIGHT,
+    zIndex: 2
   },
   searchBox: {
     backgroundColor: WHITE,
-    marginBottom: 15,
-    margin: 40,
+    marginHorizontal: 40,
+    marginTop: 40,
     padding: 10,
     borderRadius: 10,
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  searchDropdown: {
-    backgroundColor: WHITE,
-    marginHorizontal: 40,
-    borderRadius: 10,
-    height: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
-    zIndex: 2,
   },
   searchIcon: {
     right: 1,
