@@ -15,7 +15,7 @@ public class FacilitySearchController {
     @GetMapping("/search")
     public static void main(String[] args) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B554287/DisabledPersonConvenientFacility/getFacInfoOpenApiJpEvalInfoList"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=CEQbj4%2F2L1hJOdHqcO6xhnD5VX1Qh0OUP26UuGT%2BopxEpdwi6Lxkk6c32jwdFxT96aL8XvxL0IVXz4ctPhCBdw%3D%3D"); /*Service Key*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "서비스키"); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("wfcltId","UTF-8") + "=" + URLEncoder.encode("0000045950", "UTF-8")); /*데이터 상세 정보 조회를 위한 키값(장애인 편의시설 목록 조회의 시설ID)*/
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
