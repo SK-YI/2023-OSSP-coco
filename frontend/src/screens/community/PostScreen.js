@@ -17,7 +17,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 const post = {
   id: 1,
   title: '제목1',
-  content: '내용1',
+  content: '내용1~~~~~',
   date: '22.02.02',
   nickname: '닉네임1',
   like: 0,
@@ -52,8 +52,12 @@ const PostScreen = () => {
     <ScrollView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.postContainer}>
-          <Text style={styles.nickname}>{post.nickname}</Text>
-          <Text style={styles.date}>{post.date}</Text>
+          <Text style={styles.nickname}>{post.title}</Text>
+          <View style={styles.explainContainer}>
+            <Text style={styles.explain}>{post.date}</Text>
+            <Text style={styles.explain}>|</Text>
+            <Text style={styles.explain}>{post.nickname}</Text>
+          </View>
           <View style={styles.imageContainer}>
             <Image
               source={require('../../../assets/comap.png')}
@@ -124,8 +128,12 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     fontWeight: '700',
   },
-  date: {
+  explainContainer: {
+    flexDirection: 'row',
+  },
+  explain: {
     paddingVertical: 5,
+    paddingRight: 5,
     fontSize: 15,
     lineHeight: 20,
     color: PRIMARY.DARK,

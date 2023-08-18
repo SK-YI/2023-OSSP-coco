@@ -8,6 +8,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import TextButton from '../../components/login/TextButton';
 import { AuthRoutes } from '../../navigations/routes';
 import HR from '../../components/login/HR';
+import { useUserState } from '../../contexts/UserContext';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +16,8 @@ const LoginScreen = () => {
   const passwordRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
+
+  const [, setUser] = useUserState();
 
   const { top } = useSafeAreaInsets();
   const { navigate } = useNavigation();
@@ -38,6 +41,7 @@ const LoginScreen = () => {
     Keyboard.dismiss();
     if (!disabled && !isLoading) {
       setIsLoading(true);
+      setUser(true); // 로그인
       console.log(email, password);
       setIsLoading(false);
     }

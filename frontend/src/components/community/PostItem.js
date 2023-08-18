@@ -18,7 +18,7 @@ const PostItem = ({ post }) => {
   return (
     <Pressable
       style={[styles.container, { width: windowWidth - 50 }]}
-      onPress={() => navigation.navigate('상세보기')}
+      onPress={() => navigation.navigate('커뮤니티')}
     >
       <View style={styles.textContainer}>
         <Text style={styles.title}>{post.title}</Text>

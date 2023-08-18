@@ -11,14 +11,14 @@ const CommunityStackNavigation = () => {
       // screenOptions={{
       //   headerShown: false,
       // }}
-      initialRouteName="커뮤니티"
+      initialRouteName="목록"
     >
       <CommunityStack.Screen
         options={{ headerShown: false }}
         name="목록"
         component={PostListScreen}
       />
-      <CommunityStack.Screen name="상세보기" component={PostScreen} />
+      <CommunityStack.Screen name="커뮤니티" component={PostScreen} />
       <CommunityStack.Screen name="글쓰기" component={WritePostScreen} />
     </CommunityStack.Navigator>
   );
