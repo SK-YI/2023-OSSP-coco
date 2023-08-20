@@ -10,8 +10,8 @@ const MapScreen = () => {
 
   const [status, setStatus] = useState(null);
   const [location, setLocation] = useState({
-    latitudeDelta: 0.05,
-    longitudeDelta: 0.05,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005,
   });
 
   // const [initialLocation, setInitialLocation] = useState();
@@ -39,6 +39,13 @@ const MapScreen = () => {
   return (
     <View style={styles.container}>
       <MapView
+        showsUserLocation={true}
+        followsUserLocation={true}
+        showsMyLocationButton={true}
+        showsCompass={true}
+        zoomEnabled={true}
+        rotateEnabled={true}
+        // onMarkerDragStart={}
         style={styles.map}
         // initialRegion={
         //   initialLocation && {

@@ -1,13 +1,23 @@
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { PRIMARY, WHITE } from '../../colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import WriteSaveButton from '../../components/community/WriteSaveButton';
 
 // 추가 글자 수를 설정하는게 필요할까?? 필요하다면 작성중인 글자수 보여주기!
 const MAX_TITLE_LENGTH = 30;
 const MAX_TEXT_LENGTH = 60;
 
 const WritePostScreen = () => {
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <WriteSaveButton onPress={() => {}} />,
+    });
+  });
+
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   return (
@@ -44,7 +54,7 @@ const WritePostScreen = () => {
         />
       </View>
       <View style={styles.inputTextContainer}>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={() => {}}>
           <MaterialCommunityIcons
             style={styles.icon}
             name={'folder-multiple-image'}
