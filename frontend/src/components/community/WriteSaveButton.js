@@ -30,10 +30,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 10,
     paddingHorizontal: 10,
-    paddingVertical: 7,
+    paddingVertical: 6,
   },
   text: {
+    paddingBottom: 3,
     color: WHITE,
+    fontSize: 15,
   },
 });
 export default WriteSaveButton;

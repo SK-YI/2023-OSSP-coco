@@ -1,9 +1,18 @@
 import { useLayoutEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { PRIMARY, WHITE } from '../../colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import WriteSaveButton from '../../components/community/WriteSaveButton';
+import * as ImagePicker from 'expo-image-picker';
 
 // 추가 글자 수를 설정하는게 필요할까?? 필요하다면 작성중인 글자수 보여주기!
 const MAX_TITLE_LENGTH = 30;
@@ -20,6 +29,25 @@ const WritePostScreen = () => {
 
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
+  const [image, setImage] = useState([]);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      // allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      allowsMultipleSelection: true,
+    });
+
+    //console.log(result); 에러 발생하니 주의하자!
+
+    if (result.assets[0].uri) {
+      setImage(result.assets);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.inputTitleContainer}>
@@ -53,8 +81,23 @@ const WritePostScreen = () => {
           blurOnSubmit={true}
         />
       </View>
+      <View style={styles.imageContainer}>
+        {/* {image && (
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        )} */}
+        <ScrollView horizontal={true}>
+          {image &&
+            image.map((item, index) => (
+              <Image
+                key={index}
+                source={{ uri: item.uri }}
+                style={styles.image}
+              />
+            ))}
+        </ScrollView>
+      </View>
       <View style={styles.inputTextContainer}>
-        <Pressable style={styles.button} onPress={() => {}}>
+        <Pressable style={styles.button} onPress={pickImage} hitSlop={10}>
           <MaterialCommunityIcons
             style={styles.icon}
             name={'folder-multiple-image'}
@@ -98,6 +141,16 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 10,
     textAlignVertical: 'top', // 안드로이드에서 글자가 중앙에 위치하는 문제를 해결
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  image: {
+    marginHorizontal: 5,
+    width: 150,
+    height: 150,
   },
   buttonContainer: {
     justifyContent: 'flex-start',

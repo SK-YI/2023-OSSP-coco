@@ -30,7 +30,8 @@
     "react-native-maps": "1.7.1",
     "expo-location": "~16.1.0",
     "expo-media-library": "~15.4.1",
-    "react-native-webview": "13.2.2"
+    "react-native-webview": "13.2.2",
+    "expo-image-picker": "~14.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

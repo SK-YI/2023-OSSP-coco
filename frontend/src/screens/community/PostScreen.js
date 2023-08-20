@@ -46,6 +46,7 @@ const post = {
 
 const PostScreen = () => {
   const [text, setText] = useState('');
+  const [like, setLike] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -94,55 +95,67 @@ const PostScreen = () => {
               />
             </View>
             <Text style={styles.content}>{post.content}</Text>
-            <Pressable style={styles.button}>
+            <Pressable
+              style={styles.button}
+              onPress={() => setLike(!like)}
+              hitSlop={10}
+            >
               <Text style={styles.buttonText}>좋아요</Text>
-              <MaterialCommunityIcons
-                style={styles.icon}
-                name={'cards-heart-outline'}
-                size={25}
-              />
+              {like ? (
+                <MaterialCommunityIcons
+                  style={styles.icon}
+                  name={'cards-heart'}
+                  size={25}
+                />
+              ) : (
+                <MaterialCommunityIcons
+                  style={styles.icon}
+                  name={'cards-heart-outline'}
+                  size={25}
+                />
+              )}
             </Pressable>
           </View>
         }
-        ListFooterComponent={
-          <View style={styles.searchContainer}>
-            <TextInput
-              value={text}
-              onChangeText={(text) => setText(text)}
-              style={styles.search}
-              placeholder={'댓글을 작성해주세요.'}
-              returnKeyType={'done'}
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              textContentType={'none'}
-              keyboardAppearance={'light'}
-              blurOnSubmit={true}
-              multiline
-            />
-            <Pressable style={styles.searchButton}>
-              <Text style={styles.searchButtonText}>등록</Text>
-            </Pressable>
-          </View>
-        }
+        // ListFooterComponent={
+        //   <View style={styles.searchContainer}>
+        //     <TextInput
+        //       value={text}
+        //       onChangeText={(text) => setText(text)}
+        //       style={styles.search}
+        //       placeholder={'댓글을 작성해주세요.'}
+        //       returnKeyType={'done'}
+        //       autoCapitalize={'none'}
+        //       autoCorrect={false}
+        //       textContentType={'none'}
+        //       keyboardAppearance={'light'}
+        //       blurOnSubmit={true}
+        //       multiline
+        //     />
+        //     <Pressable style={styles.searchButton}>
+        //       <Text style={styles.searchButtonText}>등록</Text>
+        //     </Pressable>
+        //   </View>
+        // }
       />
-      {/* <View style={styles.searchContainer}>
-          <TextInput
-            value={text}
-            onChangeText={(text) => setText(text)}
-            style={styles.search}
-            placeholder={'댓글을 작성해주세요.'}
-            returnKeyType={'done'}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            textContentType={'none'}
-            keyboardAppearance={'light'}
-            blurOnSubmit={true}
-            multiline
-          />
-          <Pressable style={styles.searchButton}>
-            <Text style={styles.searchButtonText}>등록</Text>
-          </Pressable>
-        </View> */}
+      <View style={styles.searchContainer}>
+        <TextInput
+          value={text}
+          onChangeText={(text) => setText(text)}
+          style={styles.search}
+          placeholder={'댓글을 작성해주세요.'}
+          returnKeyType={'done'}
+          autoCapitalize={'none'}
+          autoCorrect={false}
+          textContentType={'none'}
+          keyboardAppearance={'light'}
+          blurOnSubmit={true}
+          multiline
+        />
+        <Pressable style={styles.searchButton}>
+          <Text style={styles.searchButtonText}>등록</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
