@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -5,15 +6,30 @@ import {
   Image,
   ScrollView,
   Platform,
+  Pressable,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import facilityData from '../../sample/facilitySampledata';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
+import WriteReviewPopup from '../../components/facility/reviewPopup';
+
 /* import { AntDesign } from '@expo/vector-icons'; */
 
 const FacilityDetailScreen = ({ route }) => {
   const facilityId = route.params.facilityId;
   const facility = facilityData.find((item) => item.key === facilityId);
+
+  const [isReviewPopupVisible, setReviewPopupVisible] = useState(false);
+  const handleOpenReviewPopup = () => {
+    setReviewPopupVisible(true);
+  };
+  const handleCloseReviewPopup = () => {
+    setReviewPopupVisible(false);
+  };
+  const handleSaveReview = (reviewData) => {
+    console.log(reviewData);
+    handleCloseReviewPopup();
+  };
 
   return (
     <ScrollView>
@@ -36,13 +52,7 @@ const FacilityDetailScreen = ({ route }) => {
               justifyContent: 'space-between',
             }}
           >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 15,
-              }}
-            >
+            <View style={{ flexDirection: 'row', alignContent: 'center' }}>
               <Text style={styles.reviewTitle}>리뷰</Text>
               <Text
                 style={{
@@ -55,6 +65,17 @@ const FacilityDetailScreen = ({ route }) => {
                 4.5
               </Text>
             </View>
+            <View>
+              <Pressable onPress={handleOpenReviewPopup}>
+                <Text style={{paddingRight: 20}}>리뷰 쓰기</Text>
+              </Pressable>
+            </View>
+            {isReviewPopupVisible && (
+              <WriteReviewPopup
+                onClose={handleCloseReviewPopup}
+                onSave={handleSaveReview}
+              />
+            )}
           </View>
           <ScrollView
             horizontal={true}
@@ -62,16 +83,17 @@ const FacilityDetailScreen = ({ route }) => {
             contentContainerStyle={{ alignItems: 'center' }}
           >
             {facility.review.map((review, index) => (
-                <View style={styles.review} key={index}>
-                  <Text style={{ fontSize: 15, fontWeight: '700' }}>
-                    {review.title}
-                  </Text>
-                  <Text style={{ color: PRIMARY.DARK }}>
-                    {review.reviewscore}
-                  </Text>
-                  <Text>{review.content}</Text>
-                </View>
+              <View style={styles.review} key={index}>
+                <Text style={{ fontSize: 15, fontWeight: '700' }}>
+                  {review.title}
+                </Text>
+                <Text style={{ color: PRIMARY.DARK }}>
+                  {review.reviewscore}
+                </Text>
+                <Text>{review.content}</Text>
+              </View>
             ))}
+            
           </ScrollView>
           <Text style={styles.info}>정보: {facility.info}</Text>
         </View>

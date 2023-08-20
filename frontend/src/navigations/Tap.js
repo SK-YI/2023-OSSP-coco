@@ -15,6 +15,7 @@ const TabNavigation = () => {
       tabBarOptions={{
         activeTintColor: '#79bd9a',
         inactiveTintColor: '#a3a3a3',
+        keyboardHidesTabBar: true
       }}
       screenOptions={{ headerShown: false }}
       initialRouteName="startPage"

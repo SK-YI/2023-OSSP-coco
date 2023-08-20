@@ -10,10 +10,8 @@ const FacilityDropdown = () => {
     {label: '유형 1', value: 'type1'},
     {label: '세부유형 1', value: 'detailtype1', parent: 'type1'},
     {label: '세부유형 2', value: 'detailtype2', parent: 'type1'},
-
     {label: '유형 2', value: 'type2'},
     {label: '세부유형 3', value: 'detailtype3', parent: 'type2'},
-
     {label: '유형 3', value: 'type3'}
   ]);
 
