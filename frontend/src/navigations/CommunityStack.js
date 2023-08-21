@@ -18,7 +18,7 @@ const CommunityStackNavigation = () => {
         name="목록"
         component={PostListScreen}
       />
-      <CommunityStack.Screen name="커뮤니티" component={PostScreen} />
+      <CommunityStack.Screen name="커뮤니티 메인" component={PostScreen} />
       <CommunityStack.Screen name="글쓰기" component={WritePostScreen} />
     </CommunityStack.Navigator>
   );

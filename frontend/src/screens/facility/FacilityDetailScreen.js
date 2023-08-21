@@ -50,6 +50,7 @@ const FacilityDetailScreen = ({ route }) => {
               paddingVertical: 10,
               flexDirection: 'row',
               justifyContent: 'space-between',
+              paddingTop: 20
             }}
           >
             <View style={{ flexDirection: 'row', alignContent: 'center' }}>
@@ -58,6 +59,7 @@ const FacilityDetailScreen = ({ route }) => {
                 style={{
                   color: PRIMARY.DARK,
                   paddingLeft: 10,
+                  paddingTop: 2,
                   fontSize: 17,
                   fontWeight: '700',
                 }}
@@ -67,7 +69,7 @@ const FacilityDetailScreen = ({ route }) => {
             </View>
             <View>
               <Pressable onPress={handleOpenReviewPopup}>
-                <Text style={{paddingRight: 20}}>리뷰 쓰기</Text>
+                <Text style={{paddingRight: 20, paddingTop: 5}}>리뷰 쓰기</Text>
               </Pressable>
             </View>
             {isReviewPopupVisible && (

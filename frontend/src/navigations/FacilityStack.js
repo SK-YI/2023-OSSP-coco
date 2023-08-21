@@ -7,10 +7,7 @@ const FaciltyStack = createStackNavigator();
 const FaciltyStackNavigation = () => {
   return (
     <FaciltyStack.Navigator
-      /* screenOptions={{
-        headerShown: false,
-      }} */
-      initialRouteName="시설"
+      initialRouteName="시설 메인"
     >
       <FaciltyStack.Screen
         name="시설 정보"
@@ -18,7 +15,7 @@ const FaciltyStackNavigation = () => {
       />
       <FaciltyStack.Screen
         options={{headerShown: false}}
-        name="시설"
+        name="시설 메인"
         component={FacilityScreen}
       />
     </FaciltyStack.Navigator>

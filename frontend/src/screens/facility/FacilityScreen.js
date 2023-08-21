@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Pressable, Image, Platform, } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 import { TextInput } from 'react-native-gesture-handler';
@@ -27,21 +27,15 @@ const FacilityScreen = () => {
         </View>
         <FacilityDropdown></FacilityDropdown>
       </View>
+      <View style={styles.recommendFacilityContainer}>
+        <AntDesign name="home" size={24} color={WHITE} />
+        <Text style={styles.FacilityTitle}>추천 시설</Text>
+      </View>
       <View style={styles.faciltyContainer}>
-        <View style={styles.recommendFacilityContainer}>
-          <Image
-            source={require('frontend/assets/icons/green-idea.png')}
-            style={styles.image}
-          />
-          <Text style={styles.FacilityTitle}>추천 시설</Text>
-        </View>
-        <View style={{ marginHorizontal: 40 }}>
+        <View style={{ marginHorizontal: 20 }}>
           {facilityData.map((facility) => (
             <View style={styles.FacilityMenu} key={facility.key}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{ fontSize: 20 }}>{facility.name}</Text>
-                {/* <Text style={{ fontSize: 10 }}>{facility.location}</Text> */}
-              </View>
+              <Text style={{ fontSize: 18 }}>{facility.name}</Text>
               <Pressable
                 onPress={() => handleFacilityDetail(facility.key)}
                 style={({ pressed }) => ({
@@ -50,7 +44,7 @@ const FacilityScreen = () => {
                   borderRadius: 5,
                 })}
               >
-                <AntDesign name="right" size={24} color= {PRIMARY.DARK} />
+                <AntDesign name="right" size={24} color={PRIMARY.DARK} />
               </Pressable>
             </View>
           ))}
@@ -63,16 +57,16 @@ const FacilityScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: PRIMARY.LIGHT,
+    backgroundColor: PRIMARY.DEFAULT,
   },
   searchContainer: {
     height: 180,
-    backgroundColor: PRIMARY.LIGHT,
-    zIndex: 2
+    backgroundColor: PRIMARY.DEFAULT,
+    zIndex: 2,
   },
   searchBox: {
     backgroundColor: WHITE,
-    marginHorizontal: 40,
+    marginHorizontal: 30,
     marginTop: 40,
     padding: 10,
     borderRadius: 10,
@@ -80,15 +74,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: GRAY.DARK,
+        shadowOffset: {
+          width: 3,
+          height: 3,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
   },
   searchIcon: {
     right: 1,
   },
   faciltyContainer: {
-    flex: 6,
+    borderRadius: 10,
+    marginHorizontal: 30,
     backgroundColor: WHITE,
     flexDirection: 'column',
     zIndex: 0,
+    paddingBottom: 20,
     ...Platform.select({
       ios: {
         shadowColor: GRAY.DARK,
@@ -107,8 +117,11 @@ const styles = StyleSheet.create({
   FacilityTitle: {
     fontSize: 22,
     fontWeight: '700',
+    color: WHITE,
+    paddingLeft: 10,
   },
   FacilityMenu: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     fontSize: 18,
@@ -116,10 +129,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   recommendFacilityContainer: {
+    marginHorizontal: 30,
     paddingTop: 20,
-    paddingHorizontal: 15,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingBottom: 30,
   },
   image: {
     width: 35,

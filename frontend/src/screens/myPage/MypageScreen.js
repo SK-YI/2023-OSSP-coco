@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'; // 내비게이션 객
 
 const MyPageScreen = () => {
   const { bottom } = useSafeAreaInsets();
-  const navigation = useNavigation(); // 내비게이션 객체를 가져옴
+  const navigation = useNavigation();
 
 
   return (
