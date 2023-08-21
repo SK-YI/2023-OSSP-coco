@@ -1,5 +1,6 @@
 package Data.Entity;
 
+import Data.Type.UserRole;
 import Data.Type.type;
 import lombok.*;
 import jakarta.persistence.*;
@@ -16,103 +17,57 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_number")
-    private int user_number;
+    private int userNumber;
 
     @Column(nullable = false)
-    private String id;
+    private String nickname;
+
+    @Column(nullable = false)
+    private String loginId;
 
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
-    private String username;
+    private String name;
+
     @Column(nullable = false)
     private int age;
+
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
-    private String nickname;
+    @Enumerated(EnumType.STRING)
+    private type userType;
 
     @Enumerated(EnumType.STRING)
-    private type role;
+    private UserRole role; // 역할 매핑 추가
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Post> boardList = new ArrayList<Post>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<PostReply> boardReplyList = new ArrayList<PostReply>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<FacilityReview> FacilityReviewList = new ArrayList<FacilityReview>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<UserLikePost> likeBoardList = new ArrayList<UserLikePost>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<UserFavoriteFacility> likeCocktailList = new ArrayList<UserFavoriteFacility>();
 
-    public int getUser_number() {
-        return user_number;
-    }
-
-    public void setUser_number(int user_number) {
-        this.user_number = user_number;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
+    @Builder
+    public User(int userNumber, String loginId, String password, String name, int age, String email, String nickname, type userType, UserRole role) {
+        this.userNumber = userNumber;
+        this.loginId = loginId;
         this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
+        this.name = name;
         this.age = age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public type getRole() {
-        return role;
-    }
-
-    public void setRole(type role) {
+        this.userType = userType;
         this.role = role;
     }
 }
