@@ -20,7 +20,7 @@ const FacilityScreen = () => {
     <View style={styles.container}>
       <View style={styles.searchContainer}>
         <View style={styles.searchBox}>
-          <TextInput sytle={{ flex: 1 }} placeholder="검색어를 입력하세요" />
+          <TextInput sytle={{ flex: 1 }} placeholderTextColor={GRAY.DARK} placeholder="검색어를 입력하세요" />
           <AntDesign
             style={styles.searchIcon}
             name="search1"
@@ -111,12 +111,12 @@ const styles = StyleSheet.create({
     right: 1,
   },
   icon: {
-    height: 30,
-    width: 30,
+    height: 28,
+    width: 28,
     marginHorizontal: 3
   },
   faciltyContainer: {
-    padding: 12,
+    padding: 14,
     height: 120,
     borderRadius: 25,
     marginHorizontal: 30,

@@ -7,13 +7,13 @@ import {
   ScrollView,
   Platform,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import facilityData from '../../sample/facilitySampledata';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 import WriteReviewPopup from '../../components/facility/reviewPopup';
-
-/* import { AntDesign } from '@expo/vector-icons'; */
+import { AntDesign } from '@expo/vector-icons';
 
 const FacilityDetailScreen = ({ route }) => {
   const facilityId = route.params.facilityId;
@@ -31,11 +31,29 @@ const FacilityDetailScreen = ({ route }) => {
     handleCloseReviewPopup();
   };
 
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const toggleFavorite = () => {
+    setIsFavorite(prevState => !prevState);
+  };
+
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>{facility.name}</Text>
-        <Text style={styles.type}>{facility.type}</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text style={styles.type}>{facility.type}</Text>
+          <TouchableOpacity onPress={toggleFavorite}>
+        <AntDesign
+          name={isFavorite ? 'star' : 'staro'} 
+          size={30}
+          color={isFavorite ? PRIMARY.DEFAULT : GRAY.DEFAULT} 
+          style={{marginRight: 35}}
+        />
+      </TouchableOpacity>
+        </View>
+        
         <View style={{ alignItems: 'center', paddingVertical: 30 }}>
           <Image
             source={require('frontend/assets/mapSample.png')}
