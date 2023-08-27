@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { GRAY } from '../../colors';
 
@@ -20,7 +20,7 @@ const FacilityDropdown = () => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      paddingHorizontal: 40,
+      paddingHorizontal: 30,
     }}>
       <DropDownPicker
         open={open}
@@ -34,7 +34,21 @@ const FacilityDropdown = () => {
         mode="BADGE"
         badgeColors={GRAY.LIGHT}
         badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
-        style={{ borderColor: 'transparent' }}
+        style={{ borderColor: 'transparent', ...Platform.select({
+          ios: {
+            shadowColor: GRAY.DARK,
+            shadowOffset: {
+              width: 3,
+              height: 3,
+            },
+            shadowOpacity: 0.3,
+            shadowRadius: 10,
+          },
+          android: {
+            elevation: 7,
+          },
+        }),
+      }}
       />
     </View>
   );
