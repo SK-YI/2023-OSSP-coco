@@ -29,23 +29,23 @@ const MyPageScreen = () => {
         </Pressable>
         <Text style={styles.MyPageTitle}>커뮤니티</Text>
         <Pressable
-          onPress={() => navigation.navigate('계정 정보')}
+          onPress={() => navigation.navigate('내가 작성한 글')}
         >
           <Text style={styles.MyPageMenu}>내가 작성한 글</Text>
         </Pressable>
         <Pressable
-          onPress={() => navigation.navigate('계정 정보')}
+          onPress={() => navigation.navigate('내가 작성한 댓글')}
         >
           <Text style={styles.MyPageMenu}>내가 작성한 댓글</Text>
         </Pressable>
         <Text style={styles.MyPageTitle}>시설</Text>
         <Pressable
-          onPress={() => navigation.navigate('계정 정보')}
+          onPress={() => navigation.navigate('내가 즐겨찾기한 시설')}
         >
-          <Text style={styles.MyPageMenu}>내가 좋아요한 시설</Text>
+          <Text style={styles.MyPageMenu}>내가 즐겨찾기한 시설</Text>
         </Pressable>
         <Pressable
-          onPress={() => navigation.navigate('계정 정보')}
+          onPress={() => navigation.navigate('내가 작성한 리뷰')}
         >
           <Text style={styles.MyPageMenu}>내가 작성한 리뷰</Text>
         </Pressable>
