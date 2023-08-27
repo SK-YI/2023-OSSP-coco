@@ -18,7 +18,7 @@ const UserProfile = ({ userName, userEmail }) => {
 };
 
 UserProfile.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   onPress: PropTypes.func,
   styles: PropTypes.object,
   userName: PropTypes.string,

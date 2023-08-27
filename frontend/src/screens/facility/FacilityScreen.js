@@ -33,7 +33,7 @@ const FacilityScreen = () => {
       </View>
       <View style={styles.faciltyContainer}>
         <View style={{ marginHorizontal: 20 }}>
-          {facilityData.map((facility) => (
+          {facilityData.slice(0, 3).map((facility) => (
             <View style={styles.FacilityMenu} key={facility.key}>
               <Text style={{ fontSize: 18 }}>{facility.name}</Text>
               <Pressable
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     marginTop: 40,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 50,
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     right: 1,
   },
   faciltyContainer: {
-    borderRadius: 10,
+    borderRadius: 25,
     marginHorizontal: 30,
     backgroundColor: WHITE,
     flexDirection: 'column',

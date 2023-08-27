@@ -21,6 +21,7 @@ const FacilityDropdown = () => {
       alignItems: 'center',
       justifyContent: 'center',
       paddingHorizontal: 30,
+      borderRadius: 50
     }}>
       <DropDownPicker
         open={open}
@@ -34,7 +35,7 @@ const FacilityDropdown = () => {
         mode="BADGE"
         badgeColors={GRAY.LIGHT}
         badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
-        style={{ borderColor: 'transparent', ...Platform.select({
+        style={{ borderRadius: 25 ,borderColor: 'transparent', ...Platform.select({
           ios: {
             shadowColor: GRAY.DARK,
             shadowOffset: {

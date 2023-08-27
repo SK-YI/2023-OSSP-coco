@@ -23,7 +23,6 @@ const TabNavigation = () => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: WHITE,
-          position: 'absolute',
           elevation: 0,
           ...Platform.select({
             ios: {
