@@ -21,7 +21,7 @@ const FacilityDropdown = () => {
       alignItems: 'center',
       justifyContent: 'center',
       paddingHorizontal: 30,
-      borderRadius: 50
+      borderRadius: 25
     }}>
       <DropDownPicker
         open={open}
@@ -31,6 +31,7 @@ const FacilityDropdown = () => {
         setValue={setValue}
         setItems={setItems}
         placeholder='장애 유형을 선택해주세요'
+        placeholderStyle={{ color: GRAY.DARK }}
         multiple={true}
         mode="BADGE"
         badgeColors={GRAY.LIGHT}
