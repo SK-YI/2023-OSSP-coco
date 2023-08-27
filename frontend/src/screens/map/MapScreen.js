@@ -4,7 +4,13 @@ import LocationSearch from '../../components/map/LocationSearch';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
-
+import LocationModal from '../../components/map/LocationModal';
+// 더미데이터
+const facilityData = {
+  name: '이마트 산본점',
+  latitude: 37.3610506,
+  longitude: 126.9314088,
+};
 const MapScreen = () => {
   const { top } = useSafeAreaInsets();
 
@@ -13,6 +19,7 @@ const MapScreen = () => {
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
   });
+  const [modalOpen, setModalOpen] = useState(false);
 
   // const [initialLocation, setInitialLocation] = useState();
 
@@ -56,8 +63,22 @@ const MapScreen = () => {
         region={location.latitude && location.longitude ? location : null}
       >
         {location.latitude && location.longitude && (
-          <Marker coordinate={location} title={location.name} />
+          <Marker
+            coordinate={location}
+            title={location.name}
+            description={'설명~~~'}
+          />
+          /* <View style={{ backgroundColor: 'red', padding: 10 }}>
+              <Text>SF</Text>
+            </View>
+          </Marker> */
         )}
+        <Marker
+          coordinate={facilityData}
+          title={facilityData.name}
+          description={'편의시설1'}
+          onPress={() => setModalOpen(true)}
+        />
       </MapView>
 
       <LocationSearch
@@ -88,6 +109,7 @@ const MapScreen = () => {
           <LocationPostList location={location.name} />
         </View>
       )} */}
+      <LocationModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </View>
   );
 };

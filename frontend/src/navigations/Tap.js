@@ -47,8 +47,7 @@ const TabNavigation = () => {
         component={FaciltyStackNavigation}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View
-            >
+            <View>
               <AntDesign
                 name="bars"
                 size={35}
@@ -66,7 +65,7 @@ const TabNavigation = () => {
             <View
               style={{
                 justifyContent: 'center',
-                alignContent: 'center'
+                alignContent: 'center',
               }}
             >
               <Ionicons
@@ -86,7 +85,7 @@ const TabNavigation = () => {
             <View
               style={{
                 justifyContent: 'center',
-                alignContent: 'center'
+                alignContent: 'center',
               }}
             >
               <AntDesign
@@ -106,7 +105,7 @@ const TabNavigation = () => {
             <View
               style={{
                 justifyContent: 'center',
-                alignContent: 'center'
+                alignContent: 'center',
               }}
             >
               <AntDesign
