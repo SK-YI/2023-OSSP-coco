@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { GRAY, PRIMARY } from '../../colors';
 
 export const InputTypes = {
+  ID: 'ID',
   EMAIL: 'EMAIL',
   PASSWORD: 'PASSWORD',
   PASSWORD_CONFIRM: 'PASSWORD_CONFIRM',
@@ -21,9 +22,16 @@ const PasswordProps = {
 };
 
 const InputTypeProps = {
-  EMAIL: {
+  ID: {
     title: '아이디',
     placeholder: '아이디를 입력해주세요.',
+    keyboardType: 'default',
+    secureTextEntry: false,
+    iconName: { active: 'account-key', inactive: 'account-key-outline' },
+  },
+  EMAIL: {
+    title: '이메일',
+    placeholder: '이메일를 입력해주세요.',
     keyboardType: 'email-address',
     secureTextEntry: false,
     iconName: { active: 'email', inactive: 'email-outline' },

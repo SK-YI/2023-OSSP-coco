@@ -16,6 +16,7 @@ import RadioButton from '../../components/signup/RadioButton';
 import SignupDropdown from '../../components/signup/SignupDropDown';
 
 const SignUpScreen = () => {
+  const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -33,6 +34,7 @@ const SignUpScreen = () => {
   const { navigate } = useNavigation();
 
   useEffect(() => {
+    // 필수 값 체크!
     setDisabled(!email || !password || password !== passwordConfirm);
   }, [email, password, passwordConfirm]);
 
@@ -65,9 +67,9 @@ const SignUpScreen = () => {
             </View>
             <View style={styles.inputContainer}>
               <Input
-                inputType={InputTypes.EMAIL}
-                value={email}
-                onChangeText={(text) => setEmail(text.trim())}
+                inputType={InputTypes.ID}
+                value={id}
+                onChangeText={(text) => setId(text.trim())}
                 // onSubmitEditing={() => passwordRef.current.focus()}
                 styles={{ container: { marginBottom: 20 } }}
                 returnKeyType={ReturnKeyTypes.NEXT}
@@ -91,6 +93,15 @@ const SignUpScreen = () => {
               value={passwordConfirm}
               onChangeText={(text) => setPasswordConfirm(text.trim())}
               onSubmitEditing={onSubmit}
+              styles={{ container: { marginBottom: 20 } }}
+              returnKeyType={ReturnKeyTypes.NEXT}
+              star={true}
+            />
+            <Input
+              inputType={InputTypes.EMAIL}
+              value={email}
+              onChangeText={(text) => setEmail(text.trim())}
+              // onSubmitEditing={() => passwordRef.current.focus()}
               styles={{ container: { marginBottom: 20 } }}
               returnKeyType={ReturnKeyTypes.NEXT}
               star={true}
