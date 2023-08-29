@@ -28,7 +28,16 @@ public class Facility {
     private int liked;
 
     @Column(nullable = false)
-    private String facilityAddress;
+    private String address;
+
+    @Column(nullable = false)
+    private String longitude;
+
+    @Column(nullable = false)
+    private String latitude;
+
+    @Column(nullable = false)
+    private int code;
 
     @OneToMany(mappedBy = "facility")
     private List<FacilityReview> facilityReviewList = new ArrayList<FacilityReview>();

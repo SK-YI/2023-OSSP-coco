@@ -17,14 +17,20 @@ public class FacilityResponseDto {
         private int liked;
         private String name;
 
-        private String facilityAddress;
+        private String address;
+
+        private String latitude;
+
+        private String longitude;
 
         public FacilityResponseDto(Facility facility) {
                 facilityId = facility.getFacilityId();
                 type = facility.getType();
                 liked = facility.getLiked();
                 name = facility.getName();
-                facilityAddress = facility.getFacilityAddress();
+                address = facility.getAddress();
+                latitude = facility.getLatitude();
+                longitude = facility.getLongitude();
         }
 
 
