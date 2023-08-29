@@ -1,0 +1,20 @@
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://coco-mysql.ckoldtvydv7j.ap-northeast-2.rds.amazonaws.com:3306/cocodb
+        username: admin
+        password: cocococo
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: false
+
+        properties:
+            hibernate:
+                format_sql: true
+logging:
+    level:
+        com.tutorial: debug
+jwt:
+    secret: "VlwEyVBsYt9V7zq57TejMnVUyzblYcffUjXn2opi2990s90sd0sdk283l5u8x"
