@@ -6,14 +6,26 @@ import { GRAY } from '../../colors';
 const FacilityDropdown = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(['italy', 'spain', 'barcelona', 'finland']);
-  const [items, setItems] = useState([
-    {label: '유형 1', value: 'type1'},
-    {label: '세부유형 1', value: 'detailtype1', parent: 'type1'},
-    {label: '세부유형 2', value: 'detailtype2', parent: 'type1'},
-    {label: '유형 2', value: 'type2'},
-    {label: '세부유형 3', value: 'detailtype3', parent: 'type2'},
-    {label: '유형 3', value: 'type3'}
-  ]);
+
+  const options = [
+    { label: '지체장애', value: '지체장애' },
+    { label: '뇌병변장애', value: '뇌병변장애' },
+    { label: '시작장애', value: '시작장애' },
+    { label: '청각장애', value: '청각장애' },
+    { label: '언어장애', value: '언어장애' },
+    { label: '안면장애', value: '안면장애' },
+    { label: '신장장애', value: '신장장애' },
+    { label: '심장장애', value: '심장장애' },
+    { label: '간장애', value: '간장애' },
+    { label: '호흡기장애', value: '호흡기장애' },
+    { label: '장루, 요루장애', value: '장루, 요루장애' },
+    { label: '간질장애', value: '간질장애' },
+    { label: '지적장애', value: '지적장애' },
+    { label: '자폐성장애', value: '자폐성장애' },
+    { label: '정신장애', value: '정신장애' },
+  ];
+
+  const [items, setItems] = useState(options);
 
   return (
     <View style={{

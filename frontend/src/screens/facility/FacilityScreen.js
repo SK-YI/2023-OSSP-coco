@@ -8,16 +8,18 @@ import FacilityDropdown from '../../components/facility/facilityDropdown';
 import toiletIcon from 'frontend/assets/facilityIcons/toilet.png';
 import rampIcon from 'frontend/assets/facilityIcons/ramp.png';
 import elevatorIcon from 'frontend/assets/facilityIcons/elevator.png';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const FacilityScreen = () => {
   const navigation = useNavigation();
+  const { top } = useSafeAreaInsets();
 
   const handleFacilityDetail = (facilityId) => {
     navigation.navigate('시설 정보', { facilityId });
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: top }]}>
       <View style={styles.searchContainer}>
         <View style={styles.searchBox}>
           <TextInput sytle={{ flex: 1 }} placeholderTextColor={GRAY.DARK} placeholder="검색어를 입력하세요" />
@@ -78,14 +80,13 @@ const styles = StyleSheet.create({
     backgroundColor: PRIMARY.DEFAULT,
   },
   searchContainer: {
-    height: 180,
+    height: 140,
     backgroundColor: PRIMARY.DEFAULT,
     zIndex: 2,
   },
   searchBox: {
     backgroundColor: WHITE,
     marginHorizontal: 30,
-    marginTop: 40,
     padding: 10,
     borderRadius: 50,
     height: 50,

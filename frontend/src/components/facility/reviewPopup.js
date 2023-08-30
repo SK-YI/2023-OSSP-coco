@@ -3,7 +3,6 @@ import { View, Text, TextInput, Pressable, Modal, StyleSheet } from 'react-nativ
 import { PRIMARY, WHITE } from '../../colors';
 import PropTypes from 'prop-types';
 
-
 const WriteReviewPopup = ({ onClose, onSave }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -11,6 +10,10 @@ const WriteReviewPopup = ({ onClose, onSave }) => {
 
   const handleSave = () => {
     onSave({ title, content, score });
+    onClose();
+  };
+
+  const handleClose = () => {
     onClose();
   };
 
@@ -32,14 +35,20 @@ const WriteReviewPopup = ({ onClose, onSave }) => {
             multiline
             style={[styles.input, styles.multilineInput]}
           />
-          <Pressable style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.saveButtonText}>저장</Text>
-          </Pressable>
+          <View style={styles.buttonContainer}>
+            <Pressable style={styles.saveButton} onPress={handleSave}>
+              <Text style={styles.saveButtonText}>저장</Text>
+            </Pressable>
+            <Pressable style={styles.cancelButton} onPress={handleClose}>
+              <Text style={styles.cancelButtonText}>취소</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </Modal>
   );
 };
+
 WriteReviewPopup.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired, 
@@ -74,14 +83,33 @@ const styles = StyleSheet.create({
   multilineInput: {
     height: 100,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   saveButton: {
+    flex: 1,
     backgroundColor: PRIMARY.DARK,
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
+    marginRight: 10,
   },
   saveButtonText: {
     color: WHITE,
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: PRIMARY.LIGHT,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  cancelButtonText: {
+    color: PRIMARY.DARK,
     fontWeight: '700',
     fontSize: 16,
   },
