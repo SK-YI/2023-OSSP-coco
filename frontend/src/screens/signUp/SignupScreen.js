@@ -1,4 +1,11 @@
-import { Keyboard, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  Alert,
+  Keyboard,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import Input, {
   InputTypes,
   ReturnKeyTypes,
@@ -11,12 +18,13 @@ import { useNavigation } from '@react-navigation/native';
 import TextButton from '../../components/login/TextButton';
 import { AuthRoutes } from '../../navigations/routes';
 import HR from '../../components/login/HR';
-import CheckButton from '../../components/login/CheckButton';
+import CheckButton from '../../components/signup/CheckButton';
 import RadioButton from '../../components/signup/RadioButton';
 import SignupDropdown from '../../components/signup/SignupDropDown';
 
 const SignUpScreen = () => {
   const [id, setId] = useState('');
+  const [idCheck, setIdCheck] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -24,8 +32,6 @@ const SignUpScreen = () => {
   const [age, setAge] = useState(null);
   const [gender, setGender] = useState(0); // 0: 남자, 1: 여자
   const [disability, setDisability] = useState([]);
-  // const passwordRef = useRef();
-  // const passwordConfirmRef = useRef();
 
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -35,17 +41,44 @@ const SignUpScreen = () => {
 
   useEffect(() => {
     // 필수 값 체크!
-    setDisabled(!email || !password || password !== passwordConfirm);
-  }, [email, password, passwordConfirm]);
+    setDisabled(
+      !idCheck ||
+        !email ||
+        !password ||
+        password !== passwordConfirm ||
+        !email ||
+        !nickname ||
+        disability.length === 0
+    );
+  }, [idCheck, email, password, passwordConfirm, nickname, disability]);
 
   const onSubmit = () => {
     Keyboard.dismiss();
     if (!disabled && !isLoading) {
       setIsLoading(true);
-      // console.log(email, password);
+      // 회원가입 api 넣기
+      // 회원가입 성공하면 로그인 페이지로 이동하기!
       setIsLoading(false);
+    } else if (disabled) {
+      Alert.alert('회원가입 실패', '필수값을 입력해주세요.', [
+        { text: '확인', onPress: () => {} },
+      ]);
     }
   };
+
+  const onCheckId = () => {
+    Keyboard.dismiss();
+    if (!id) {
+      Alert.alert('아이디 중복 확인 실패', '아이디값을 입력해주세요.', [
+        { text: '확인', onPress: () => {} },
+      ]);
+    } else {
+      // ID 중복확인 api 넣기
+      // 중복확인 성공하면
+      setIdCheck(true);
+    }
+  };
+
   return (
     <SafeInputView>
       <View style={{ height: '100%', width: '100%', paddingTop: top }}>
@@ -75,7 +108,11 @@ const SignUpScreen = () => {
                 returnKeyType={ReturnKeyTypes.NEXT}
                 star={true}
               />
-              <CheckButton title={'중복 확인'} onPress={() => {}} />
+              <CheckButton
+                title={'중복 확인'}
+                onPress={onCheckId}
+                idCheck={idCheck}
+              />
             </View>
             <Input
               // ref={passwordRef}
