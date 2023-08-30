@@ -17,7 +17,7 @@ const MyFacilityScreen = () => {
   const navigation = useNavigation();
 
   const handleFacilityDetail = (facilityId) => {
-    navigation.navigate('내가 즐겨찾기한 시설 정보', { facilityId });
+    navigation.navigate('내 시설 정보', { facilityId });
   };
 
   return (

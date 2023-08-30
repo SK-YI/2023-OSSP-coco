@@ -1,111 +1,130 @@
-import { FlatList, StyleSheet, View } from 'react-native';
+import {
+  Alert,
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
-// import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import PostItem from '../../components/community/PostItem';
-/* import { useNavigation } from '@react-navigation/native'; */
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Comment from '../../components/community/Comment';
+import { useState } from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // 더미데이터
-const postData = [
-  {
-    id: 1,
-    title: '제목1',
-    name: '내용1', 
-    date: '22.02.02',
-    nickname: '닉네임1',
-    like: 0,
-    comment: 0,
-    photo: null,
-  },
-  {
-    id: 2,
-    title: '제목2',
-    name: '내용2',
-    date: '22.02.02',
-    nickname: '닉네임2',
-    like: 2,
-    comment: 0,
-    photo: null,
-  },
-  {
-    id: 3,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-  {
-    id: 4,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-  {
-    id: 5,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-  {
-    id: 6,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-  {
-    id: 7,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-  {
-    id: 8,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-];
+const post = {
+  id: 1,
+  title: '제목1',
+  content: '내용1~~~~~',
+  date: '22.02.02',
+  nickname: '닉네임1',
+  like: 0,
+  commentNumber: 0,
+  photo: null,
+  comment: [
+    {
+      id: 1,
+      nickname: '닉네임11',
+      content: '내용11',
+      date: '22.01.01',
+    },
+    {
+      id: 2,
+      nickname: '닉네임22',
+      content: '내용22',
+      date: '22.01.01',
+    },
+    {
+      id: 3,
+      nickname: '닉네임33',
+      content: '내용33',
+      date: '22.01.01',
+    },
+  ],
+};
 
 const MyPostScreen = () => {
-  /* const navigation = useNavigation(); */
+  const [text, setText] = useState('');
+  const [like, setLike] = useState(false);
 
-  const { top } = useSafeAreaInsets();
+  const onSubmit = () => {
+    if (!text) {
+      Alert.alert('댓글 등록 실패', '댓글을 입력해주세요.', [
+        { text: '확인', onPress: () => {} },
+      ]);
+    } else {
+      // 댓글 등록 api 호출
+    }
+  };
+
+  const onClickLike = () => {
+    setLike(!like);
+    // 좋아요 api 호출
+  };
 
   return (
-    <View style={[styles.container, { paddingTop: top }]}>
+    <View style={styles.container}>
       <FlatList
-        data={postData}
-        renderItem={({ item }) => <PostItem post={item} />}
+        style={styles.commentContainer}
+        data={post.comment}
+        renderItem={({ item }) => <Comment data={item} />}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
-        horizontal={false}
-        // onEndReached={fetchNextPage}
-        // onEndReachedThreshold={0.4}
-        // onRefresh={refetch}
-        // refreshing={refetching}
+        ListHeaderComponent={
+          <View style={styles.postContainer}>
+            <Text style={styles.nickname}>{post.title}</Text>
+            <View style={styles.explainContainer}>
+              <Text style={styles.explain}>{post.date}</Text>
+              <Text style={styles.explain}>|</Text>
+              <Text style={styles.explain}>{post.nickname}</Text>
+            </View>
+            <View style={styles.imageContainer}>
+              <Image
+                source={require('../../../assets/comap.png')}
+                style={styles.image}
+                // resizeMode={'cover'}
+              />
+            </View>
+            <Text style={styles.content}>{post.content}</Text>
+            <Pressable style={styles.button} onPress={onClickLike} hitSlop={10}>
+              <Text style={styles.buttonText}>좋아요</Text>
+              {like ? (
+                <MaterialCommunityIcons
+                  style={styles.icon}
+                  name={'cards-heart'}
+                  size={25}
+                />
+              ) : (
+                <MaterialCommunityIcons
+                  style={styles.icon}
+                  name={'cards-heart-outline'}
+                  size={25}
+                />
+              )}
+            </Pressable>
+          </View>
+        }
       />
+      <View style={styles.searchContainer}>
+        <TextInput
+          value={text}
+          onChangeText={(text) => setText(text.trim())}
+          style={styles.search}
+          placeholder={'댓글을 작성해주세요.'}
+          returnKeyType={'done'}
+          autoCapitalize={'none'}
+          autoCorrect={false}
+          textContentType={'none'}
+          keyboardAppearance={'light'}
+          blurOnSubmit={true}
+          multiline
+          onSubmitEditing={onSubmit}
+        />
+        <Pressable style={styles.searchButton} onPress={onSubmit}>
+          <Text style={styles.searchButtonText}>등록</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -115,10 +134,84 @@ MyPostScreen.propTypes = {};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 5,
     backgroundColor: WHITE,
+  },
+  postContainer: {
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    marginVertical: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: GRAY.DEFAULT,
+  },
+  nickname: {
+    paddingVertical: 5,
+    fontSize: 25,
+    lineHeight: 30,
+    fontWeight: '700',
+  },
+  explainContainer: {
+    flexDirection: 'row',
+  },
+  explain: {
+    paddingVertical: 5,
+    paddingRight: 5,
+    fontSize: 15,
+    lineHeight: 20,
+    color: PRIMARY.DARK,
+  },
+  imageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  image: {
+    margin: 10,
+    width: 300,
+    height: 300,
+    borderWidth: 1, // 지워
+    borderColor: 'black', // 지워
+    borderRadius: 10,
+  },
+  content: {
+    paddingVertical: 5,
+    fontSize: 20,
+    lineHeight: 25,
+  },
+  button: {
+    flexDirection: 'row',
+    marginVertical: 20,
+    padding: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: PRIMARY.DARK,
+  },
+  icon: {
+    color: 'white',
+    paddingLeft: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+    lineHeight: 25,
+  },
+  separator: {
+    marginVertical: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: GRAY.DEFAULT,
+  },
+  commentContainer: {
+    width: '100%',
+    borderTopWidth: 1,
+    borderTopColor: GRAY.DEFAULT,
   },
   searchContainer: {
     width: '100%',
@@ -130,21 +223,26 @@ const styles = StyleSheet.create({
     borderBottomColor: GRAY.DEFAULT,
   },
   search: {
-    width: '85%',
+    width: '80%',
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 20,
     borderColor: PRIMARY.DEFAULT,
     borderWidth: 2,
     fontSize: 20,
     lineHeight: 25,
   },
-  icon: {
-    paddingHorizontal: 10,
+  searchButton: {
+    padding: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: PRIMARY.DARK,
   },
-  separator: {
-    marginVertical: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: GRAY.DEFAULT,
+  searchButtonText: {
+    color: 'white',
+    fontSize: 18,
+    lineHeight: 25,
   },
 });
 
