@@ -1,4 +1,12 @@
-import { FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import {
+  Alert,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PostItem from '../../components/community/PostItem';
@@ -97,14 +105,27 @@ const PostListScreen = () => {
   const { top } = useSafeAreaInsets();
   const [text, setText] = useState('');
 
+  const onSearch = () => {
+    if (!text) {
+      Alert.alert('검색 실패', '검색어를 입력해주세요.', [
+        { text: '확인', onPress: () => {} },
+      ]);
+    } else {
+      // 검색 api 호출
+      // 검색 페이지를 따로 만들까?
+      // 검색 후 전체 목록 페이지 보는 것이 힘들 것 같은데..
+    }
+  };
+
   return (
     <View style={[styles.container, { paddingTop: top }]}>
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.search}
           value={text}
-          onChange={(text) => setText(text)}
+          onChangeText={(text) => setText(text.trim())}
           placeholder={'검색어를 입력해주세요.'}
+          onSubmitEditing={onSearch}
         />
         <Pressable onPress={() => navigation.navigate('글쓰기')}>
           <MaterialCommunityIcons
@@ -115,16 +136,22 @@ const PostListScreen = () => {
           />
         </Pressable>
       </View>
-      <FlatList
-        data={postData}
-        renderItem={({ item }) => <PostItem post={item} />}
-        ItemSeparatorComponent={() => <View style={styles.separator}></View>}
-        horizontal={false}
-        // onEndReached={fetchNextPage}
-        // onEndReachedThreshold={0.4}
-        // onRefresh={refetch}
-        // refreshing={refetching}
-      />
+      {postData !== 0 ? (
+        <FlatList
+          data={postData}
+          renderItem={({ item }) => <PostItem post={item} />}
+          ItemSeparatorComponent={() => <View style={styles.separator}></View>}
+          horizontal={false}
+          // onEndReached={fetchNextPage}
+          // onEndReachedThreshold={0.4}
+          // onRefresh={refetch}
+          // refreshing={refetching}
+        />
+      ) : (
+        <View style={styles.empty}>
+          <Text style={styles.emptyText}>검색 결과가 없습니다.</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -164,6 +191,14 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderBottomWidth: 1,
     borderBottomColor: GRAY.DEFAULT,
+  },
+  empty: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 20,
   },
 });
 

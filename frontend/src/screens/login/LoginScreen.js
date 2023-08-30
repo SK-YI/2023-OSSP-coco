@@ -1,4 +1,4 @@
-import { Image, Keyboard, StyleSheet, View } from 'react-native';
+import { Alert, Image, Keyboard, StyleSheet, View } from 'react-native';
 import Input, { InputTypes } from '../../components/login/Input';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Button from '../../components/login/Button';
@@ -11,7 +11,7 @@ import HR from '../../components/login/HR';
 import { useUserState } from '../../contexts/UserContext';
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('');
+  const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const passwordRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +25,7 @@ const LoginScreen = () => {
   useFocusEffect(
     useCallback(() => {
       return () => {
-        setEmail('');
+        setId('');
         setPassword('');
         setIsLoading(false);
         setDisabled(true);
@@ -34,16 +34,20 @@ const LoginScreen = () => {
   );
 
   useEffect(() => {
-    setDisabled(!email || !password);
-  }, [email, password]);
+    setDisabled(!id || !password);
+  }, [id, password]);
 
   const onSubmit = () => {
     Keyboard.dismiss();
     if (!disabled && !isLoading) {
       setIsLoading(true);
       setUser(true); // 로그인
-      console.log(email, password);
+      console.log(id, password); // 로그인 api 하기
       setIsLoading(false);
+    } else if (disabled) {
+      Alert.alert('로그인 실패', '아이디, 비밀번호를 올바르게 입력해주세요.', [
+        { text: '확인', onPress: () => {} },
+      ]);
     }
   };
 
@@ -58,9 +62,9 @@ const LoginScreen = () => {
           />
         </View>
         <Input
-          inputType={InputTypes.EMAIL}
-          value={email}
-          onChangeText={(text) => setEmail(text.trim())}
+          inputType={InputTypes.ID}
+          value={id}
+          onChangeText={(text) => setId(text.trim())}
           onSubmitEditing={() => passwordRef.current.focus()}
           styles={{ container: { marginBottom: 20 } }}
         />

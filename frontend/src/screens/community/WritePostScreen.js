@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 import {
+  Alert,
   Image,
   Pressable,
   ScrollView,
@@ -23,7 +24,7 @@ const WritePostScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <WriteSaveButton onPress={() => {}} />,
+      headerRight: () => <WriteSaveButton onPress={onSubmit} />,
     });
   });
 
@@ -48,12 +49,23 @@ const WritePostScreen = () => {
     }
   };
 
+  const onSubmit = () => {
+    if (!text || !title) {
+      Alert.alert('게시글 등록 실패', '제목과 내용을 입력해주세요.', [
+        { text: '확인', onPress: () => {} },
+      ]);
+    } else {
+      // 게시글 등록 api 호출
+      // 성공하면 다시 게시글 목록 페이지로 이동하기!
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.inputTitleContainer}>
         <TextInput
           value={title}
-          onChangeText={(title) => setTitle(title)}
+          onChangeText={(title) => setTitle(title.trim())}
           style={styles.inputTitle}
           placeholder={'게시글의 제목을 입력해주세요.'}
           maxLength={MAX_TITLE_LENGTH}
@@ -68,7 +80,7 @@ const WritePostScreen = () => {
       <View style={styles.inputTextContainer}>
         <TextInput
           value={text}
-          onChangeText={(text) => setText(text)}
+          onChangeText={(text) => setText(text.trim())}
           style={styles.inputText}
           placeholder={'게시글의 내용을 작성해주세요.'}
           maxLength={MAX_TEXT_LENGTH}
