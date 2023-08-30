@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Image,
   Pressable,
@@ -48,32 +49,23 @@ const PostScreen = () => {
   const [text, setText] = useState('');
   const [like, setLike] = useState(false);
 
+  const onSubmit = () => {
+    if (!text) {
+      Alert.alert('댓글 등록 실패', '댓글을 입력해주세요.', [
+        { text: '확인', onPress: () => {} },
+      ]);
+    } else {
+      // 댓글 등록 api 호출
+    }
+  };
+
+  const onClickLike = () => {
+    setLike(!like);
+    // 좋아요 api 호출
+  };
+
   return (
     <View style={styles.container}>
-      {/* <View style={styles.postContainer}>
-          <Text style={styles.nickname}>{post.title}</Text>
-          <View style={styles.explainContainer}>
-            <Text style={styles.explain}>{post.date}</Text>
-            <Text style={styles.explain}>|</Text>
-            <Text style={styles.explain}>{post.nickname}</Text>
-          </View>
-          <View style={styles.imageContainer}>
-            <Image
-              source={require('../../../assets/comap.png')}
-              style={styles.image}
-              // resizeMode={'cover'}
-            />
-          </View>
-          <Text style={styles.content}>{post.content}</Text>
-          <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>좋아요</Text>
-            <MaterialCommunityIcons
-              style={styles.icon}
-              name={'cards-heart-outline'}
-              size={25}
-            />
-          </Pressable>
-        </View> */}
       <FlatList
         style={styles.commentContainer}
         data={post.comment}
@@ -95,11 +87,7 @@ const PostScreen = () => {
               />
             </View>
             <Text style={styles.content}>{post.content}</Text>
-            <Pressable
-              style={styles.button}
-              onPress={() => setLike(!like)}
-              hitSlop={10}
-            >
+            <Pressable style={styles.button} onPress={onClickLike} hitSlop={10}>
               <Text style={styles.buttonText}>좋아요</Text>
               {like ? (
                 <MaterialCommunityIcons
@@ -117,31 +105,11 @@ const PostScreen = () => {
             </Pressable>
           </View>
         }
-        // ListFooterComponent={
-        //   <View style={styles.searchContainer}>
-        //     <TextInput
-        //       value={text}
-        //       onChangeText={(text) => setText(text)}
-        //       style={styles.search}
-        //       placeholder={'댓글을 작성해주세요.'}
-        //       returnKeyType={'done'}
-        //       autoCapitalize={'none'}
-        //       autoCorrect={false}
-        //       textContentType={'none'}
-        //       keyboardAppearance={'light'}
-        //       blurOnSubmit={true}
-        //       multiline
-        //     />
-        //     <Pressable style={styles.searchButton}>
-        //       <Text style={styles.searchButtonText}>등록</Text>
-        //     </Pressable>
-        //   </View>
-        // }
       />
       <View style={styles.searchContainer}>
         <TextInput
           value={text}
-          onChangeText={(text) => setText(text)}
+          onChangeText={(text) => setText(text.trim())}
           style={styles.search}
           placeholder={'댓글을 작성해주세요.'}
           returnKeyType={'done'}
@@ -151,8 +119,9 @@ const PostScreen = () => {
           keyboardAppearance={'light'}
           blurOnSubmit={true}
           multiline
+          onSubmitEditing={onSubmit}
         />
-        <Pressable style={styles.searchButton}>
+        <Pressable style={styles.searchButton} onPress={onSubmit}>
           <Text style={styles.searchButtonText}>등록</Text>
         </Pressable>
       </View>
@@ -177,6 +146,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: 20,
     paddingTop: 10,
+    marginVertical: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: GRAY.DEFAULT,
   },
   nickname: {
     paddingVertical: 5,
