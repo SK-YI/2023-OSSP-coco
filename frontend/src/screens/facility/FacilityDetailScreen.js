@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   ScrollView,
   Platform,
   Pressable,
@@ -14,6 +13,7 @@ import facilityData from '../../sample/facilitySampledata';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 import WriteReviewPopup from '../../components/facility/reviewPopup';
 import { AntDesign } from '@expo/vector-icons';
+import FacilityMap from '../../components/facility/facilityMap';
 
 const FacilityDetailScreen = ({ route }) => {
   const facilityId = route.params.facilityId;
@@ -34,31 +34,27 @@ const FacilityDetailScreen = ({ route }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const toggleFavorite = () => {
-    setIsFavorite(prevState => !prevState);
+    setIsFavorite((prevState) => !prevState);
   };
-
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>{facility.name}</Text>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles.type}>{facility.type}</Text>
           <TouchableOpacity onPress={toggleFavorite}>
-        <AntDesign
-          name={isFavorite ? 'star' : 'staro'} 
-          size={30}
-          color={isFavorite ? PRIMARY.DEFAULT : GRAY.DEFAULT} 
-          style={{marginRight: 35}}
-        />
-      </TouchableOpacity>
+            <AntDesign
+              name={isFavorite ? 'star' : 'staro'}
+              size={30}
+              color={isFavorite ? PRIMARY.DEFAULT : GRAY.DEFAULT}
+              style={{ marginRight: 35 }}
+            />
+          </TouchableOpacity>
         </View>
-        
+
         <View style={{ alignItems: 'center', paddingVertical: 30 }}>
-          <Image
-            source={require('frontend/assets/mapSample.png')}
-            style={styles.image}
-          />
+          <FacilityMap />
         </View>
         <View style={{}}>
           <Text style={styles.menu}>위치: {facility.location}</Text>
@@ -68,7 +64,7 @@ const FacilityDetailScreen = ({ route }) => {
               paddingVertical: 10,
               flexDirection: 'row',
               justifyContent: 'space-between',
-              paddingTop: 20
+              paddingTop: 20,
             }}
           >
             <View style={{ flexDirection: 'row', alignContent: 'center' }}>
@@ -87,7 +83,9 @@ const FacilityDetailScreen = ({ route }) => {
             </View>
             <View>
               <Pressable onPress={handleOpenReviewPopup}>
-                <Text style={{paddingRight: 20, paddingTop: 5}}>리뷰 쓰기</Text>
+                <Text style={{ paddingRight: 20, paddingTop: 5 }}>
+                  리뷰 쓰기
+                </Text>
               </Pressable>
             </View>
             {isReviewPopupVisible && (
@@ -113,7 +111,6 @@ const FacilityDetailScreen = ({ route }) => {
                 <Text>{review.content}</Text>
               </View>
             ))}
-            
           </ScrollView>
           <Text style={styles.info}>정보: {facility.info}</Text>
         </View>
@@ -147,12 +144,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: PRIMARY.DARK,
     paddingHorizontal: 25,
-  },
-  image: {
-    width: 300,
-    height: 300,
-    marginRight: 5,
-    borderRadius: 10,
   },
   menu: {
     fontSize: 18,
