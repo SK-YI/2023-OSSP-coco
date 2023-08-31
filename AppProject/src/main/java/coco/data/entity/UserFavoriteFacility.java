@@ -13,7 +13,7 @@ import lombok.*;
 public class UserFavoriteFacility {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_number")
     private User user;
 
     @Id

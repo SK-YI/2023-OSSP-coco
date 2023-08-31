@@ -12,8 +12,16 @@ import java.util.List;
 
 @Repository
 public interface FacilityRepository extends JpaRepository<Facility, Integer> {
+
+    Facility findById(int id);
+    @SuppressWarnings("all")
+    Page<Facility> findAll(Pageable pageable);
+    Page<Facility> findAllByOrderByName(Pageable pageable);
+    Page<Facility> findAllByOrderByLikedDesc(Pageable pageable);
     Page<Facility> getFacilitiesByName(String name, Pageable pageable);
     @SuppressWarnings("all")
     Page<Facility> findAllByNameContaining(String name, Pageable pageable);
+
+
 
 }
