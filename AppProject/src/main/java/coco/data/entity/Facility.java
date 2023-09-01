@@ -14,6 +14,8 @@ import java.util.List;
 @Entity
 public class Facility {
     @Id
+    //아래를 추가?
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "facility_id")
     private int facilityId;
 
