@@ -1,5 +1,6 @@
 package coco.controller;
 
+import coco.data.dto.FacilityDetailReviewDto;
 import coco.data.dto.FacilityRequestDto;
 import coco.data.dto.FacilityResponseDto;
 import coco.data.dto.LikedResponseDto;
@@ -53,7 +54,7 @@ public class FacilityController {
         return ResponseEntity.ok(facilities);
     }
 
-    @GetMapping("/user/facilities/{name}")
+    @GetMapping("/user/facilities/search/{name}")
     @ResponseBody
     public ResponseEntity<Page<FacilityResponseDto>> getFacilitiesByName(@PathVariable String name, @PageableDefault Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -62,14 +63,14 @@ public class FacilityController {
         return ResponseEntity.ok(facilities);
     }
 
-//    @PutMapping("/{facility_id}/like")
-//    public ResponseEntity<LikedResponseDto> likeCocktail(@PathVariable int cocktail_id){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication != null && authentication.getPrincipal() != "anonymousUser") {
-//            return ResponseEntity.ok(facilityService.likeCocktail(cocktail_id, authentication));
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
+    @PutMapping("/user/facilities/{facility_id}/like")
+    public ResponseEntity<LikedResponseDto> likeFacility(@PathVariable int facility_id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() != "anonymousUser") {
+            return ResponseEntity.ok(facilityService.likeFacility(facility_id, authentication));
+        }
+        return ResponseEntity.notFound().build();
+    }
 
 }
 

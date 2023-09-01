@@ -2,6 +2,8 @@ package coco.service;
 
 import coco.data.dto.FacilityRequestDto;
 import coco.data.dto.FacilityResponseDto;
+import coco.data.dto.LikedResponseDto;
+import coco.data.entity.Facility;
 import coco.data.entity.UserFavoriteFacility;
 import coco.data.repository.FacilityRepository;
 import coco.data.repository.UserFavoriteFacilityRepository;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FacilityService {
@@ -55,4 +58,30 @@ public class FacilityService {
         return facilityRepository.findAllByNameContaining(name, pageable).map(FacilityResponseDto::new);
     }
 
+    @Transactional
+    public LikedResponseDto likeFacility(int facility_id, Authentication authentication){
+
+        int userId = userRepository.findByUsername(authentication.getName()).getUserNumber();
+        System.out.println("userId" + userId);
+        Optional<UserFavoriteFacility> userFavoriteFacility = userFavoriteFacilityRepository.findByFacilityFacilityIdAndUserUserNumber(facility_id,userId);
+        int liked;
+
+        if(userFavoriteFacility.isPresent()){
+            userFavoriteFacilityRepository.deleteByFacilityFacilityIdAndUserUserNumber(facility_id,userFavoriteFacility.get().getUser().getUserNumber());
+            Facility facility=facilityRepository.findById(facility_id);
+            liked = facility.getLiked() - 1;
+            facility.setLiked(liked);
+        }
+        else {
+            UserFavoriteFacility userFavoriteFacility2 = new UserFavoriteFacility();
+            userFavoriteFacility2.setFacility(facilityRepository.findById(facility_id));
+            userFavoriteFacility2.setUser(userRepository.findById(userId));
+            UserFavoriteFacility userFavoriteFacility1 = userFavoriteFacilityRepository.save(userFavoriteFacility2);
+
+            Facility facility = facilityRepository.findById(facility_id);
+            liked = facility.getLiked() + 1;
+            facility.setLiked(liked);
+        }
+        return new LikedResponseDto(liked);
+    }
 }

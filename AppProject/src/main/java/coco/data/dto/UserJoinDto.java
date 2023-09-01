@@ -15,6 +15,7 @@ public class UserJoinDto {
     private String password;
     private String email;
     private String nickname;
+    private int age;
 
     public User toEntity(String encryptPassword, UserRole role) {
 
@@ -23,6 +24,7 @@ public class UserJoinDto {
                 .password(encryptPassword)
                 .email(this.getEmail())
                 .nickname(this.getNickname())
+                .age(this.getAge())
                 .role(role)
                 .build();
     }
@@ -42,5 +44,7 @@ public class UserJoinDto {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public void setAge(int age) {this.age = age;}
 
 }
