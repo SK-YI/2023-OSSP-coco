@@ -29,12 +29,12 @@ const MyPageScreen = () => {
         </Pressable>
         <Text style={styles.MyPageTitle}>커뮤니티</Text>
         <Pressable
-          onPress={() => navigation.navigate('내가 작성한 글')}
+          onPress={() => navigation.navigate('내가 작성한 글 리스트')}
         >
           <Text style={styles.MyPageMenu}>내가 작성한 글</Text>
         </Pressable>
         <Pressable
-          onPress={() => navigation.navigate('내가 작성한 댓글')}
+          onPress={() => navigation.navigate('내가 작성한 댓글 리스트')}
         >
           <Text style={styles.MyPageMenu}>내가 작성한 댓글</Text>
         </Pressable>

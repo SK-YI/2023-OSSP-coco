@@ -1,9 +1,8 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import PostItem from '../../components/community/PostItem';
+import MyPostItem from '../../components/community/MyPostItem';
 /* import { useNavigation } from '@react-navigation/native'; */
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // 더미데이터
 const postData = [
@@ -89,16 +88,12 @@ const postData = [
   },
 ];
 
-const MyCommentScreen = () => {
-  /* const navigation = useNavigation(); */
-
-  const { top } = useSafeAreaInsets();
-
+const MyPostListScreen = () => {
   return (
-    <View style={[styles.container, { paddingTop: top }]}>
+    <View style={[styles.container]}>
       <FlatList
         data={postData}
-        renderItem={({ item }) => <PostItem post={item} />}
+        renderItem={({ item }) => <MyPostItem post={item} />}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         horizontal={false}
         // onEndReached={fetchNextPage}
@@ -110,7 +105,7 @@ const MyCommentScreen = () => {
   );
 };
 
-MyCommentScreen.propTypes = {};
+MyPostListScreen.propTypes = {};
 
 const styles = StyleSheet.create({
   container: {
@@ -148,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyCommentScreen;
+export default MyPostListScreen;
