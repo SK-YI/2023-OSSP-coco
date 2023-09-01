@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(true);
+  const [token, setToken] = useState(''); // 토큰 저장
+  const [login, setLogin] = useState(true); // 로그인 여부
   return (
-    <UserContext.Provider value={[user, setUser]}>
+    <UserContext.Provider value={[token, setToken, login, setLogin]}>
       {children}
     </UserContext.Provider>
   );

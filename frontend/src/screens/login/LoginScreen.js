@@ -9,6 +9,8 @@ import TextButton from '../../components/login/TextButton';
 import { AuthRoutes } from '../../navigations/routes';
 import HR from '../../components/login/HR';
 import { useUserState } from '../../contexts/UserContext';
+import axios from 'axios';
+import { URL } from '../../../env';
 
 const LoginScreen = () => {
   const [id, setId] = useState('');
@@ -37,12 +39,27 @@ const LoginScreen = () => {
     setDisabled(!id || !password);
   }, [id, password]);
 
+  const loginApi = async () => {
+    const data = {
+      username: id,
+      password: password,
+    };
+
+    try {
+      const response = await axios.post(`${URL}/user/login`, data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const onSubmit = () => {
     Keyboard.dismiss();
     if (!disabled && !isLoading) {
       setIsLoading(true);
       setUser(true); // 로그인
       console.log(id, password); // 로그인 api 하기
+      loginApi();
       setIsLoading(false);
     } else if (disabled) {
       Alert.alert('로그인 실패', '아이디, 비밀번호를 올바르게 입력해주세요.', [
