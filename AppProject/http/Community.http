@@ -1,0 +1,68 @@
+### 회원가입
+POST localhost:8080/user/join
+Content-Type: application/json
+
+{
+  "username" : "sk4",
+  "password" : "1234",
+  "email" : "sk@1234",
+  "nickname" : "sk"
+}
+*
+### 로그인
+POST localhost:8080/user/login
+Content-Type: application/json
+
+{
+  "username" : "sk3",
+  "password" : "1234"
+}
+
+
+### 커뮤니티 글 작성 - DB 삽입 x
+POST localhost:8080/community
+Content-Type: application/json
+
+{
+  "title": "안녕2",
+  "content": "안녕하세요2"
+}
+
+### 커뮤니티 글 삭제
+DELETE localhost:8080/community/1
+Content-Type: application/json
+
+
+
+### 커뮤니티 글 수정
+PUT localhost:8080/community/1
+Content-Type: application/json
+
+{
+  "title": "안녕",
+  "content": "안녕히가세요"
+}
+
+### 커뮤니티 메인페이지
+GET localhost:8080/community
+Content-Type: application/json
+
+{
+
+}
+
+### 게시글 조회
+
+### 게시글 제목으로 찾기
+GET localhost:8080//community/title/{post_title}
+Content-Type: application/json
+
+{
+
+}
+
+### 게시글 좋아요
+
+
+
+

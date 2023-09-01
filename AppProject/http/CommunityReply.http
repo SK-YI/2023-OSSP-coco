@@ -1,0 +1,24 @@
+
+### 커뮤니티 댓글 작성
+POST localhost:8080/community/{postId}/reply
+Content-Type: application/json
+
+{
+  "content" : "안녕안녕"
+}
+
+### 커뮤니티 댓글 삭제
+DELETE localhost:8080/community/{postId}/reply/{replyId}
+Content-Type: application/json
+
+{
+
+}
+
+### 커뮤니티 댓글 수정
+PUT localhost:8080/community/{postId}/reply/{replyId}
+Content-Type: application/json
+
+{
+  "content" : "잘가잘가"
+}
