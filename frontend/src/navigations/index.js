@@ -9,7 +9,7 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      {login ? <TabNavigation /> : <AuthStack />}
+      {true ? <TabNavigation /> : <AuthStack />}
     </NavigationContainer>
   );
 };
