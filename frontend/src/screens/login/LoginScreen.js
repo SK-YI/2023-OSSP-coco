@@ -21,8 +21,6 @@ const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
-  // const [, setUser] = useUserState();
-
   const { top } = useSafeAreaInsets();
   const { navigate } = useNavigation();
 

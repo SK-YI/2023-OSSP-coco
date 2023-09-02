@@ -21,6 +21,7 @@ import HR from '../../components/login/HR';
 import CheckButton from '../../components/signup/CheckButton';
 import RadioButton from '../../components/signup/RadioButton';
 import SignupDropdown from '../../components/signup/SignupDropDown';
+import axios from 'axios';
 
 const SignUpScreen = () => {
   const [id, setId] = useState('');
@@ -52,17 +53,60 @@ const SignUpScreen = () => {
     );
   }, [idCheck, email, password, passwordConfirm, nickname, disability]);
 
+  const onChangeId = (text) => {
+    setId(text);
+    setIdCheck(false);
+  };
+
+  const signUpApi = async () => {
+    const data = {
+      username: id,
+      password: password,
+      email: email,
+      nickname: nickname,
+      age: age, // 필수값 아님..?
+      // 성별이랑 장애유형도 넣을 수 있어야 함
+      gender: gender,
+      type: disability,
+    };
+
+    try {
+      const response = await axios.post(`${URL}/user/join`, data);
+      console.log(response.data);
+      // 회원가입 성공하면 로그인 페이지로 이동하기!
+      navigate(AuthRoutes.LOG_IN);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const onSubmit = () => {
     Keyboard.dismiss();
     if (!disabled && !isLoading) {
       setIsLoading(true);
       // 회원가입 api 넣기
-      // 회원가입 성공하면 로그인 페이지로 이동하기!
+      signUpApi();
+
       setIsLoading(false);
     } else if (disabled) {
       Alert.alert('회원가입 실패', '필수값을 입력해주세요.', [
         { text: '확인', onPress: () => {} },
       ]);
+    }
+  };
+
+  const checkIdApi = async () => {
+    const data = {
+      username: id,
+    };
+
+    try {
+      const response = await axios.post(`${URL}/user/join/username`, data);
+      console.log(response.data);
+      // 중복확인 성공하면
+      setIdCheck(true);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -74,8 +118,7 @@ const SignUpScreen = () => {
       ]);
     } else {
       // ID 중복확인 api 넣기
-      // 중복확인 성공하면
-      setIdCheck(true);
+      checkIdApi();
     }
   };
 
@@ -102,7 +145,7 @@ const SignUpScreen = () => {
               <Input
                 inputType={InputTypes.ID}
                 value={id}
-                onChangeText={(text) => setId(text.trim())}
+                onChangeText={(text) => onChangeId(text.trim())}
                 // onSubmitEditing={() => passwordRef.current.focus()}
                 styles={{ container: { marginBottom: 20 } }}
                 returnKeyType={ReturnKeyTypes.NEXT}
@@ -159,6 +202,7 @@ const SignUpScreen = () => {
               onSubmitEditing={onSubmit}
               styles={{ container: { marginBottom: 20 } }}
               returnKeyType={ReturnKeyTypes.NEXT}
+              star={true}
             />
             <RadioButton gender={gender} setGender={setGender} />
             <SignupDropdown

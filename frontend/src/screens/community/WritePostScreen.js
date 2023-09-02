@@ -14,13 +14,17 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import WriteSaveButton from '../../components/community/WriteSaveButton';
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
+import { useUserContext } from '../../contexts/UserContext';
 
 // 추가 글자 수를 설정하는게 필요할까?? 필요하다면 작성중인 글자수 보여주기!
 const MAX_TITLE_LENGTH = 30;
 const MAX_TEXT_LENGTH = 60;
 
 const WritePostScreen = () => {
+  const { token } = useUserContext();
   const navigation = useNavigation();
+  const { navigate } = useNavigation();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -49,6 +53,26 @@ const WritePostScreen = () => {
     }
   };
 
+  const writePostApi = async () => {
+    const data = {
+      title: title,
+      content: text,
+    };
+
+    try {
+      const response = await axios.post(`${URL}/community`, data, {
+        headers: {
+          accessToken: token,
+        },
+      });
+      console.log(response.data);
+      // 성공하면 다시 게시글 목록 페이지로 이동하기!
+      navigate();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const onSubmit = () => {
     if (!text || !title) {
       Alert.alert('게시글 등록 실패', '제목과 내용을 입력해주세요.', [
@@ -56,7 +80,7 @@ const WritePostScreen = () => {
       ]);
     } else {
       // 게시글 등록 api 호출
-      // 성공하면 다시 게시글 목록 페이지로 이동하기!
+      writePostApi('목록');
     }
   };
 

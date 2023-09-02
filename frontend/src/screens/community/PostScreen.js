@@ -9,45 +9,100 @@ import {
   View,
 } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
+import PropTypes from 'prop-types';
 import Comment from '../../components/community/Comment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import axios from 'axios';
+import { useUserContext } from '../../contexts/UserContext';
 
 // 더미데이터
 const post = {
   id: 1,
   title: '제목1',
   content: '내용1~~~~~',
-  date: '22.02.02',
+  createdDate: '22.02.02',
   nickname: '닉네임1',
-  like: 0,
+  userLikePost: false,
+  liked: 0,
   commentNumber: 0,
   photo: null,
-  comment: [
+  postReplyList: [
     {
       id: 1,
       nickname: '닉네임11',
       content: '내용11',
-      date: '22.01.01',
+      createdDate: '22.01.01',
     },
     {
       id: 2,
       nickname: '닉네임22',
       content: '내용22',
-      date: '22.01.01',
+      createdDate: '22.01.01',
     },
     {
       id: 3,
       nickname: '닉네임33',
       content: '내용33',
-      date: '22.01.01',
+      createdDate: '22.01.01',
     },
   ],
 };
 
-const PostScreen = () => {
+const PostScreen = ({ route }) => {
+  const { token } = useUserContext();
+
+  const [postData, setPostData] = useState(post);
+
   const [text, setText] = useState('');
   const [like, setLike] = useState(false);
+  const [commentWrited, setCommentWrited] = useState(false);
+
+  const getPostApi = async (postId) => {
+    try {
+      const response = await axios.get(`${URL}/community/${postId}`, {
+        headers: {
+          accessToken: token,
+        },
+      });
+      console.log(response.data);
+      // 실패하면 ..?
+      // 성공하면!
+      setPostData(response.data);
+      setLike(response.data.userLikePost);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(route.params.postId);
+    getPostApi(route.params.postId);
+  }, [route.params.postId, commentWrited]);
+
+  const writeCommentApi = async (postId) => {
+    const data = {
+      content: text,
+    };
+
+    try {
+      const response = await axios.post(
+        `${URL}/community/${postId}/reply`,
+        data,
+        {
+          headers: {
+            accessToken: token,
+          },
+        }
+      );
+      console.log(response.data);
+      // 실패하면 ..?
+      // 성공하면! 다시 리렌더링
+      setCommentWrited(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const onSubmit = () => {
     if (!text) {
@@ -56,6 +111,7 @@ const PostScreen = () => {
       ]);
     } else {
       // 댓글 등록 api 호출
+      writeCommentApi();
     }
   };
 
@@ -68,16 +124,16 @@ const PostScreen = () => {
     <View style={styles.container}>
       <FlatList
         style={styles.commentContainer}
-        data={post.comment}
+        data={postData.postReplyList}
         renderItem={({ item }) => <Comment data={item} />}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         ListHeaderComponent={
           <View style={styles.postContainer}>
-            <Text style={styles.nickname}>{post.title}</Text>
+            <Text style={styles.nickname}>{postData.title}</Text>
             <View style={styles.explainContainer}>
-              <Text style={styles.explain}>{post.date}</Text>
+              <Text style={styles.explain}>{postData.createdDate}</Text>
               <Text style={styles.explain}>|</Text>
-              <Text style={styles.explain}>{post.nickname}</Text>
+              <Text style={styles.explain}>{postData.nickname}</Text>
             </View>
             <View style={styles.imageContainer}>
               <Image
@@ -86,7 +142,7 @@ const PostScreen = () => {
                 // resizeMode={'cover'}
               />
             </View>
-            <Text style={styles.content}>{post.content}</Text>
+            <Text style={styles.content}>{postData.content}</Text>
             <Pressable style={styles.button} onPress={onClickLike} hitSlop={10}>
               <Text style={styles.buttonText}>좋아요</Text>
               {like ? (
@@ -129,7 +185,9 @@ const PostScreen = () => {
   );
 };
 
-PostScreen.propTypes = {};
+PostScreen.propTypes = {
+  route: PropTypes.object,
+};
 
 const styles = StyleSheet.create({
   container: {
