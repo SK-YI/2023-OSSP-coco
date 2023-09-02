@@ -8,18 +8,20 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import TextButton from '../../components/login/TextButton';
 import { AuthRoutes } from '../../navigations/routes';
 import HR from '../../components/login/HR';
-import { useUserState } from '../../contexts/UserContext';
+import { useUserContext } from '../../contexts/UserContext';
 import axios from 'axios';
 import { URL } from '../../../env';
 
 const LoginScreen = () => {
+  const { setToken, setLogin } = useUserContext();
+
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const passwordRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
-  const [, setUser] = useUserState();
+  // const [, setUser] = useUserState();
 
   const { top } = useSafeAreaInsets();
   const { navigate } = useNavigation();
@@ -48,6 +50,9 @@ const LoginScreen = () => {
     try {
       const response = await axios.post(`${URL}/user/login`, data);
       console.log(response.data);
+      // 성공하면
+      setLogin(true);
+      setToken(response.data.accessToken);
     } catch (error) {
       console.error(error);
     }
@@ -57,7 +62,7 @@ const LoginScreen = () => {
     Keyboard.dismiss();
     if (!disabled && !isLoading) {
       setIsLoading(true);
-      setUser(true); // 로그인
+      // setUser(true); // 로그인
       console.log(id, password); // 로그인 api 하기
       loginApi();
       setIsLoading(false);

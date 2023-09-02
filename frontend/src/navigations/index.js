@@ -2,14 +2,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import AuthStack from './AuthStack';
 // import { useState } from 'react';
 import TabNavigation from './Tap';
-import { useUserState } from '../contexts/UserContext';
+import { useUserContext } from '../contexts/UserContext';
 
 const Navigation = () => {
-  const [user] = useUserState();
+  const { login } = useUserContext();
 
   return (
     <NavigationContainer>
-      {user ? <TabNavigation /> : <AuthStack />}
+      {login ? <TabNavigation /> : <AuthStack />}
     </NavigationContainer>
   );
 };
