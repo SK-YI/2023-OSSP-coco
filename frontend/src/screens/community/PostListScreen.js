@@ -10,7 +10,7 @@ import {
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PostItem from '../../components/community/PostItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -102,8 +102,15 @@ const postData = [
 const PostListScreen = () => {
   const navigation = useNavigation();
 
+  const [postListData, setPostListData] = useState(postData);
   const { top } = useSafeAreaInsets();
   const [text, setText] = useState('');
+
+  useEffect(() => {
+    // 목록 조회 api
+    // 성공하면
+    setPostListData(postData);
+  }, []);
 
   const onSearch = () => {
     if (!text) {
@@ -136,9 +143,9 @@ const PostListScreen = () => {
           />
         </Pressable>
       </View>
-      {postData !== 0 ? (
+      {postListData !== 0 ? (
         <FlatList
-          data={postData}
+          data={postListData}
           renderItem={({ item }) => <PostItem post={item} />}
           ItemSeparatorComponent={() => <View style={styles.separator}></View>}
           horizontal={false}

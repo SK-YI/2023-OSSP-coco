@@ -1,7 +1,9 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
+import MyPostItem from '../../components/myPage/MyPostItem';
+import { useEffect, useState } from 'react';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import MyPostItem from '../../components/community/MyPostItem';
+
 /* import { useNavigation } from '@react-navigation/native'; */
 
 // 더미데이터
@@ -9,7 +11,7 @@ const postData = [
   {
     id: 1,
     title: '제목1',
-    name: '내용1', 
+    name: '내용1',
     date: '22.02.02',
     nickname: '닉네임1',
     like: 0,
@@ -90,11 +92,18 @@ const postData = [
 
 const MyCommentListScreen = () => {
   /* const navigation = useNavigation(); */
+  const [postListData, setPostListData] = useState(postData);
+
+  useEffect(() => {
+    // 목록 조회 api
+    // 성공하면
+    setPostListData(postData);
+  }, []);
 
   return (
     <View style={[styles.container]}>
       <FlatList
-        data={postData}
+        data={postListData}
         renderItem={({ item }) => <MyPostItem post={item} />}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         horizontal={false}

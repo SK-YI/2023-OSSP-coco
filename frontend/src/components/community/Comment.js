@@ -9,7 +9,7 @@ const Comment = ({ data }) => {
       <View style={styles.textContainer}>
         <Text style={styles.nickname}>{data.nickname}</Text>
         <Text style={styles.content}>{data.content}</Text>
-        <Text style={styles.date}>{data.date}</Text>
+        <Text style={styles.date}>{data.createdDate}</Text>
       </View>
     </View>
   );

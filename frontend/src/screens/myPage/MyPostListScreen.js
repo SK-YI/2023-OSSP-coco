@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import MyPostItem from '../../components/community/MyPostItem';
+import MyPostItem from '../../components/myPage/MyPostItem';
 /* import { useNavigation } from '@react-navigation/native'; */
 
 // 더미데이터
@@ -9,7 +9,7 @@ const postData = [
   {
     id: 1,
     title: '제목1',
-    name: '내용1', 
+    name: '내용1',
     date: '22.02.02',
     nickname: '닉네임1',
     like: 0,

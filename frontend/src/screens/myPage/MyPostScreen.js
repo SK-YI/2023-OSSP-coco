@@ -9,45 +9,68 @@ import {
   View,
 } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
+import PropTypes from 'prop-types';
 import Comment from '../../components/community/Comment';
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import WriteStartButton from '../../components/myPage/WriteStartButton';
 
 // 더미데이터
 const post = {
   id: 1,
   title: '제목1',
   content: '내용1~~~~~',
-  date: '22.02.02',
+  createdDate: '22.02.02',
   nickname: '닉네임1',
-  like: 0,
+  userLikePost: false,
+  liked: 0,
   commentNumber: 0,
   photo: null,
-  comment: [
+  postReplyList: [
     {
       id: 1,
       nickname: '닉네임11',
       content: '내용11',
-      date: '22.01.01',
+      createdDate: '22.01.01',
     },
     {
       id: 2,
       nickname: '닉네임22',
       content: '내용22',
-      date: '22.01.01',
+      createdDate: '22.01.01',
     },
     {
       id: 3,
       nickname: '닉네임33',
       content: '내용33',
-      date: '22.01.01',
+      createdDate: '22.01.01',
     },
   ],
 };
 
-const MyPostScreen = () => {
+const MyPostScreen = ({ route }) => {
+  const navigation = useNavigation();
+
   const [text, setText] = useState('');
   const [like, setLike] = useState(false);
+
+  const [isChanged, setIsChanged] = useState(false);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <WriteStartButton
+          onPress={() => navigation.navigate('게시글 수정', { postData: post })}
+        />
+      ), // 수정 페이지로 이동하기
+    });
+  });
+
+  useEffect(() => {
+    console.log(route.params.postId);
+    // getPostApi(route.params.postId);
+  }, [route.params.postId, isChanged]);
 
   const onSubmit = () => {
     if (!text) {
@@ -56,6 +79,8 @@ const MyPostScreen = () => {
       ]);
     } else {
       // 댓글 등록 api 호출
+      // 성공하면
+      setIsChanged(true);
     }
   };
 
@@ -68,14 +93,14 @@ const MyPostScreen = () => {
     <View style={styles.container}>
       <FlatList
         style={styles.commentContainer}
-        data={post.comment}
+        data={post.postReplyList}
         renderItem={({ item }) => <Comment data={item} />}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         ListHeaderComponent={
           <View style={styles.postContainer}>
             <Text style={styles.nickname}>{post.title}</Text>
             <View style={styles.explainContainer}>
-              <Text style={styles.explain}>{post.date}</Text>
+              <Text style={styles.explain}>{post.createdDate}</Text>
               <Text style={styles.explain}>|</Text>
               <Text style={styles.explain}>{post.nickname}</Text>
             </View>
@@ -129,7 +154,9 @@ const MyPostScreen = () => {
   );
 };
 
-MyPostScreen.propTypes = {};
+MyPostScreen.propTypes = {
+  route: PropTypes.object,
+};
 
 const styles = StyleSheet.create({
   container: {
