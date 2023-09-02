@@ -1,5 +1,4 @@
 package coco.data.entity;
-import coco.data.type.facilityType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -22,8 +21,8 @@ public class Facility {
     @Column(nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private facilityType type;
+    @Column
+    private String type;
 
     @Column(nullable = false)
     @ColumnDefault("0")
@@ -37,6 +36,9 @@ public class Facility {
 
     @Column(nullable = false)
     private String latitude;
+
+    @Column
+    private String equipment;
 
     @Column(nullable = false)
     private int code;

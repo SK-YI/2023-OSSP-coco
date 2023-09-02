@@ -1,6 +1,5 @@
 package coco.data.entity;
 
-import coco.data.type.facilityType;
 import jakarta.persistence.*;
 import lombok.*;
 

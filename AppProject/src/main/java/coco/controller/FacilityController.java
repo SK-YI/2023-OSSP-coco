@@ -62,16 +62,6 @@ public class FacilityController {
         Page<FacilityResponseDto> facilities = facilityService.getFacilitiesByName(name, modifiedPageable,authentication);
         return ResponseEntity.ok(facilities);
     }
-
-    @PutMapping("/user/facilities/{facility_id}/like")
-    public ResponseEntity<LikedResponseDto> likeFacility(@PathVariable int facility_id){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() != "anonymousUser") {
-            return ResponseEntity.ok(facilityService.likeFacility(facility_id, authentication));
-        }
-        return ResponseEntity.notFound().build();
-    }
-
 }
 
 

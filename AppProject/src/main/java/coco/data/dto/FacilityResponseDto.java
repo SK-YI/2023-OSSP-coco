@@ -3,7 +3,6 @@ package coco.data.dto;
 import coco.data.entity.Facility;
 import coco.data.entity.UserFavoriteFacility;
 import coco.data.repository.FacilityRepository;
-import coco.data.type.facilityType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ import java.util.Optional;
 @NoArgsConstructor
 public class FacilityResponseDto {
         private int facilityId;
-        private facilityType type; // Enum 타입 사용
+        private String type; // Enum 타입 사용
         private int liked;
         private String name;
 
@@ -25,6 +24,8 @@ public class FacilityResponseDto {
         private String latitude;
 
         private String longitude;
+
+        private String equipment;
 
         private boolean userFavoriteFacility;
 
@@ -36,6 +37,7 @@ public class FacilityResponseDto {
                 address = facility.getAddress();
                 latitude = facility.getLatitude();
                 longitude = facility.getLongitude();
+                equipment = facility.getEquipment();
                 userFavoriteFacility = false;
         }
 

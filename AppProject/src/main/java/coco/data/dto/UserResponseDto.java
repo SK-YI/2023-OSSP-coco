@@ -1,7 +1,7 @@
 package coco.data.dto;
 
 import coco.data.entity.User;
-import coco.data.type.type;
+import coco.data.type.Gender;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +14,10 @@ public class UserResponseDto {
     private String email;
     private String nickname;
     private int age;
-    private type userType;
+    private String userType;
+
+    private Gender gender;
+
 
     public UserResponseDto(User user) {
         userNumber = user.getUserNumber();
@@ -24,5 +27,7 @@ public class UserResponseDto {
         nickname = user.getNickname();
         age = user.getAge();
         userType = user.getUserType();
+        gender = user.getGender();
+
     }
 }

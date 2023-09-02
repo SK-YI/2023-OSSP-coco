@@ -3,7 +3,6 @@ package coco.data.dto;
 import coco.data.entity.Facility;
 import coco.data.entity.FacilityReview;
 import coco.data.entity.UserFavoriteFacility;
-import coco.data.type.facilityType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +16,7 @@ import java.util.Optional;
 @NoArgsConstructor
 public class FacilityDetailReviewDto {
     private int facilityId;
-    private facilityType type; // Enum 타입 사용
+    private String type; // Enum 타입 사용
     private int liked;
     private String name;
 
@@ -26,6 +25,8 @@ public class FacilityDetailReviewDto {
     private String latitude;
 
     private String longitude;
+
+    private String equipment;
 
     private boolean userFavoriteFacility;
 
@@ -41,12 +42,14 @@ public class FacilityDetailReviewDto {
         address = facility.getAddress();
         latitude = facility.getLatitude();
         longitude = facility.getLongitude();
+        equipment = facility.getEquipment();
 
         facilityReviewList=new ArrayList<>();
         for (FacilityReview facilityReview : facility.getFacilityReviewList()){
             facilityReviewList.add(new FacilityReviewDto(facilityReview));
         }
-        userFavoriteFacility=false;
+        userFavoriteFacility=userLike.isPresent();
+        System.out.println(userFavoriteFacility);
     }
     // 생성자, getter, setter 메서드
 }

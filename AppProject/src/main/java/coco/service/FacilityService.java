@@ -59,29 +59,7 @@ public class FacilityService {
     }
 
     @Transactional
-    public LikedResponseDto likeFacility(int facility_id, Authentication authentication){
-
-        int userId = userRepository.findByUsername(authentication.getName()).getUserNumber();
-        System.out.println("userId" + userId);
-        Optional<UserFavoriteFacility> userFavoriteFacility = userFavoriteFacilityRepository.findByFacilityFacilityIdAndUserUserNumber(facility_id,userId);
-        int liked;
-
-        if(userFavoriteFacility.isPresent()){
-            userFavoriteFacilityRepository.deleteByFacilityFacilityIdAndUserUserNumber(facility_id,userFavoriteFacility.get().getUser().getUserNumber());
-            Facility facility=facilityRepository.findById(facility_id);
-            liked = facility.getLiked() - 1;
-            facility.setLiked(liked);
-        }
-        else {
-            UserFavoriteFacility userFavoriteFacility2 = new UserFavoriteFacility();
-            userFavoriteFacility2.setFacility(facilityRepository.findById(facility_id));
-            userFavoriteFacility2.setUser(userRepository.findById(userId));
-            UserFavoriteFacility userFavoriteFacility1 = userFavoriteFacilityRepository.save(userFavoriteFacility2);
-
-            Facility facility = facilityRepository.findById(facility_id);
-            liked = facility.getLiked() + 1;
-            facility.setLiked(liked);
-        }
-        return new LikedResponseDto(liked);
+    public Page<FacilityResponseDto> getFacilitiesByFacilityId(String name, Pageable pageable, Authentication authentication) {
+        return facilityRepository.findAllByNameContaining(name, pageable).map(FacilityResponseDto::new);
     }
 }

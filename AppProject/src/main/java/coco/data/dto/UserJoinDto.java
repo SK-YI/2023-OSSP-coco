@@ -1,8 +1,8 @@
 package coco.data.dto;
 
 import coco.data.entity.User;
+import coco.data.type.Gender;
 import coco.data.type.UserRole;
-import coco.data.type.type;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +17,10 @@ public class UserJoinDto {
     private String nickname;
     private int age;
 
+    private String userType;
+
+    private Gender gender;
+
     public User toEntity(String encryptPassword, UserRole role) {
 
         return User.builder()
@@ -25,6 +29,8 @@ public class UserJoinDto {
                 .email(this.getEmail())
                 .nickname(this.getNickname())
                 .age(this.getAge())
+                .userType(this.getUserType())
+                .gender(this.getGender())
                 .role(role)
                 .build();
     }

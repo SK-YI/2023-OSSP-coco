@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class MapRequestDto {
 
     private String latitude;
-
     private String longitude;
-    
+
 }

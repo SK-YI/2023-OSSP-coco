@@ -1,10 +1,12 @@
 package coco.data.entity;
 
+import coco.data.type.Gender;
 import coco.data.type.UserRole;
-import coco.data.type.type;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +38,12 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private type userType;
+    @Column(nullable = false)
+    private String userType;
+
+    @Enumerated()
+    @ColumnDefault("0")
+    private Gender gender;
 
     @Enumerated(EnumType.STRING)
     private UserRole role; // 역할 매핑 추가
