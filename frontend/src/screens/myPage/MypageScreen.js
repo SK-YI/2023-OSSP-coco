@@ -1,19 +1,51 @@
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import UserProfile from '../../components/myPage/UserProfile';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native'; // 내비게이션 객체를 가져오기 위해 추가
-
+import { useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { URL } from '../../../env';
+import axios from 'axios';
+import { useUserContext } from '../../contexts/UserContext';
 
 const MyPageScreen = () => {
   const { bottom } = useSafeAreaInsets();
   const navigation = useNavigation();
+  const { token } = useUserContext();
+  const [userInfo, setUserInfo] = useState({
+      username: '',
+      password: '',
+      email: '',
+      nickname: '',
+      age: '',
+    });
+
+  const userInfoGetApi = async () => {
+    try {
+      const response = await axios.get(`${URL}/user/info`,
+      {
+        headers: {
+          "accessToken": token,
+        },
+      }
+      );
+      console.log(response.userInfo);
+      setUserInfo(response.data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    userInfoGetApi();
+  }, []);
 
 
   return (
     <View style={{ paddingBottom: bottom, flex: 1 }}>
       <UserProfile
-        userName={'닉네임'}
-        userEmail={'User@email.com'}
+        userName={userInfo.username}
+        userEmail={userInfo.email}
       ></UserProfile>
       <View style={styles.MyPageMenuContainter}>
         <Text style={{ ...styles.MyPageTitle, paddingTop: 25}}>계정</Text>

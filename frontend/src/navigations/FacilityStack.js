@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import FacilityScreen from '../screens/facility/FacilityScreen';
 import FacilityDatailScreen from '../screens/facility/FacilityDetailScreen';
+import { BLACK, PRIMARY } from '../colors';
 
 const FaciltyStack = createStackNavigator();
 
@@ -12,9 +13,13 @@ const FaciltyStackNavigation = () => {
       <FaciltyStack.Screen
         name="시설 정보"
         component={FacilityDatailScreen}
+        options={{headerTintColor: PRIMARY.DARK,
+          headerTitleStyle: {
+            color: BLACK
+          },}}
       />
       <FaciltyStack.Screen
-        options={{headerShown: false}}
+        options={{headerShown: false, headerTintColor: PRIMARY.DARK}}
         name="시설 메인"
         component={FacilityScreen}
       />
