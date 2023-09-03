@@ -36,10 +36,20 @@ const MyPageScreen = () => {
     }
   };
 
+  const userDel = async (username) => {
+    try {
+        const response = await axios.delete(`${URL}/user/${username}`);
+        console.log(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+  }
+
   useEffect(() => {
     userInfoGetApi();
   }, []);
 
+  
 
   return (
     <View style={{ paddingBottom: bottom, flex: 1 }}>
@@ -58,6 +68,11 @@ const MyPageScreen = () => {
           onPress={() => navigation.navigate('계정 정보')}
         >
           <Text style={styles.MyPageMenu}>로그아웃</Text>
+        </Pressable>
+        <Pressable
+          onPress={() =>{userDel(userInfo.username)}}
+        >
+          <Text style={styles.MyPageMenu}>탈퇴하기</Text>
         </Pressable>
         <Text style={styles.MyPageTitle}>커뮤니티</Text>
         <Pressable
@@ -106,6 +121,12 @@ const styles = StyleSheet.create({
   MyPageMenu: {
     fontSize: 18,
     paddingVertical:10
+  },
+  withdrawButton: {
+    flex: 1
+  },
+  withdraw: {
+    fontSize: 20
   }
 });
 

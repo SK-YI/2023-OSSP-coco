@@ -12,9 +12,28 @@ import facilityData from '../../sample/facilitySampledata';
 import toiletIcon from 'frontend/assets/facilityIcons/toilet.png';
 import rampIcon from 'frontend/assets/facilityIcons/ramp.png';
 import elevatorIcon from 'frontend/assets/facilityIcons/elevator.png';
+import { useEffect, useState } from 'react';
+import { URL } from '../../../env';
+import axios from 'axios';
+import { useUserContext } from '../../contexts/UserContext';
 
 const MyFacilityScreen = () => {
   const navigation = useNavigation();
+  const [ favoriteFacility, setFavoriteFacility] = useState['']
+
+  const favoriteFacilityGet = async () => {
+    try {
+      const response = await axios.get(`${URL}/user/favoriteFacility`);
+      console.log(response.data);
+      setFavoriteFacility(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    favoriteFacilityGet();
+  }, []);
 
   const handleFacilityDetail = (facilityId) => {
     navigation.navigate('내 시설 정보', { facilityId });

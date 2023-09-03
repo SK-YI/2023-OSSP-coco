@@ -1,18 +1,61 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { GRAY } from '../../colors';
 
+import { URL } from '../../../env';
+import axios from 'axios';
+import { useUserContext } from '../../contexts/UserContext';
+
+
 const MyPageDetailScreen = () => {
-  const [nickname, setNickname] = useState('고구마멈멍');
-  const [username, setUsername] = useState('gogumamummung');
-  const [email, setEmail] = useState('goguma@gmail.com');
-  const [disability, setDisability] = useState('신체적 장애 (외부 신체기능 장애)');
-  const [joinDate, setJoinDate] = useState('2023/08/04');
-  const [isEditing, setIsEditing] = useState(false);
+  const { token } = useUserContext();
+  const [userInfo, setUserInfo] = useState({
+    username: 'mummung',
+    password: '1234',
+    email: 'email@email.com',
+    nickname: '고구마멈멍',
+    age: '20',
+    gender: '남',
+    type: '',
+  });
 
   const handleSave = () => {
     setIsEditing(false);
   };
+
+  const userInfoGetApi = async () => {
+    try {
+      const response = await axios.get(`${URL}/user/info`, {
+        headers: {
+          accessToken: token,
+        },
+      });
+      console.log(response.userInfo);
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const userInfoPutApi = async (data) => {
+    try {
+      const response = await axios.put(`${URL}/user/info/${username}`, data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    userInfoGetApi();
+  }, []);
+
+  const [nickname, setNickname] = useState(userInfo.nickname);
+  const [username, setUsername] = useState(userInfo.username);
+  const [email, setEmail] = useState(userInfo.email);
+  const [disability, setDisability] = useState(userInfo.type);
+  const [age, setAge] = useState(userInfo.age);
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -24,36 +67,36 @@ const MyPageDetailScreen = () => {
           onChangeText={setNickname}
         />
       ) : (
-        <Text style={styles.menuText}>{nickname}</Text>
+        <Text style={styles.menuText}>{userInfo.nickname}</Text>
       )}
 
       <Text style={styles.title}>아이디</Text>
-      <Text style={styles.menuText}>{username}</Text>
+      <Text style={styles.menuText}>{userInfo.username}</Text>
 
       <Text style={styles.title}>이메일</Text>
       {isEditing ? (
         <TextInput
           style={styles.input}
-          value={email}
+          value={userInfo.email}
           onChangeText={setEmail}
         />
       ) : (
-        <Text style={styles.menuText}>{email}</Text>
+        <Text style={styles.menuText}>{userInfo.email}</Text>
       )}
 
       <Text style={styles.title}>장애 종류</Text>
       {isEditing ? (
         <TextInput
           style={styles.input}
-          value={disability}
+          value={userInfo.type}
           onChangeText={setDisability}
         />
       ) : (
-        <Text style={styles.menuText}>{disability}</Text>
+        <Text style={styles.menuText}>{userInfo.type}</Text>
       )}
 
-      <Text style={styles.title}>가입일</Text>
-      <Text style={styles.menuText}>{joinDate}</Text>
+      <Text style={styles.title}>나이</Text>
+      <Text style={styles.menuText}>{userInfo.age}</Text>
 
       {/* 수정 버튼 및 저장 버튼 */}
       {isEditing ? (
@@ -63,10 +106,12 @@ const MyPageDetailScreen = () => {
       ) : (
         <TouchableOpacity
           style={styles.button}
-          onPress={() => setIsEditing(true)}>
+          onPress={() => setIsEditing(true)}
+        >
           <Text style={styles.buttonText}>수정</Text>
         </TouchableOpacity>
       )}
+      
     </View>
   );
 };

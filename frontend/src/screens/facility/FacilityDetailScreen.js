@@ -18,8 +18,37 @@ import FacilityMap from '../../components/facility/facilityMap';
 import toiletIcon from 'frontend/assets/facilityIcons/toilet.png';
 import rampIcon from 'frontend/assets/facilityIcons/ramp.png';
 import elevatorIcon from 'frontend/assets/facilityIcons/elevator.png';
+import { URL } from '../../../env';
+import axios from 'axios';
+import { useUserContext } from '../../contexts/UserContext';
 
 const FacilityDetailScreen = ({ route }) => {
+
+  const [facilityInfo, setFacilityInfo] = useState({
+    name: '', //시설이름
+    type: '', //시설타입
+    info: '', //시설정보
+    location: '', 
+    //편의시설 정보가 어떻게 넘어오는지 모르겠음!!
+  });
+
+  const { token } = useUserContext();
+
+  const facilityInfoGetApi = async () => {
+    try {
+      const response = await axios.get(`${URL}/facility/${facilityId}`, {
+        headers: {
+          accessToken: token,
+        },
+      });
+      console.log(response.facilityInfo);
+      setFacilityInfo(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   const facilityId = route.params.facilityId;
   const facility = facilityData.find((item) => item.key === facilityId);
 
