@@ -17,30 +17,30 @@ public class CommunityReplyController {
     @Autowired
     private CommunityReplyService communityReplyService;
 
-    // 댓글 작성
+    // 댓글 작성 - 완료
     @PostMapping("/reply")
-    public ResponseEntity<PostReplyDto> createReply(@RequestBody PostReplyRequestDto PostReplyRequestDto, @PathVariable int PostId){
+    public ResponseEntity<PostReplyDto> createReply(@RequestBody PostReplyRequestDto PostReplyRequestDto, @PathVariable int postId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() != "anonymousUser") {
-            return ResponseEntity.ok(communityReplyService.createReply(PostReplyRequestDto,PostId,authentication));
+            return ResponseEntity.ok(communityReplyService.createReply(PostReplyRequestDto,postId,authentication));
         }
         return ResponseEntity.ok(null);
     }
-    // 댓글 삭제
+    // 댓글 삭제 - 완료
     @DeleteMapping("/reply/{replyId}")
-    public ResponseEntity<String> delete(@PathVariable int replyId,@PathVariable int PostId){
+    public ResponseEntity<String> delete(@PathVariable int replyId,@PathVariable int postId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() != "anonymousUser") {
-            return ResponseEntity.ok(communityReplyService.deleteReply(replyId,PostId,authentication));
+            return ResponseEntity.ok(communityReplyService.deleteReply(replyId,postId,authentication));
         }
         return ResponseEntity.ok("fail");
     }
-    // 댓글 수정
+    // 댓글 수정 - 완료
     @PutMapping("/reply/{replyId}")
-    public ResponseEntity<PostReplyDto> editReply(@PathVariable int replyId,@RequestBody PostReplyRequestDto PostREplyRequestDto){
+    public ResponseEntity<PostReplyDto> editReply(@PathVariable int replyId,@RequestBody PostReplyRequestDto postReplyRequestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.getPrincipal() != "anonymousUser"){
-            return ResponseEntity.ok(communityReplyService.editReply(replyId,PostREplyRequestDto,authentication));
+            return ResponseEntity.ok(communityReplyService.editReply(replyId,postReplyRequestDto,authentication));
         }
         return ResponseEntity.notFound().build();
     }

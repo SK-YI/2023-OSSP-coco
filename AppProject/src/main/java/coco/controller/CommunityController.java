@@ -23,7 +23,7 @@ public class CommunityController {
     @Autowired
     private CommunityService communityService;
     private final int defaultPageSize = 4; //수정가능
-    //게시글 생성 create 붙일지 말지 고민
+    //게시글 생성 - 완료
     @PostMapping("/community")
     public ResponseEntity<PostDto> createPost(@RequestBody PostRequestDto postRequestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -32,7 +32,7 @@ public class CommunityController {
         }
         return ResponseEntity.ok(null);
     }
-    //게시글 삭제
+    //게시글 삭제 - 완료
     @DeleteMapping("/community/{postId}")
     public ResponseEntity<String> deletePost(@PathVariable int postId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -41,7 +41,7 @@ public class CommunityController {
         }
         return ResponseEntity.ok("fail");
     }
-    //게시글 수정
+    //게시글 수정 - 완료
     @PutMapping("/community/{postId}")
     public ResponseEntity<PostDto> editPost(@PathVariable int postId,@RequestBody PostRequestDto postRequestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
