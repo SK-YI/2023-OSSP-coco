@@ -1,10 +1,12 @@
 package coco.service;
 
+import coco.data.dto.LikedResponseDto;
 import coco.data.dto.PostDto;
 //import coco.data.repository.PostReplyRepository;
 import coco.data.dto.PostRequestDto;
 import coco.data.dto.PostResponseDto;
 import coco.data.entity.Post;
+import coco.data.entity.UserLikePost;
 import coco.data.repository.PostReplyRepository;
 import coco.data.repository.PostRepository;
 import coco.data.repository.UserLikePostRepository;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 @Service
 public class CommunityService {
@@ -30,18 +33,6 @@ public class CommunityService {
     @Autowired
     private PostReplyRepository postReplyRepository;
 
-    /*
-    private final PostRepository postRepository;
-    private final UserRepository userRepository;
-    private final UserLikePostRepository userLikePostRepository;
-    private final PostReplyRepository postReplyRepository;
-
-    public CommunityService(PostRepository postRepository, UserRepository userRepository, UserLikePostRepository userLikePostRepository, PostReplyRepository postReplyRepository) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-        this.userLikePostRepository = userLikePostRepository;
-        this.postReplyRepository = postReplyRepository;
-    }*/
 
     @Transactional
     public PostDto createPost(PostRequestDto postRequestDto, Authentication authentication) {
@@ -58,8 +49,6 @@ public class CommunityService {
         
         Post savePost=postRepository.save(post);
         return new PostDto(savePost,userNumber);
-
-        //postRepository.save(PostDto.toEntity());
     }
 
     @Transactional
@@ -89,8 +78,7 @@ public class CommunityService {
     @Transactional
     public Page<PostResponseDto> getPostList(Pageable pageable, Authentication authentication) {
         if(authentication != null && authentication.getPrincipal() != "anonymousUser"){
-            return null;
-            //return postRepository.findAllByOrderByIdDesc(pageable).map(post->new PostResponseDto(post,userLikePostRepository.findByPostIdAndUserNumber(post.getId(),userRepository.findByUsername(authentication.getName()).getUserNumber())));
+            return postRepository.findAllByOrderByIdDesc(pageable).map(post->new PostResponseDto(post,userLikePostRepository.findByPostIdAndUserUserNumber(post.getId(),userRepository.findByUsername(authentication.getName()).getUserNumber())));
         }
         return postRepository.findAllByOrderByIdDesc(pageable).map(PostResponseDto::new);
     }
@@ -98,11 +86,31 @@ public class CommunityService {
     @Transactional
     public Page<PostResponseDto> getPostListByTitle(String title, Pageable pageable, Authentication authentication) {
         if(authentication != null && authentication.getPrincipal() != "anonymousUser"){
-            return null;
-            //return postRepository.findAllByTitleContaining(title,pageable).map(post->new PostResponseDto(post,userLikePostRepository.findByPostIdAndUserNumber(post.getId(),userRepository.findByUsername(authentication.getName()).getUserNumber())));
+            return postRepository.findAllByTitleContaining(title,pageable).map(post->new PostResponseDto(post,userLikePostRepository.findByPostIdAndUserUserNumber(post.getId(),userRepository.findByUsername(authentication.getName()).getUserNumber())));
         }
         return postRepository.findAllByTitleContaining(title,pageable).map(PostResponseDto::new);
     }
 
+    @Transactional
+    public LikedResponseDto likePost(int postId, Authentication authentication){
+        int userNumber=userRepository.findByUsername(authentication.getName()).getUserNumber();
+        Optional<UserLikePost> likedPost=userLikePostRepository.findByPostIdAndUserUserNumber(postId,userNumber);
+        Post post=postRepository.findById(postId);
+        int liked;
+        if(likedPost.isPresent()){
+            userLikePostRepository.deleteByUserUserNumberAndPostId(userNumber,postId);
+            liked=post.getLiked()-1;
+            post.setLiked(liked);
+        }
+        else{
+            UserLikePost userLikePost=new UserLikePost();
+            userLikePost.setPost(post);
+            userLikePost.setUser(userRepository.findById(userNumber));
+            UserLikePost saveUserLikePost=userLikePostRepository.save(userLikePost);
+            liked=post.getLiked()+1;
+            post.setLiked(liked);
+        }
+        return new LikedResponseDto(liked);
+    } 
 
 }

@@ -1,5 +1,6 @@
 package coco.controller;
 
+import coco.data.dto.LikedResponseDto;
 import coco.data.dto.PostDto;
 import coco.data.dto.PostRequestDto;
 import coco.data.dto.PostResponseDto;
@@ -24,6 +25,17 @@ public class CommunityController {
     private CommunityService communityService;
     private final int defaultPageSize = 4; //수정가능
     //게시글 생성 - 완료
+
+    //커뮤니티 메인페이지 - 완료
+    @GetMapping("/community")
+    @ResponseBody
+    public ResponseEntity<Page<PostResponseDto>> getPostList(@PageableDefault Pageable pageable) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Pageable modifiedPageable = PageRequest.of(pageable.getPageNumber(), defaultPageSize);
+        Page<PostResponseDto> postList = communityService.getPostList(modifiedPageable, authentication);
+        return ResponseEntity.ok(postList);
+    }
+
     @PostMapping("/community")
     public ResponseEntity<PostDto> createPost(@RequestBody PostRequestDto postRequestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -50,27 +62,18 @@ public class CommunityController {
         }
         return ResponseEntity.notFound().build();
     }
-    //게시글 좋아요 - 수정필요
-    /*
-    @PutMapping("/Post/{PostId}/like")
-    public ResponseEntity<LikedResponseDto> likePost(@PathVariable int PostId){
+    //게시글 좋아요 - 완료
+
+    @PutMapping("/community/{postId}/like")
+    public ResponseEntity<LikedResponseDto> likePost(@PathVariable int postId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && authentication.getPrincipal() != "anonymousUser"){
-            return ResponseEntity.ok(communityService.likePost(PostId,authentication));
+            return ResponseEntity.ok(communityService.likePost(postId,authentication));
         }
         return ResponseEntity.notFound().build();
-    }*/
-    //커뮤니티 메인페이지
-    @GetMapping("/community")
-    @ResponseBody
-    public ResponseEntity<Page<PostResponseDto>> getPostList(@PageableDefault Pageable pageable) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Pageable modifiedPageable = PageRequest.of(pageable.getPageNumber(), defaultPageSize);
-        Page<PostResponseDto> postList = communityService.getPostList(modifiedPageable, authentication);
-        return ResponseEntity.ok(postList);
     }
 
-    //게시글 제목으로 찾기
+    //게시글 제목으로 찾기 - 완료
     @GetMapping("/community/title/{post_title}")
     @ResponseBody
     public ResponseEntity<Page<PostResponseDto>> getPostListByTitle(@PageableDefault Pageable pageable,@PathVariable String post_title){

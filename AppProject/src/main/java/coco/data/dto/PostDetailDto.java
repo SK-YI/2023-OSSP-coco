@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,8 @@ public class PostDetailDto {
     private int liked;
     private UserDto user;
     private List<PostReplyDto> PostReplyList;
-    private Timestamp createdDate;
+    private String createdDate;
+    //private Timestamp createdDate;
     private boolean userLikePost;
     @Getter
     @NoArgsConstructor
@@ -47,7 +49,9 @@ public class PostDetailDto {
         for(PostReply postReply:post.getPostReplyList()){
             PostReplyList.add(new PostReplyDto(postReply));
         }
-        createdDate=post.getCreatedDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+        createdDate = dateFormat.format(post.getCreatedDate());
+        //createdDate=post.getCreatedDate();
         userLikePost=userLike.isPresent();
     }
     //PostDetailResponseDto
@@ -62,7 +66,9 @@ public class PostDetailDto {
         for(PostReply postReply:post.getPostReplyList()){
             PostReplyList.add(new PostReplyDto(postReply));
         }
-        createdDate=post.getCreatedDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+        createdDate = dateFormat.format(post.getCreatedDate());
+        //createdDate=post.getCreatedDate();
         userLikePost=false;
     }
 

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 @Getter
 @NoArgsConstructor
@@ -13,7 +14,8 @@ public class PostReplyDto {
     private int id;
     private String content;
     private UserDto user;
-    private Timestamp createdDate;
+    private String createdDate;
+    //private Timestamp createdDate;
     private int postId;
     private int userNumber;
 
@@ -36,14 +38,18 @@ public class PostReplyDto {
         content= postReply.getContent();
 
         user=new UserDto(postReply.getUser());
-        createdDate=postReply.getCreatedDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+        createdDate = dateFormat.format(postReply.getCreatedDate());
+        //createdDate=postReply.getCreatedDate();
         postId=postReply.getPost().getId();
         userNumber=postReply.getUser().getUserNumber();
     }
     public PostReplyDto(PostReply postReply,int postId,int userNumber){
         id=postReply.getId();
         content= postReply.getContent();
-        createdDate=postReply.getCreatedDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+        createdDate = dateFormat.format(postReply.getCreatedDate());
+        //createdDate=postReply.getCreatedDate();
 
         this.postId=postId;
         this.userNumber=userNumber;
