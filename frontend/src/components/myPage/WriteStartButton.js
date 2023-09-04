@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { PRIMARY, WHITE } from '../../colors';
+import { BLACK, PRIMARY } from '../../colors';
 
-const WriteStartButton = ({ onPress, disabled }) => {
+const WriteStartButton = ({ onPress, disabled, text }) => {
   return (
     <Pressable
       onPress={onPress}
@@ -10,7 +10,7 @@ const WriteStartButton = ({ onPress, disabled }) => {
       hitSlop={10}
       style={styles.button}
     >
-      <Text style={styles.text}>수정</Text>
+      <Text style={styles.text}>{text}</Text>
     </Pressable>
   );
 };
@@ -22,20 +22,22 @@ WriteStartButton.defaultProps = {
 WriteStartButton.propTypes = {
   onPress: PropTypes.func,
   disabled: PropTypes.bool,
+  text: PropTypes.text,
 };
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: PRIMARY.DARK,
-    marginHorizontal: 10,
+    backgroundColor: PRIMARY.LIGHT,
+    marginHorizontal: 3,
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 6,
   },
   text: {
     paddingBottom: 3,
-    color: WHITE,
+    color: BLACK,
     fontSize: 15,
+    fontWeight: '500',
   },
 });
 export default WriteStartButton;

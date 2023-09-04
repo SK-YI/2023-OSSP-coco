@@ -33,18 +33,21 @@ const post = {
       nickname: '닉네임11',
       content: '내용11',
       createdDate: '22.01.01',
+      myReply: false,
     },
     {
       id: 2,
       nickname: '닉네임22',
       content: '내용22',
       createdDate: '22.01.01',
+      myReply: true,
     },
     {
       id: 3,
       nickname: '닉네임33',
       content: '내용33',
       createdDate: '22.01.01',
+      myReply: true,
     },
   ],
 };
@@ -56,7 +59,7 @@ const PostScreen = ({ route }) => {
 
   const [text, setText] = useState('');
   const [like, setLike] = useState(false);
-  const [commentWrited, setCommentWrited] = useState(false);
+  const [rerendering, setRerendering] = useState(false);
 
   const getPostApi = async (postId) => {
     try {
@@ -78,7 +81,7 @@ const PostScreen = ({ route }) => {
   useEffect(() => {
     console.log(route.params.postId);
     getPostApi(route.params.postId);
-  }, [route.params.postId, commentWrited]);
+  }, [route.params.postId, rerendering]);
 
   const writeCommentApi = async (postId) => {
     const data = {
@@ -98,7 +101,7 @@ const PostScreen = ({ route }) => {
       console.log(response.data);
       // 실패하면 ..?
       // 성공하면! 다시 리렌더링
-      setCommentWrited(!commentWrited);
+      setRerendering(!rerendering);
     } catch (error) {
       console.error(error);
     }
@@ -111,7 +114,7 @@ const PostScreen = ({ route }) => {
       ]);
     } else {
       // 댓글 등록 api 호출
-      writeCommentApi(postData.id); // id가 postId 맞지?
+      writeCommentApi(postData.id);
     }
   };
 
@@ -127,7 +130,7 @@ const PostScreen = ({ route }) => {
       console.log(response.data);
       // 실패하면 ..?
       // 성공하면! 다시 리렌더링
-      setCommentWrited(!commentWrited);
+      setRerendering(!rerendering);
     } catch (error) {
       console.error(error);
     }
@@ -144,7 +147,14 @@ const PostScreen = ({ route }) => {
       <FlatList
         style={styles.commentContainer}
         data={postData.postReplyList}
-        renderItem={({ item }) => <Comment data={item} />}
+        renderItem={({ item }) => (
+          <Comment
+            data={item}
+            postId={postData.id}
+            setRerendering={setRerendering}
+            rerendering={rerendering}
+          />
+        )}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         ListHeaderComponent={
           <View style={styles.postContainer}>
