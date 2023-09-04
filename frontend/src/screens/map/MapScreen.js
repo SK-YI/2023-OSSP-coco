@@ -14,34 +14,52 @@ const facilityData = {
 const MapScreen = () => {
   const { top } = useSafeAreaInsets();
 
-  const [status, setStatus] = useState(null);
+  // const [status, setStatus] = useState(null);
   const [location, setLocation] = useState({
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
   });
   const [modalOpen, setModalOpen] = useState(false);
 
-  // const [initialLocation, setInitialLocation] = useState();
-
   useEffect(() => {
-    async function fetchAndSetUser() {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      setStatus(status);
-      if (status === 'granted') {
-        let loc = await Location.getCurrentPositionAsync({});
-        // location.coords.latitude와 location.coords.longitude로
-        //setInitialLocation(loc);
+    // async function fetchAndSetUser() {
+    //   let { status } = await Location.requestForegroundPermissionsAsync();
+    //   // setStatus(status);
+    //   console.log('status : ', status);
+    //   if (status === 'granted') {
+    //     let loc = await Location.getCurrentPositionAsync({});
+    //     // location.coords.latitude와 location.coords.longitude로
+    //     //setInitialLocation(loc);
+    //     console.log(loc);
+    //     setLocation((prev) => ({
+    //       ...prev,
+    //       latitude: loc.coords.latitude,
+    //       longitude: loc.coords.longitude,
+    //     }));
+    //     // 유저의 현 위치를 가져올 수 있다.
+    //   }
+    // }
+    // fetchAndSetUser();
+    const getLocation = async () => {
+      //수많은 로직중에 에러가 발생하면
+      //해당 에러를 포착하여 로직을 멈추고,에러를 해결하기 위한 catch 영역 로직이 실행
+      try {
+        //자바스크립트 함수의 실행순서를 고정하기 위해 쓰는 async,await
+        await Location.requestForegroundPermissionsAsync();
+        const loc = await Location.getCurrentPositionAsync();
         console.log(loc);
         setLocation((prev) => ({
           ...prev,
           latitude: loc.coords.latitude,
           longitude: loc.coords.longitude,
         }));
-        // 유저의 현 위치를 가져올 수 있다.
+      } catch (error) {
+        //혹시나 위치를 못가져올 경우를 대비해서, 안내를 준비합니다
+        console.log('위치를 찾을 수가 없습니다.', '앱을 껏다 켜볼까요?');
       }
-    }
-    fetchAndSetUser();
-  }, [status]);
+    };
+    getLocation();
+  }, []);
 
   return (
     <View style={styles.container}>

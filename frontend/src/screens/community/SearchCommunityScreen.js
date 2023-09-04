@@ -8,14 +8,13 @@ import {
   View,
 } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
-// import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PostItem from '../../components/community/PostItem';
 import { useEffect, useState } from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
+import PropTypes from 'prop-types';
 
 // 더미데이터
 const postData = [
@@ -101,18 +100,18 @@ const postData = [
   },
 ];
 
-const PostListScreen = () => {
+const SearchCommunityScreen = ({ route }) => {
   const { token } = useUserContext();
 
   const navigation = useNavigation();
 
   const [postListData, setPostListData] = useState(postData);
   const { top } = useSafeAreaInsets();
-  const [text, setText] = useState('');
+  const [text, setText] = useState(route.params.searchText);
 
   const getPostApi = async () => {
     try {
-      const response = await axios.get(`${URL}/community`, {
+      const response = await axios.get(`${URL}/community/title/${text}`, {
         headers: {
           accessToken: token,
         },
@@ -127,7 +126,7 @@ const PostListScreen = () => {
   };
 
   useEffect(() => {
-    // 목록 조회 api
+    // 검색 목록 조회 api
     getPostApi();
     // 나중에 지워랑!
     setPostListData(postData);
@@ -139,8 +138,8 @@ const PostListScreen = () => {
         { text: '확인', onPress: () => {} },
       ]);
     } else {
-      // 검색 페이지로 이동
-      navigation.navigate('검색창', { searchText: text });
+      // 검색 api 호출
+      getPostApi();
     }
   };
 
@@ -154,13 +153,8 @@ const PostListScreen = () => {
           placeholder={'검색어를 입력해주세요.'}
           onSubmitEditing={onSearch}
         />
-        <Pressable onPress={() => navigation.navigate('글쓰기')}>
-          <MaterialCommunityIcons
-            style={styles.icon}
-            name={'lead-pencil'}
-            size={40}
-            color={'black'}
-          />
+        <Pressable onPress={() => navigation.navigate('목록')}>
+          <Text style={styles.backText}>취소</Text>
         </Pressable>
       </View>
       {postListData !== 0 ? (
@@ -176,14 +170,16 @@ const PostListScreen = () => {
         />
       ) : (
         <View style={styles.empty}>
-          <Text style={styles.emptyText}>커뮤니티 게시글이 없습니다.</Text>
+          <Text style={styles.emptyText}>검색 결과가 없습니다.</Text>
         </View>
       )}
     </View>
   );
 };
 
-PostListScreen.propTypes = {};
+SearchCommunityScreen.propTypes = {
+  route: PropTypes.object,
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -227,6 +223,10 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 20,
   },
+  backText: {
+    paddingRight: 10,
+    fontSize: 20,
+  },
 });
 
-export default PostListScreen;
+export default SearchCommunityScreen;

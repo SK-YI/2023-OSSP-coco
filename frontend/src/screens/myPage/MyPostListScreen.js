@@ -93,7 +93,7 @@ const MyPostListScreen = () => {
     <View style={[styles.container]}>
       <FlatList
         data={postData}
-        renderItem={({ item }) => <MyPostItem post={item} />}
+        renderItem={({ item }) => <MyPostItem post={item} isModify={true} />}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         horizontal={false}
         // onEndReached={fetchNextPage}

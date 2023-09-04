@@ -11,14 +11,21 @@ import { GRAY, PRIMARY } from '../../colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-const MyPostItem = ({ post }) => {
+const MyPostItem = ({ post, isModify }) => {
   const navigation = useNavigation();
   const windowWidth = Dimensions.get('window').width;
 
+  const onChangePage = () => {
+    if (isModify) {
+      navigation.navigate('내가 작성한 글', { postId: 1, isModify: true });
+    } else {
+      navigation.navigate('내가 작성한 글', { postId: 1, isModify: false });
+    }
+  };
   return (
     <Pressable
       style={[styles.container, { width: windowWidth - 50 }]}
-      onPress={() => navigation.navigate('내가 작성한 글', { postId: 1 })}
+      onPress={onChangePage}
     >
       <View style={styles.textContainer}>
         <Text style={styles.title}>{post.title}</Text>
@@ -62,6 +69,7 @@ const MyPostItem = ({ post }) => {
 MyPostItem.propTypes = {
   post: PropTypes.object,
   onPress: PropTypes.func,
+  isModify: PropTypes.bool,
 };
 
 const styles = StyleSheet.create({

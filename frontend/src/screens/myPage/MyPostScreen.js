@@ -58,13 +58,17 @@ const MyPostScreen = ({ route }) => {
   const [isChanged, setIsChanged] = useState(false);
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <WriteStartButton
-          onPress={() => navigation.navigate('게시글 수정', { postData: post })}
-        />
-      ), // 수정 페이지로 이동하기
-    });
+    if (route.params.isModify) {
+      navigation.setOptions({
+        headerRight: () => (
+          <WriteStartButton
+            onPress={() =>
+              navigation.navigate('게시글 수정', { postData: post })
+            }
+          />
+        ), // 수정 페이지로 이동하기
+      });
+    }
   });
 
   useEffect(() => {
