@@ -16,4 +16,5 @@ public interface PostReplyRepository extends JpaRepository<PostReply, Integer> {
     void deleteById(int id);
     PostReply findById(int id);
 
+    List<PostReply> findAllByUserUserNumber(int userNumber);
 }

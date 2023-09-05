@@ -28,7 +28,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.apache.tika:tika-core:2.7.0'

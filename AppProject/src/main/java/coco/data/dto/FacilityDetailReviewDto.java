@@ -22,9 +22,9 @@ public class FacilityDetailReviewDto {
 
     private String address;
 
-    private String latitude;
+    private float latitude;
 
-    private String longitude;
+    private float longitude;
 
     private String equipment;
 
@@ -40,9 +40,9 @@ public class FacilityDetailReviewDto {
         liked = facility.getLiked();
         name = facility.getName();
         address = facility.getAddress();
-        latitude = facility.getLatitude();
-        longitude = facility.getLongitude();
         equipment = facility.getEquipment();
+        latitude =facility.getLatitude();
+        longitude = facility.getLongitude();
 
         facilityReviewList=new ArrayList<>();
         for (FacilityReview facilityReview : facility.getFacilityReviewList()){

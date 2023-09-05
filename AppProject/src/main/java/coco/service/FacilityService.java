@@ -59,7 +59,7 @@ public class FacilityService {
     }
 
     @Transactional
-    public Page<FacilityResponseDto> getFacilitiesByFacilityId(String name, Pageable pageable, Authentication authentication) {
-        return facilityRepository.findAllByNameContaining(name, pageable).map(FacilityResponseDto::new);
+    public Page<FacilityResponseDto> getFacilitiesByType(String type, Pageable pageable, Authentication authentication){
+        return facilityRepository.findAllByType(type, pageable).map(FacilityResponseDto::new);
     }
 }

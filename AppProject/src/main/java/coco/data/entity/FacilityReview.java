@@ -18,6 +18,9 @@ public class FacilityReview {
     private int id;
     @Lob
     private String content;
+    @Lob
+    private String title;
+
     @ColumnDefault("0")
     private float star;
 

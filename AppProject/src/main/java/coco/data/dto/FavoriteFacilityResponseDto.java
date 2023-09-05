@@ -48,9 +48,19 @@ public class FavoriteFacilityResponseDto {
     public static class LikedFacilityDto implements Serializable {
         private int id;
         private String name;
+        private float latitude;
+        private float longitude;
+        private String equipment;
+
+        private String address;
+
         public LikedFacilityDto(Facility facility) {
             this.id = facility.getFacilityId();
             this.name = facility.getName();
+            this.equipment = facility.getEquipment();
+            this.latitude = facility.getLatitude();
+            this.longitude = facility.getLongitude();
+            this.address = facility.getAddress();
         }
     }
 }

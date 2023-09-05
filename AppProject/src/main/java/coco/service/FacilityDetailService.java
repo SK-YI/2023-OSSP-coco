@@ -20,7 +20,6 @@ public class FacilityDetailService {
 
     @Autowired
     private FacilityRepository facilityRepository;
-
     @Autowired
     private UserFavoriteFacilityRepository userFavoriteFacilityRepository;
     @Autowired
@@ -28,7 +27,6 @@ public class FacilityDetailService {
 
     @Autowired
     private FacilityDetailRepository facilityDetailRepository;
-
 
     @Transactional
     public FacilityDetailReviewDto getFacilityDetailAndlike(int id, Authentication authentication){

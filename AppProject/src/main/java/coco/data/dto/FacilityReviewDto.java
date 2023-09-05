@@ -16,6 +16,8 @@ import java.util.Optional;
 public class FacilityReviewDto {
     private int id;
     private String content;
+
+    private String title;
     private Timestamp createdDate;
     private UserDto user;
     private int userId;
@@ -39,6 +41,7 @@ public class FacilityReviewDto {
     }
     public FacilityReviewDto(FacilityReview facilityReview){
         id=facilityReview.getId();
+        title = facilityReview.getTitle();
         content= facilityReview.getContent();
         createdDate=facilityReview.getCreatedDate();
         user= new UserDto(facilityReview.getUser());
@@ -48,6 +51,7 @@ public class FacilityReviewDto {
     }
     public FacilityReviewDto(FacilityReview facilityReview, int facilityId1, int userId1){
         id=facilityReview.getId();
+        title=facilityReview.getTitle();
         content=facilityReview.getContent();
         createdDate=facilityReview.getCreatedDate();
         userId=userId1;

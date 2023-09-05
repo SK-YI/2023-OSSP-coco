@@ -17,11 +17,20 @@ public interface FacilityRepository extends JpaRepository<Facility, Integer> {
     @SuppressWarnings("all")
     Page<Facility> findAll(Pageable pageable);
     Page<Facility> findAllByOrderByName(Pageable pageable);
+
+    Page<Facility> findAllByType(String type, Pageable pageable);
+
+    Page<Facility> findAllByType(String type1, String type2, Pageable pageable);
+
+    Page<Facility> findAllByTypeAndEquipmentContaining(String type, String equipment1, String equipment2, Pageable pageable);
+
+    Page<Facility> findAllByTypeAndEquipmentContaining(String type1, String type2, String equipment1, String equipment2, Pageable pageable);
+
     Page<Facility> findAllByOrderByLikedDesc(Pageable pageable);
     Page<Facility> getFacilitiesByName(String name, Pageable pageable);
     @SuppressWarnings("all")
     Page<Facility> findAllByNameContaining(String name, Pageable pageable);
 
-
+    List<Facility> findAllByLatitudeBetweenAndLongitudeBetween(float minX, float maxX, float minY, float maxY);
 
 }

@@ -21,9 +21,9 @@ public class FacilityResponseDto {
 
         private String address;
 
-        private String latitude;
+        private float latitude;
 
-        private String longitude;
+        private float longitude;
 
         private String equipment;
 
@@ -49,6 +49,7 @@ public class FacilityResponseDto {
                 address = facility.getAddress();
                 latitude = facility.getLatitude();
                 longitude = facility.getLongitude();
+                equipment = facility.getEquipment();
                 userFavoriteFacility = userFavoritedFacility.isPresent();
         }
 

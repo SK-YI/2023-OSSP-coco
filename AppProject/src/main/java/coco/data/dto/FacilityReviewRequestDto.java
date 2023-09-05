@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class FacilityReviewRequestDto {
+
+    String title;
     String content;
     float star;
 }

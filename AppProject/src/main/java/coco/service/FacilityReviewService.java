@@ -27,9 +27,11 @@ public class FacilityReviewService {
     @Transactional
     public FacilityReviewDto createReview(FacilityReviewRequestDto facilityReviewDto, int facility_id, Authentication authentication){
         String content = facilityReviewDto.getContent();
+        String title = facilityReviewDto.getTitle();
         float star = facilityReviewDto.getStar();
         int userId=userRepository.findByUsername(authentication.getName()).getUserNumber();
         FacilityReview facilityReview =new FacilityReview();
+        facilityReview.setTitle(title);
         facilityReview.setContent(content);
         facilityReview.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         facilityReview.setUser(userRepository.findById(userId));
@@ -41,8 +43,8 @@ public class FacilityReviewService {
 
     @Transactional
     public String deleteReply(int reviewId,int facilityId,Authentication authentication){
-        FacilityReview cocktailReply = facilityReviewRepository.findById(reviewId);
-        if(facilityId==cocktailReply.getFacility().getFacilityId()&&cocktailReply.getUser().getUserNumber()==userRepository.findByUsername(authentication.getName()).getUserNumber()){
+        FacilityReview facilityReply = facilityReviewRepository.findById(reviewId);
+        if(facilityId==facilityReply.getFacility().getFacilityId()&&facilityReply.getUser().getUserNumber()==userRepository.findByUsername(authentication.getName()).getUserNumber()){
             facilityReviewRepository.deleteById(reviewId);
             return "success";
         }

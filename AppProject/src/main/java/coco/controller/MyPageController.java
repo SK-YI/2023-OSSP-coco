@@ -1,20 +1,39 @@
 package coco.controller;
 
-import coco.data.dto.UserJoinDto;
-import coco.data.dto.UsernameRequestDto;
+import coco.data.dto.*;
+import coco.data.entity.*;
+import coco.data.repository.PostReplyRepository;
+import coco.data.repository.PostRepository;
+import coco.data.repository.UserRepository;
+import coco.service.CommunityService;
 import coco.service.MyPageService;
+import coco.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.webjars.NotFoundException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
 public class MyPageController {
     private final MyPageService mypageService;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
-    public MyPageController(MyPageService mypageService, MyPageService mypageService1) {
-        this.mypageService = mypageService1;
+    private final PostReplyRepository postReplyRepository;
+
+    @Autowired
+    public MyPageController(MyPageService mypageService, UserRepository userRepository, PostRepository postRepository, PostReplyRepository postReplyRepository) {
+        this.mypageService = mypageService;
+        this.userRepository = userRepository;
+        this.postRepository = postRepository;
+        this.postReplyRepository = postReplyRepository;
     }
 
     @PostMapping // 회원 정보 조회
@@ -55,5 +74,34 @@ public class MyPageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 탈퇴에 실패하였습니다.");
         }
     }
+
+    @GetMapping("/postlist")
+    public ResponseEntity<List<PostDto>> getPostList(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username);
+        int userNumber = user.getUserNumber();
+
+        List<Post> postList = postRepository.findAllByUserUserNumber(userNumber);
+        List<PostDto> postDtos = postList.stream()
+                .map(PostDto::new) // Convert FacilityReview to FacilityReviewDto
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(postDtos);
+    }
+
+    @GetMapping("/commetlist")
+    public ResponseEntity<List<PostReplyDto>> getCommentList(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username);
+        int userNumber = user.getUserNumber();
+
+        List<PostReply> replyList = postReplyRepository.findAllByUserUserNumber(userNumber);
+        List<PostReplyDto> replyDtos = replyList.stream()
+                .map(PostReplyDto::new) // Convert FacilityReview to FacilityReviewDto
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(replyDtos);
+    }
+
 }
 

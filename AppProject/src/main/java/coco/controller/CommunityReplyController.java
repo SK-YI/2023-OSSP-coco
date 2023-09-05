@@ -19,19 +19,19 @@ public class CommunityReplyController {
 
     // 댓글 작성
     @PostMapping("/reply")
-    public ResponseEntity<PostReplyDto> createReply(@RequestBody PostReplyRequestDto PostReplyRequestDto, @PathVariable int PostId){
+    public ResponseEntity<PostReplyDto> createReply(@RequestBody PostReplyRequestDto PostReplyRequestDto, @PathVariable int postId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() != "anonymousUser") {
-            return ResponseEntity.ok(communityReplyService.createReply(PostReplyRequestDto,PostId,authentication));
+            return ResponseEntity.ok(communityReplyService.createReply(PostReplyRequestDto,postId,authentication));
         }
         return ResponseEntity.ok(null);
     }
     // 댓글 삭제
     @DeleteMapping("/reply/{replyId}")
-    public ResponseEntity<String> delete(@PathVariable int replyId,@PathVariable int PostId){
+    public ResponseEntity<String> delete(@PathVariable int replyId,@PathVariable int postId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() != "anonymousUser") {
-            return ResponseEntity.ok(communityReplyService.deleteReply(replyId,PostId,authentication));
+            return ResponseEntity.ok(communityReplyService.deleteReply(replyId,postId,authentication));
         }
         return ResponseEntity.ok("fail");
     }

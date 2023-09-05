@@ -32,10 +32,10 @@ public class Facility {
     private String address;
 
     @Column(nullable = false)
-    private String longitude;
+    private float longitude;
 
     @Column(nullable = false)
-    private String latitude;
+    private float latitude;
 
     @Column
     private String equipment;
