@@ -2,6 +2,9 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MyPostItem from '../../components/myPage/MyPostItem';
+import { useUserContext } from '../../contexts/UserContext';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 /* import { useNavigation } from '@react-navigation/native'; */
 
 // 더미데이터
@@ -89,10 +92,37 @@ const postData = [
 ];
 
 const MyPostListScreen = () => {
+  const { token } = useUserContext();
+
+  const [postListData, setPostListData] = useState(postData);
+
+  const getPostApi = async () => {
+    try {
+      const response = await axios.get(`${URL}/user/postlist`, {
+        headers: {
+          accessToken: token,
+        },
+      });
+      console.log(response.data);
+      // 실패하면 ..?
+      // 성공하면!
+      setPostListData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    // 목록 조회 api
+    getPostApi();
+    // 성공하면
+    // setPostListData(postData);
+  }, []);
+
   return (
     <View style={[styles.container]}>
       <FlatList
-        data={postData}
+        data={postListData}
         renderItem={({ item }) => <MyPostItem post={item} isModify={true} />}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         horizontal={false}

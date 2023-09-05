@@ -9,11 +9,11 @@ import TextButton from '../../components/login/TextButton';
 import { AuthRoutes } from '../../navigations/routes';
 import HR from '../../components/login/HR';
 import { useUserContext } from '../../contexts/UserContext';
-import axios from 'axios';
 import { URL } from '../../../env';
 
 const LoginScreen = () => {
-  const { setToken, setLogin } = useUserContext();
+  //const [, setLogin] = useUserContext();
+  const [, setToken] = useUserContext();
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -39,22 +39,54 @@ const LoginScreen = () => {
     setDisabled(!id || !password);
   }, [id, password]);
 
-  const loginApi = async () => {
+  const loginApi = () => {
     const data = {
       username: id,
       password: password,
     };
 
-    try {
-      const response = await axios.post(`${URL}/user/login`, data);
-      console.log(response.data);
-      // 성공하면
-      setLogin(true);
-      setToken(response.data.accessToken);
-    } catch (error) {
-      console.error(error);
-    }
+    fetch(`${URL}/user/login`, {
+      method: 'POST', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(data), //실제 데이터 파싱하여 body에 저장
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res.accessToken); // 리턴값에 대한 처리
+        // setLogin(true);
+        setToken(res.accessToken);
+      });
+
+    // try {
+    //   const response = await axios.post(`${URL}/user/login`, data);
+    //   console.log(response.data);
+    //   // 성공하면
+    //   setLogin(true);
+    //   setToken(response.data.accessToken);
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
+
+  // const loginApi = async () => {
+  //   const data = {
+  //     username: id,
+  //     password: password,
+  //   };
+
+  //   try {
+  //     const response = await axios.post(`${URL}/user/login`, data);
+  //     console.log(response.data);
+  //     // 성공하면
+  //     setLogin(true);
+  //     setToken(response.data.accessToken);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const onSubmit = () => {
     Keyboard.dismiss();
@@ -64,6 +96,7 @@ const LoginScreen = () => {
       console.log(id, password); // 로그인 api 하기
       loginApi();
       setIsLoading(false);
+      //setLogin(true);
     } else if (disabled) {
       Alert.alert('로그인 실패', '아이디, 비밀번호를 올바르게 입력해주세요.', [
         { text: '확인', onPress: () => {} },

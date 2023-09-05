@@ -2,8 +2,8 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 import MyPostItem from '../../components/myPage/MyPostItem';
 import { useEffect, useState } from 'react';
-// import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import axios from 'axios';
+import { useUserContext } from '../../contexts/UserContext';
 /* import { useNavigation } from '@react-navigation/native'; */
 
 // 더미데이터
@@ -91,13 +91,31 @@ const postData = [
 ];
 
 const MyCommentListScreen = () => {
+  const { token } = useUserContext();
   /* const navigation = useNavigation(); */
   const [postListData, setPostListData] = useState(postData);
 
+  const getPostApi = async () => {
+    try {
+      const response = await axios.get(`${URL}/user/commentlist`, {
+        headers: {
+          accessToken: token,
+        },
+      });
+      console.log(response.data);
+      // 실패하면 ..?
+      // 성공하면!
+      setPostListData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     // 목록 조회 api
+    getPostApi();
     // 성공하면
-    setPostListData(postData);
+    // setPostListData(postData);
   }, []);
 
   return (
