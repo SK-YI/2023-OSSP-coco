@@ -34,9 +34,9 @@ public class UserController {
     }
 
     @PostMapping("/user/join")
-    public ResponseEntity<String> signUp(@RequestBody UserJoinDto userJoinDto) {
+    public ResponseEntity<Boolean> signUp(@RequestBody UserJoinDto userJoinDto) {
         userService.join(userJoinDto);
-        return ResponseEntity.ok("회원가입 완료");
+        return ResponseEntity.ok(true);
     }
 
     @PostMapping("/user/join/username")
@@ -52,8 +52,8 @@ public class UserController {
     }
 
     @GetMapping("/user/logout")
-    public ResponseEntity<String> logoutPage(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<Boolean> logoutPage(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-        return ResponseEntity.ok("로그아웃 완료");
+        return ResponseEntity.ok(true);
     }
 }
