@@ -30,15 +30,15 @@ public class MapRecommendController {
     private FacilityRepository facilityRepository;
     @GetMapping("/user/map/{longitude}/{latitude}")
     @ResponseBody
-    public ResponseEntity<List<FacilityResponseDto>> getFacilitiesByPosition(@PathVariable Float longitude, @PathVariable Float latitude) {
+    public ResponseEntity<List<FacilityResponseDto>> getFacilitiesByPosition(@PathVariable double longitude, @PathVariable double latitude) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Float minX = longitude - 0.015f;
-        Float maxX = longitude + 0.015f;
+        double minX = longitude - 0.015f;
+        double maxX = longitude + 0.015f;
 
-        Float minY = latitude - 0.065f;
-        Float maxY = latitude + 0.065f;
+        double minY = latitude - 0.065f;
+        double maxY = latitude + 0.065f;
 
 
         List<Facility> facilities = facilityRepository.findAllByLatitudeBetweenAndLongitudeBetween(minX, maxX, minY, maxY);

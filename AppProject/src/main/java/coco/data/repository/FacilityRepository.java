@@ -31,6 +31,6 @@ public interface FacilityRepository extends JpaRepository<Facility, Integer> {
     @SuppressWarnings("all")
     Page<Facility> findAllByNameContaining(String name, Pageable pageable);
 
-    List<Facility> findAllByLatitudeBetweenAndLongitudeBetween(float minX, float maxX, float minY, float maxY);
+    List<Facility> findAllByLatitudeBetweenAndLongitudeBetween(double minX, double maxX, double minY, double maxY);
 
 }

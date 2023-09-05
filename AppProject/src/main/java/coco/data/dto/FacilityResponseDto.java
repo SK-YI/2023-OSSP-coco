@@ -21,9 +21,9 @@ public class FacilityResponseDto {
 
         private String address;
 
-        private float latitude;
+        private double latitude;
 
-        private float longitude;
+        private double longitude;
 
         private String equipment;
 

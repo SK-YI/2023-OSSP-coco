@@ -26,12 +26,6 @@ public class UserController {
         return ResponseEntity.ok(userService.login(requestDto));
     }
 
-//    @PostMapping(value = "/logout")
-//    public ResponseEntity<String> logout(@RequestBody UserRequestDto requestDto) {
-//        userService.logout();
-//        return ResponseEntity.ok("로그아웃 완료");
-//    }
-
     @GetMapping("/user/info")
     public ResponseEntity<UserResponseDto> getMyMemberInfo() {
         UserResponseDto myInfoBySecurity = userService.getMyInfoBySecurity();

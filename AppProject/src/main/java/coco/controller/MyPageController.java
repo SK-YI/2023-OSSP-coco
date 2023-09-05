@@ -88,7 +88,7 @@ public class MyPageController {
         return ResponseEntity.ok(postDtos);
     }
 
-    @GetMapping("/commetlist")
+    @GetMapping("/commentlist")
     public ResponseEntity<List<PostReplyDto>> getCommentList(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();

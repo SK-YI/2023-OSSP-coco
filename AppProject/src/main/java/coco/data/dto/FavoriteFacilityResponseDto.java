@@ -48,8 +48,8 @@ public class FavoriteFacilityResponseDto {
     public static class LikedFacilityDto implements Serializable {
         private int id;
         private String name;
-        private float latitude;
-        private float longitude;
+        private double latitude;
+        private double longitude;
         private String equipment;
 
         private String address;

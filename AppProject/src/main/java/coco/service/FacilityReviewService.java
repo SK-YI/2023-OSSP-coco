@@ -55,6 +55,8 @@ public class FacilityReviewService {
     public FacilityReviewDto editReply(int reviewId,FacilityReviewDto facilityReviewDto){
         FacilityReview facilityReview=facilityReviewRepository.findById(reviewId);
         facilityReview.setContent(facilityReviewDto.getContent());
+        facilityReview.setTitle(facilityReviewDto.getTitle());
+        facilityReview.setStar(facilityReviewDto.getStar());
         facilityReviewRepository.save(facilityReview);
         return new FacilityReviewDto(facilityReview);
     }
