@@ -29,11 +29,11 @@ const MyPostItem = ({ post, isModify }) => {
     >
       <View style={styles.textContainer}>
         <Text style={styles.title}>{post.title}</Text>
-        <Text style={styles.content}>{post.name}</Text>
+        <Text style={styles.content}>{post.content}</Text>
         <View style={styles.explainContainer}>
-          <Text style={styles.explain}>{post.date}</Text>
+          <Text style={styles.explain}>{post.createdDate}</Text>
           <Text style={styles.explainSeparator}>|</Text>
-          <Text style={styles.explain}>{post.nickname}</Text>
+          <Text style={styles.explain}>{post.user.nickname}</Text>
           <Text style={styles.explainSeparator}>|</Text>
           <MaterialCommunityIcons
             style={[styles.icon, { color: '#991b1b' }]}
@@ -42,7 +42,7 @@ const MyPostItem = ({ post, isModify }) => {
             color={GRAY.DARK}
           />
           <Text style={[styles.explain, { color: '#991b1b' }]}>
-            {post.like}
+            {post.liked}
           </Text>
           <MaterialCommunityIcons
             style={[styles.icon, { color: '#075985' }]}
