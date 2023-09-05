@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
+import { URL } from '../../../env';
 
 // 더미데이터
 const postData = [
@@ -110,21 +111,41 @@ const PostListScreen = () => {
   const { top } = useSafeAreaInsets();
   const [text, setText] = useState('');
 
-  const getPostApi = async () => {
-    try {
-      const response = await axios.get(`${URL}/community`, {
-        headers: {
-          accessToken: token,
-        },
+  const getPostApi = () => {
+    fetch(`${URL}/community`, {
+      method: 'GET', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      // body: JSON.stringify(data), //실제 데이터 파싱하여 body에 저장
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        // setPostListData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      console.log(response.data);
-      // 실패하면 ..?
-      // 성공하면!
-      setPostListData(response.data);
-    } catch (error) {
-      console.error(error);
-    }
   };
+
+  // const getPostApi = async () => {
+  //   try {
+  //     const response = await axios.get(`${URL}/community`, {
+  //       headers: {
+  //         accessToken: token,
+  //       },
+  //     });
+  //     console.log(response.data);
+  //     // 실패하면 ..?
+  //     // 성공하면!
+  //     setPostListData(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
     // 목록 조회 api
