@@ -45,7 +45,7 @@ const SignupDropdown = ({ disability, setDisability }) => {
         //   borderColor: PRIMARY.DARK,
         //   backgroundColor: '#fafafa',
         // }}
-        multiple={true}
+        // multiple={true}
         mode="BADGE"
         listMode="MODAL"
         badgeDotColors={[
@@ -67,7 +67,7 @@ const SignupDropdown = ({ disability, setDisability }) => {
 };
 
 SignupDropdown.propTypes = {
-  disability: PropTypes.array,
+  disability: PropTypes.string,
   setDisability: PropTypes.func,
 };
 

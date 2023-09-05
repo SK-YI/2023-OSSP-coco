@@ -22,6 +22,7 @@ import CheckButton from '../../components/signup/CheckButton';
 import RadioButton from '../../components/signup/RadioButton';
 import SignupDropdown from '../../components/signup/SignupDropDown';
 import axios from 'axios';
+import { URL } from '../../../env';
 
 const SignUpScreen = () => {
   const [id, setId] = useState('');
@@ -32,7 +33,7 @@ const SignUpScreen = () => {
   const [nickname, setNickname] = useState('');
   const [age, setAge] = useState(null);
   const [gender, setGender] = useState(0); // 0: 남자, 1: 여자
-  const [disability, setDisability] = useState([]);
+  const [disability, setDisability] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -43,13 +44,13 @@ const SignUpScreen = () => {
   useEffect(() => {
     // 필수 값 체크!
     setDisabled(
-      //  !idCheck ||
-      !email ||
+      !idCheck ||
+        !email ||
         !password ||
         password !== passwordConfirm ||
         !email ||
         !nickname ||
-        disability.length === 0
+        !disability
     );
   }, [idCheck, email, password, passwordConfirm, nickname, disability]);
 
@@ -64,12 +65,11 @@ const SignUpScreen = () => {
       password: password,
       email: email,
       nickname: nickname,
-      age: age, // 필수값 아님..?
-      // 성별이랑 장애유형도 넣을 수 있어야 함
-      // gender: gender,
-      // type: disability,
+      age: age,
+      gender: gender,
+      userType: disability,
     };
-
+    console.log(data);
     fetch(`${URL}/user/join`, {
       method: 'POST', //메소드 지정
       headers: {
@@ -81,8 +81,10 @@ const SignUpScreen = () => {
       .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
       .then((res) => {
         console.log(res); // 리턴값에 대한 처리
-        // setLogin(true);
         navigate(AuthRoutes.LOG_IN);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -127,7 +129,6 @@ const SignUpScreen = () => {
     const data = {
       username: id,
     };
-    //    try {
     fetch(`${URL}/user/join/username`, {
       method: 'POST', //메소드 지정
       headers: {
@@ -139,25 +140,17 @@ const SignUpScreen = () => {
       .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
       .then((res) => {
         console.log(res); // 리턴값에 대한 처리
+        if (res) {
+          Alert.alert('아이디 중복', '아이디값이 중복됩니다.', [
+            { text: '확인', onPress: () => {} },
+          ]);
+        } else {
+          setIdCheck(true);
+        }
       })
       .catch((error) => {
         console.log(error);
       });
-    // .catch((error) => {
-    //   // 오류 처리
-    //   console.error(error)});
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-    // try {
-    //   const response = await axios.post(`${URL}/user/join/username`, data);
-    //   console.log(response.data);
-    //   // 중복확인 성공하면
-    //   setIdCheck(true);
-    // } catch (error) {
-    //   console.error(error);
-    // }
   };
 
   // const checkIdApi = async () => {
