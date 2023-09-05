@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
 import { URL } from '../../../env';
 
