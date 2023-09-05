@@ -16,12 +16,13 @@ import java.util.Optional;
 public class FacilityReviewDto {
     private int id;
     private String content;
-
     private String title;
     private Timestamp createdDate;
     private UserDto user;
     private int userId;
     private int facilityId;
+
+    private String facilityName;
     float star;
 
     private List<FacilityReviewDto> reviewedFacilities;
@@ -47,6 +48,7 @@ public class FacilityReviewDto {
         user= new UserDto(facilityReview.getUser());
         star = facilityReview.getStar();
         facilityId=facilityReview.getFacility().getFacilityId();
+        facilityName = facilityReview.getFacility().getName();
         userId=user.getId();
     }
     public FacilityReviewDto(FacilityReview facilityReview, int facilityId1, int userId1){
@@ -57,5 +59,6 @@ public class FacilityReviewDto {
         userId=userId1;
         star=facilityReview.getStar();
         facilityId=facilityId1;
+        facilityName = facilityReview.getFacility().getName();
     }
 }
