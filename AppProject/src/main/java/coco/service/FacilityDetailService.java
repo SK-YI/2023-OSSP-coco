@@ -3,6 +3,7 @@ package coco.service;
 import coco.data.dto.FacilityDetailReviewDto;
 import coco.data.dto.LikedResponseDto;
 import coco.data.entity.Facility;
+import coco.data.entity.User;
 import coco.data.entity.UserFavoriteFacility;
 import coco.data.repository.FacilityDetailRepository;
 import coco.data.repository.FacilityRepository;
@@ -36,23 +37,23 @@ public class FacilityDetailService {
 
     @Transactional
     public LikedResponseDto likeFacility(int facility_id, Authentication authentication){
-        int userId=userRepository.findByUsername(authentication.getName()).getUserNumber();
-        Optional<UserFavoriteFacility> userFavoriteFacility = userFavoriteFacilityRepository.findByFacilityFacilityIdAndUserUserNumber(facility_id,userId);
+        User user = userRepository.findByUsername(authentication.getName());
+        int userNumber = user.getUserNumber();
+        Optional<UserFavoriteFacility> userFavoriteFacility = userFavoriteFacilityRepository.findByFacilityFacilityIdAndUserUserNumber(facility_id,userNumber);
         int liked;
 
         if(userFavoriteFacility.isPresent()){
             userFavoriteFacilityRepository.deleteByFacilityFacilityIdAndUserUserNumber(facility_id,userFavoriteFacility.get().getUser().getUserNumber());
-            Facility facility=facilityDetailRepository.findByFacilityId(facility_id);
+            Facility facility = facilityDetailRepository.findByFacilityId(facility_id);
             liked = facility.getLiked() - 1;
             facility.setLiked(liked);
         }
         else {
-            UserFavoriteFacility userFavoritedFacility1=new UserFavoriteFacility();
-            userFavoritedFacility1.setFacility(facilityDetailRepository.findByFacilityId(facility_id));
-            userFavoritedFacility1.setUser(userRepository.findByUserNumber(userId));
-            UserFavoriteFacility userFavoritedFacility = userFavoriteFacilityRepository.save(userFavoritedFacility1);
-
-            Facility facility=facilityDetailRepository.findByFacilityId(facility_id);
+            UserFavoriteFacility userFavoritedFacility1 = new UserFavoriteFacility();
+            Facility facility = facilityDetailRepository.findByFacilityId(facility_id);
+            userFavoritedFacility1.setFacility(facility);
+            userFavoritedFacility1.setUser(user);
+            userFavoriteFacilityRepository.save(userFavoritedFacility1);
             liked = facility.getLiked() + 1;
             facility.setLiked(liked);
         }
