@@ -1,10 +1,20 @@
-import { FlatList, StyleSheet, View } from 'react-native';
+import {
+  Alert,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
-import MyPostItem from '../../components/myPage/MyPostItem';
+import PostItem from '../../components/community/PostItem';
 import { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
-/* import { useNavigation } from '@react-navigation/native'; */
+import PropTypes from 'prop-types';
 
 // 더미데이터
 const postData = [
@@ -90,14 +100,18 @@ const postData = [
   },
 ];
 
-const MyCommentListScreen = () => {
+const SearchCommunityScreen = ({ route }) => {
   const { token } = useUserContext();
-  /* const navigation = useNavigation(); */
+
+  const navigation = useNavigation();
+
   const [postListData, setPostListData] = useState(postData);
+  const { top } = useSafeAreaInsets();
+  const [text, setText] = useState(route.params.searchText);
 
   const getPostApi = async () => {
     try {
-      const response = await axios.get(`${URL}/user/commentlist`, {
+      const response = await axios.get(`${URL}/community/title/${text}`, {
         headers: {
           accessToken: token,
         },
@@ -112,29 +126,60 @@ const MyCommentListScreen = () => {
   };
 
   useEffect(() => {
-    // 목록 조회 api
+    // 검색 목록 조회 api
     getPostApi();
-    // 성공하면
-    // setPostListData(postData);
+    // 나중에 지워랑!
+    setPostListData(postData);
   }, []);
 
+  const onSearch = () => {
+    if (!text) {
+      Alert.alert('검색 실패', '검색어를 입력해주세요.', [
+        { text: '확인', onPress: () => {} },
+      ]);
+    } else {
+      // 검색 api 호출
+      getPostApi();
+    }
+  };
+
   return (
-    <View style={[styles.container]}>
-      <FlatList
-        data={postListData}
-        renderItem={({ item }) => <MyPostItem post={item} isModify={false} />}
-        ItemSeparatorComponent={() => <View style={styles.separator}></View>}
-        horizontal={false}
-        // onEndReached={fetchNextPage}
-        // onEndReachedThreshold={0.4}
-        // onRefresh={refetch}
-        // refreshing={refetching}
-      />
+    <View style={[styles.container, { paddingTop: top }]}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.search}
+          value={text}
+          onChangeText={(text) => setText(text.trim())}
+          placeholder={'검색어를 입력해주세요.'}
+          onSubmitEditing={onSearch}
+        />
+        <Pressable onPress={() => navigation.navigate('목록')}>
+          <Text style={styles.backText}>취소</Text>
+        </Pressable>
+      </View>
+      {postListData !== 0 ? (
+        <FlatList
+          data={postListData}
+          renderItem={({ item }) => <PostItem post={item} />}
+          ItemSeparatorComponent={() => <View style={styles.separator}></View>}
+          horizontal={false}
+          // onEndReached={fetchNextPage}
+          // onEndReachedThreshold={0.4}
+          // onRefresh={refetch}
+          // refreshing={refetching}
+        />
+      ) : (
+        <View style={styles.empty}>
+          <Text style={styles.emptyText}>검색 결과가 없습니다.</Text>
+        </View>
+      )}
     </View>
   );
 };
 
-MyCommentListScreen.propTypes = {};
+SearchCommunityScreen.propTypes = {
+  route: PropTypes.object,
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -170,6 +215,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: GRAY.DEFAULT,
   },
+  empty: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 20,
+  },
+  backText: {
+    paddingRight: 10,
+    fontSize: 20,
+  },
 });
 
-export default MyCommentListScreen;
+export default SearchCommunityScreen;

@@ -33,18 +33,21 @@ const post = {
       nickname: '닉네임11',
       content: '내용11',
       createdDate: '22.01.01',
+      myReply: false,
     },
     {
       id: 2,
       nickname: '닉네임22',
       content: '내용22',
       createdDate: '22.01.01',
+      myReply: true,
     },
     {
       id: 3,
       nickname: '닉네임33',
       content: '내용33',
       createdDate: '22.01.01',
+      myReply: true,
     },
   ],
 };
@@ -56,7 +59,7 @@ const PostScreen = ({ route }) => {
 
   const [text, setText] = useState('');
   const [like, setLike] = useState(false);
-  const [commentWrited, setCommentWrited] = useState(false);
+  const [rerendering, setRerendering] = useState(false);
 
   const getPostApi = async (postId) => {
     try {
@@ -78,7 +81,7 @@ const PostScreen = ({ route }) => {
   useEffect(() => {
     console.log(route.params.postId);
     getPostApi(route.params.postId);
-  }, [route.params.postId, commentWrited]);
+  }, [route.params.postId, rerendering]);
 
   const writeCommentApi = async (postId) => {
     const data = {
@@ -98,7 +101,7 @@ const PostScreen = ({ route }) => {
       console.log(response.data);
       // 실패하면 ..?
       // 성공하면! 다시 리렌더링
-      setCommentWrited(true);
+      setRerendering(!rerendering);
     } catch (error) {
       console.error(error);
     }
@@ -111,13 +114,32 @@ const PostScreen = ({ route }) => {
       ]);
     } else {
       // 댓글 등록 api 호출
-      writeCommentApi();
+      writeCommentApi(postData.id);
+    }
+  };
+
+  const likeApi = async (postId) => {
+    // 근데 좋아요하는 건지 아닌지 보내야하는 거 아닌가?
+
+    try {
+      const response = await axios.put(`${URL}/community/${postId}/like`, {
+        headers: {
+          accessToken: token,
+        },
+      });
+      console.log(response.data);
+      // 실패하면 ..?
+      // 성공하면! 다시 리렌더링
+      setRerendering(!rerendering);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const onClickLike = () => {
     setLike(!like);
     // 좋아요 api 호출
+    likeApi(postData.id);
   };
 
   return (
@@ -125,7 +147,14 @@ const PostScreen = ({ route }) => {
       <FlatList
         style={styles.commentContainer}
         data={postData.postReplyList}
-        renderItem={({ item }) => <Comment data={item} />}
+        renderItem={({ item }) => (
+          <Comment
+            data={item}
+            postId={postData.id}
+            setRerendering={setRerendering}
+            rerendering={rerendering}
+          />
+        )}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         ListHeaderComponent={
           <View style={styles.postContainer}>
@@ -143,22 +172,48 @@ const PostScreen = ({ route }) => {
               />
             </View>
             <Text style={styles.content}>{postData.content}</Text>
-            <Pressable style={styles.button} onPress={onClickLike} hitSlop={10}>
-              <Text style={styles.buttonText}>좋아요</Text>
-              {like ? (
+            <View style={styles.buttonContainer}>
+              <Pressable
+                style={styles.button}
+                onPress={onClickLike}
+                hitSlop={10}
+              >
+                <Text style={styles.buttonText}>좋아요</Text>
+                {like ? (
+                  <MaterialCommunityIcons
+                    style={styles.icon}
+                    name={'cards-heart'}
+                    size={25}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    style={styles.icon}
+                    name={'cards-heart-outline'}
+                    size={25}
+                  />
+                )}
+              </Pressable>
+              <View style={styles.numberContainer}>
                 <MaterialCommunityIcons
-                  style={styles.icon}
-                  name={'cards-heart'}
-                  size={25}
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  style={styles.icon}
+                  style={[styles.icon, { color: '#991b1b' }]}
                   name={'cards-heart-outline'}
-                  size={25}
+                  size={18}
+                  color={GRAY.DARK}
                 />
-              )}
-            </Pressable>
+                <Text style={[styles.number, { color: '#991b1b' }]}>
+                  {post.liked}
+                </Text>
+                <MaterialCommunityIcons
+                  style={[styles.icon, { color: '#075985' }]}
+                  name={'comment-outline'}
+                  size={18}
+                  color={GRAY.DARK}
+                />
+                <Text style={[styles.number, { color: '#075985' }]}>
+                  {post.commentNumber}
+                </Text>
+              </View>
+            </View>
           </View>
         }
       />
@@ -242,6 +297,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 25,
   },
+  buttonContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+  },
   button: {
     flexDirection: 'row',
     marginVertical: 20,
@@ -260,6 +321,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     lineHeight: 25,
+  },
+  numberContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  number: {
+    paddingLeft: 3,
   },
   separator: {
     marginVertical: 5,

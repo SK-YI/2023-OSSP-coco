@@ -5,9 +5,9 @@ const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [token, setToken] = useState(''); // 토큰 저장
-  const [login, setLogin] = useState(false); // 로그인 여부
+  //const [login, setLogin] = useState(false); // 로그인 여부
   return (
-    <UserContext.Provider value={[token, setToken, login, setLogin]}>
+    <UserContext.Provider value={[token, setToken]}>
       {children}
     </UserContext.Provider>
   );

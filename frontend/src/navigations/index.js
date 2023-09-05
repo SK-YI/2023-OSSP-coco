@@ -5,11 +5,11 @@ import TabNavigation from './Tap';
 import { useUserContext } from '../contexts/UserContext';
 
 const Navigation = () => {
-  const { login } = useUserContext();
+  const [token] = useUserContext();
 
   return (
     <NavigationContainer>
-      {true ? <TabNavigation /> : <AuthStack />}
+      {token !== '' ? <TabNavigation /> : <AuthStack />}
     </NavigationContainer>
   );
 };

@@ -10,10 +10,12 @@ import {
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PostItem from '../../components/community/PostItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import axios from 'axios';
+import { useUserContext } from '../../contexts/UserContext';
 
 // 더미데이터
 const postData = [
@@ -100,10 +102,36 @@ const postData = [
 ];
 
 const PostListScreen = () => {
+  const { token } = useUserContext();
+
   const navigation = useNavigation();
 
+  const [postListData, setPostListData] = useState(postData);
   const { top } = useSafeAreaInsets();
   const [text, setText] = useState('');
+
+  const getPostApi = async () => {
+    try {
+      const response = await axios.get(`${URL}/community`, {
+        headers: {
+          accessToken: token,
+        },
+      });
+      console.log(response.data);
+      // 실패하면 ..?
+      // 성공하면!
+      setPostListData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    // 목록 조회 api
+    getPostApi();
+    // 나중에 지워랑!
+    setPostListData(postData);
+  }, []);
 
   const onSearch = () => {
     if (!text) {
@@ -111,9 +139,8 @@ const PostListScreen = () => {
         { text: '확인', onPress: () => {} },
       ]);
     } else {
-      // 검색 api 호출
-      // 검색 페이지를 따로 만들까?
-      // 검색 후 전체 목록 페이지 보는 것이 힘들 것 같은데..
+      // 검색 페이지로 이동
+      navigation.navigate('검색창', { searchText: text });
     }
   };
 
@@ -136,9 +163,9 @@ const PostListScreen = () => {
           />
         </Pressable>
       </View>
-      {postData !== 0 ? (
+      {postListData !== 0 ? (
         <FlatList
-          data={postData}
+          data={postListData}
           renderItem={({ item }) => <PostItem post={item} />}
           ItemSeparatorComponent={() => <View style={styles.separator}></View>}
           horizontal={false}
@@ -149,7 +176,7 @@ const PostListScreen = () => {
         />
       ) : (
         <View style={styles.empty}>
-          <Text style={styles.emptyText}>검색 결과가 없습니다.</Text>
+          <Text style={styles.emptyText}>커뮤니티 게시글이 없습니다.</Text>
         </View>
       )}
     </View>
