@@ -21,7 +21,6 @@ import HR from '../../components/login/HR';
 import CheckButton from '../../components/signup/CheckButton';
 import RadioButton from '../../components/signup/RadioButton';
 import SignupDropdown from '../../components/signup/SignupDropDown';
-import axios from 'axios';
 import { URL } from '../../../env';
 
 const SignUpScreen = () => {

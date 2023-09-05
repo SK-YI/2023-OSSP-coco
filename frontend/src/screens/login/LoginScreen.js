@@ -58,6 +58,9 @@ const LoginScreen = () => {
         console.log(res.accessToken); // 리턴값에 대한 처리
         // setLogin(true);
         setToken(res.accessToken);
+      })
+      .catch((error) => {
+        console.log(error);
       });
 
     // try {
