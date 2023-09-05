@@ -25,7 +25,6 @@ public class MyPageController {
     private final MyPageService mypageService;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-
     private final PostReplyRepository postReplyRepository;
 
     @Autowired
