@@ -14,9 +14,7 @@ public class CommunityDetailController {
     @Autowired
     private CommunityDetailService communityDetailService;
 
-
-
-    //게시글 조회 - CommunityDetailService 서비스 오류
+    //게시글 조회 - 성공
     @GetMapping("/community/{postId}")
     @ResponseBody
     public ResponseEntity<PostDetailResponseDto> getPost(@PathVariable int postId){

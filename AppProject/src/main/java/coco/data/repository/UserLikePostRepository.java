@@ -12,6 +12,8 @@ public interface UserLikePostRepository extends JpaRepository<UserLikePost,Integ
     //자꾸 userNumber 부분에서 오류.
     @SuppressWarnings("all")
     Optional<UserLikePost> findByPostIdAndUserUserNumber(int postId, int userNumber);
+    List<UserLikePost> findPostsByUserUserNumber(int userNumber);
     UserLikePost save(UserLikePost userLikePost);
+    void deleteByUserUserNumberAndPostId(int userNumber,int postId);
 
 }

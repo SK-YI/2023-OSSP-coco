@@ -19,7 +19,7 @@
 #}
 #
 #
-#### 커뮤니티 글 작성 - DB 삽입 x
+#### 커뮤니티 글 작성 - 테스트 ok
 #POST localhost:8080/community
 #Content-Type: application/json
 #
@@ -28,13 +28,13 @@
 #  "content": "안녕하세요2"
 #}
 #
-#### 커뮤니티 글 삭제
+#### 커뮤니티 글 삭제 - 테스트 ok
 #DELETE localhost:8080/community/1
 #Content-Type: application/json
 #
 #
 #
-#### 커뮤니티 글 수정
+#### 커뮤니티 글 수정 - 테스트 ok
 #PUT localhost:8080/community/1
 #Content-Type: application/json
 #
@@ -51,7 +51,7 @@
 #
 #}
 #
-#### 게시글 조회
+#### 게시글 조회 - 테스트 ok
 #
 #### 게시글 제목으로 찾기
 #GET localhost:8080//community/title/{post_title}
