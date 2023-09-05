@@ -1,33 +1,31 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  Platform,
-  Image,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { GRAY, WHITE } from '../../colors';
-import facilityData from '../../sample/facilitySampledata';
-import toiletIcon from 'frontend/assets/facilityIcons/toilet.png';
-import rampIcon from 'frontend/assets/facilityIcons/ramp.png';
-import elevatorIcon from 'frontend/assets/facilityIcons/elevator.png';
+import { ActivityIndicator, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { URL } from '../../../env';
 import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
+import { FlatList } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import MyFacilityCard from '../../components/myPage/myFacilityCard';
 
 const MyFacilityScreen = () => {
-  const navigation = useNavigation();
-  const [ favoriteFacility, setFavoriteFacility] = useState['']
+  const [favoriteFacility, setFavoriteFacility] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const { top } = useSafeAreaInsets();
+  const { token } = useUserContext();
 
   const favoriteFacilityGet = async () => {
     try {
-      const response = await axios.get(`${URL}/user/favoriteFacility`);
+      const response = await axios.get(`${URL}/user/favoriteFacility`, {
+        headers: {
+          accessToken: token,
+        },
+      });
       console.log(response.data);
-      setFavoriteFacility(response.data)
+      setFavoriteFacility(response.data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -35,40 +33,22 @@ const MyFacilityScreen = () => {
     favoriteFacilityGet();
   }, []);
 
-  const handleFacilityDetail = (facilityId) => {
-    navigation.navigate('내 시설 정보', { facilityId });
-  };
-
   return (
-    <View style={styles.container}>
-      {facilityData.slice(0, 3).map((facility) => (
-        <Pressable
-          key={facility.key}
-          onPress={() => handleFacilityDetail(facility.key)}
-          style={styles.faciltyContainer}
-        >
-          <Text style={styles.FacilityTitle}>{facility.name}</Text>
-          <Text style={{ fontSize: 14, color: GRAY.DARK, marginVertical: 5 }}>
-            {facility.location}
-          </Text>
-          <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-            {facility.facility.toilet && (
-              <Image style={styles.icon} source={toiletIcon} />
-            )}
-            {facility.facility.ramp && (
-              <Image style={styles.icon} source={rampIcon} />
-            )}
-            {facility.facility.elevator && (
-              <Image style={styles.icon} source={elevatorIcon} />
-            )}
-          </View>
-        </Pressable>
-      ))}
+    <View style={{ paddingTop: top }}>
+      {isLoading ? ( //로딩중일때
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <FlatList
+          data={favoriteFacility.likedFacilityList}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <MyFacilityCard facility={item} />}
+        />
+      )}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+/* const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -126,5 +106,5 @@ const styles = StyleSheet.create({
     marginRight: 5,
     borderRadius: 50,
   },
-});
+}); */
 export default MyFacilityScreen;

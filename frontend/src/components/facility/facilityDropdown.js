@@ -5,24 +5,15 @@ import { GRAY } from '../../colors';
 
 const FacilityDropdown = () => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(['italy', 'spain', 'barcelona', 'finland']);
+  const [value, setValue] = useState();
 
   const options = [
-    { label: '지체장애', value: '지체장애' },
-    { label: '뇌병변장애', value: '뇌병변장애' },
-    { label: '시작장애', value: '시작장애' },
-    { label: '청각장애', value: '청각장애' },
-    { label: '언어장애', value: '언어장애' },
-    { label: '안면장애', value: '안면장애' },
-    { label: '신장장애', value: '신장장애' },
-    { label: '심장장애', value: '심장장애' },
-    { label: '간장애', value: '간장애' },
-    { label: '호흡기장애', value: '호흡기장애' },
-    { label: '장루, 요루장애', value: '장루, 요루장애' },
-    { label: '간질장애', value: '간질장애' },
-    { label: '지적장애', value: '지적장애' },
-    { label: '자폐성장애', value: '자폐성장애' },
-    { label: '정신장애', value: '정신장애' },
+    { label: '한국장애인고용공단 및 지사', value: '한국장애인고용공단 및 지사' },
+    { label: '특수학교', value: '특수학교' },
+    { label: '종합병원', value: '종합병원' },
+    { label: '장애인복지시설', value: '장애인복지시설' },
+    { label: '병원·치과병원·한방병원·정신병원·요양병원', value: '병원·치과병원·한방병원·정신병원·요양병원' },
+    { label: '노인복지시설(경로당포함)', value: '노인복지시설(경로당포함)' },
   ];
 
   const [items, setItems] = useState(options);
@@ -42,7 +33,7 @@ const FacilityDropdown = () => {
         setOpen={setOpen}
         setValue={setValue}
         setItems={setItems}
-        placeholder='장애 유형을 선택해주세요'
+        placeholder='시설 타입을 선택해주세요'
         placeholderStyle={{ color: GRAY.DARK }}
         multiple={true}
         mode="BADGE"

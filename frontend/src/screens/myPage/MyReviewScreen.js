@@ -1,44 +1,58 @@
-import { View, Text, StyleSheet, Platform, Pressable } from 'react-native';
-import facilityData from '../../sample/facilitySampledata';
-import { WHITE, GRAY } from '../../colors';
-import { useNavigation } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native';
+import { URL } from '../../../env';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { FlatList } from 'react-native-gesture-handler';
+import { useUserContext } from '../../contexts/UserContext';
+import MyReviewCard from '../../components/myPage/myReviewCard';
 
 const MyReviewScreen = () => {
-  const navigation = useNavigation();
+  const [review, setReview] = useState();
+  const { token } = useUserContext();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleFacilityDetail = (facilityId) => {
-    navigation.navigate('내 시설 정보', { facilityId });
+  //리뷰 목록 GET
+  const myReviewGetApi = async () => {
+    try {
+      const response = await axios.get(`${URL}/user/reviewedFacility`, {
+        headers: {
+          accessToken: token,
+        },
+      });
+      console.log(response.data);
+      setReview(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+  useEffect(() => { //리뷰 정보 GET
+    myReviewGetApi();
+  }, []);
 
   return (
-    <View style={styles.container}>
-      {facilityData.map((facility) => (
-        <Pressable
-          key={facility.key}
-          onPress={() => handleFacilityDetail(facility.key)}
-          style={styles.reviewContainer}
-        >
-          <View>
-            <Text style={styles.FacilityTitle}>{facility.review[0].title}</Text>
-            <Text style={{ fontSize: 14, color: GRAY.DARK, marginVertical: 5 }}>
-              {facility.review[0].content}
-            </Text>
-          </View>
-          <Text style={{paddingTop: 22}}>{facility.name}</Text>
-        </Pressable>
-      ))}
-    </View>
+    <>
+      {isLoading ? ( //로딩중일때
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <FlatList
+          data={review}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <MyReviewCard review={item} />} //리뷰카드 렌더링!!
+        />
+      )}
+    </>
   );
 };
 
-const styles = StyleSheet.create({
+/* const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: WHITE,
   },
   reviewContainer: {
-    padding: 14,
-    height: 120,
+    padding: 13,
     borderRadius: 25,
     marginHorizontal: 30,
     marginVertical: 10,
@@ -60,6 +74,16 @@ const styles = StyleSheet.create({
       },
     }),
   },
-});
+  button: {
+    backgroundColor: 'fff',
+    zIndex: 1,
+    marginTop: 6,
+    color: GRAY.DARK,
+    padding: 7,
+    marginHorizontal: 6,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+}); */
 
 export default MyReviewScreen;

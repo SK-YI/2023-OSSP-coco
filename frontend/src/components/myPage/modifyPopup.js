@@ -1,4 +1,4 @@
-import { /* useEffect */ useState } from 'react';
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -14,23 +14,20 @@ import { URL } from '../../../env';
 import axios from 'axios';
 /* import { useUserContext } from '../../contexts/UserContext'; */
 
-const WriteReviewPopup = ( facilityId, { onClose, onSave }) => {
+const ModifyReviewPopup = ( review, { onClose, onSave }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [star, setStar] = useState();
+  const [score, setScore] = useState();
 
-  //리뷰 작성 API
-  const reviewPost = async () => {
-    const data = {
-      title: title,
-      content: content,
-      star: star,
-    };
-
+  const reviewPut = async () => {
     try {
-      const response = await axios.post(
-        `${URL}/user/${facilityId}/review`,
-        data
+      const response = await axios.put(
+        `${URL}/user/${review.facilityId}/review/${review.id}`,
+        {
+          title,
+          content,
+          score,
+        }
       );
       console.log(response.data);
     } catch (error) {
@@ -39,9 +36,9 @@ const WriteReviewPopup = ( facilityId, { onClose, onSave }) => {
   };
 
   const handleSave = () => {
-    onSave({ title, content, star }); //작성한 리뷰 저장 후
-    reviewPost(); //리뷰 등록
-    onClose(); //리뷰 모달창 닫기
+    onSave({ title, content, score });
+    reviewPut(); 
+    onClose();
   };
 
   const handleClose = () => {
@@ -52,7 +49,7 @@ const WriteReviewPopup = ( facilityId, { onClose, onSave }) => {
     <Modal transparent={true} animationType="slide">
       <View style={styles.modalContainer}>
         <View style={styles.popupContainer}>
-          <Text style={styles.popupTitle}>리뷰 작성</Text>
+          <Text style={styles.popupTitle}>리뷰 수정</Text>
           <TextInput
             placeholder="제목"
             value={title}
@@ -62,7 +59,7 @@ const WriteReviewPopup = ( facilityId, { onClose, onSave }) => {
           <Rating
             startingValue={5}
             showRating
-            onFinishRating={setStar}
+            onFinishRating={setScore}
             jumpValue={0.5}
             style={{ paddingVertical: 10 }}
             fractions={1}
@@ -76,7 +73,7 @@ const WriteReviewPopup = ( facilityId, { onClose, onSave }) => {
           />
           <View style={styles.buttonContainer}>
             <Pressable style={styles.saveButton} onPress={handleSave}>
-              <Text style={styles.saveButtonText}>등록</Text>
+              <Text style={styles.saveButtonText}>수정</Text>
             </Pressable>
             <Pressable style={styles.cancelButton} onPress={handleClose}>
               <Text style={styles.cancelButtonText}>취소</Text>
@@ -88,7 +85,7 @@ const WriteReviewPopup = ( facilityId, { onClose, onSave }) => {
   );
 };
 
-WriteReviewPopup.propTypes = {
+ModifyReviewPopup.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
 };
@@ -154,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WriteReviewPopup;
+export default ModifyReviewPopup;

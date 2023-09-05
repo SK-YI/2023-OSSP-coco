@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,6 @@ import {
   Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import facilityData from '../../sample/facilitySampledata';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 import WriteReviewPopup from '../../components/facility/reviewPopup';
 import { AntDesign } from '@expo/vector-icons';
@@ -18,20 +17,18 @@ import FacilityMap from '../../components/facility/facilityMap';
 import toiletIcon from 'frontend/assets/facilityIcons/toilet.png';
 import rampIcon from 'frontend/assets/facilityIcons/ramp.png';
 import elevatorIcon from 'frontend/assets/facilityIcons/elevator.png';
+import blockIcon from 'frontend/assets/facilityIcons/block.png';
+import escapeIcon from 'frontend/assets/facilityIcons/escape.png';
+import showerIcon from 'frontend/assets/facilityIcons/shower.png';
+import parkingIcon from 'frontend/assets/facilityIcons/parking.png';
+import vendingIcon from 'frontend/assets/facilityIcons/vending.png'
 import { URL } from '../../../env';
 import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
 
-const FacilityDetailScreen = ({ route }) => {
+const FacilityDetailScreen = ({ facilityId }) => {
 
-  const [facilityInfo, setFacilityInfo] = useState({
-    name: '', //시설이름
-    type: '', //시설타입
-    info: '', //시설정보
-    location: '', 
-    //편의시설 정보가 어떻게 넘어오는지 모르겠음!!
-  });
-
+  const [facility, setFacility] = useState('');
   const { token } = useUserContext();
 
   const facilityInfoGetApi = async () => {
@@ -42,16 +39,26 @@ const FacilityDetailScreen = ({ route }) => {
         },
       });
       console.log(response.facilityInfo);
-      setFacilityInfo(response.data);
+      setFacility(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => { //시설 정보 GET
+    facilityInfoGetApi();
+  }, []);
 
-  const facilityId = route.params.facilityId;
-  const facility = facilityData.find((item) => item.key === facilityId);
 
+  //즐겨찾기 API와 연결필요
+  const [isFavorite, setIsFavorite] = useState(false);
+
+    const toggleFavorite = () => {
+      setIsFavorite((prevState) => !prevState);
+    };
+
+
+  //리뷰 작성 모달 관련 함수들
   const [isReviewPopupVisible, setReviewPopupVisible] = useState(false);
   const handleOpenReviewPopup = () => {
     setReviewPopupVisible(true);
@@ -64,12 +71,9 @@ const FacilityDetailScreen = ({ route }) => {
     handleCloseReviewPopup();
   };
 
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const toggleFavorite = () => {
-    setIsFavorite((prevState) => !prevState);
+  FacilityDetailScreen.propTypes = {
+    facilityId: PropTypes.number,
   };
-
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -86,23 +90,37 @@ const FacilityDetailScreen = ({ route }) => {
           </TouchableOpacity>
         </View>
         <Text style={[styles.menu, { paddingTop: 20 }]}>
-          {facility.location}
+          {facility.address}
         </Text>
         <View style={{ alignItems: 'center', paddingVertical: 30 }}>
           <FacilityMap />
         </View>
-        <View style={{ flexDirection: 'row', marginHorizontal: 30 }}>
-          {facility.facility.toilet && (
-            <Image style={styles.icon} source={toiletIcon} />
-          )}
-          {facility.facility.ramp && (
-            <Image style={styles.icon} source={rampIcon} />
-          )}
-          {facility.facility.elevator && (
-            <Image style={styles.icon} source={elevatorIcon} />
-          )}
-        </View>
-        <Text style={styles.info}>{facility.info}</Text>
+        <View style={{ flexDirection: 'row', paddingTop: 8 }}>
+        {facility.equipment.includes('판매기') && (
+          <Image style={styles.icon} source={vendingIcon} />
+        )}
+        {facility.equipment.includes('주차구역') && (
+          <Image style={styles.icon} source={parkingIcon} />
+        )}
+        {facility.equipment.includes('점자블록') && (
+          <Image style={styles.icon} source={blockIcon} />
+        )}
+        {facility.equipment.includes('높이차이') && (
+          <Image style={styles.icon} source={rampIcon} />
+        )}
+        {facility.equipment.includes('승강설비') && (
+          <Image style={styles.icon} source={elevatorIcon} />
+        )}
+        {facility.equipment.includes('피난설비') && (
+          <Image style={styles.icon} source={escapeIcon} />
+        )}
+        {facility.equipment.some((equipment) => ['대변기', '소변기'].includes(equipment)
+        ) && <Image style={styles.icon} source={toiletIcon} />}
+        {facility.equipment.includes('샤워실') && (
+          <Image style={styles.icon} source={showerIcon} />
+        )}
+      </View>
+        <Text style={styles.info}>{facility.equipment}</Text>
         <View style={{}}>
           <View
             style={{
@@ -143,12 +161,13 @@ const FacilityDetailScreen = ({ route }) => {
                 <Text>리뷰 쓰기</Text>
               </Pressable>
             </View>
-
+            
             {isReviewPopupVisible && (
               <WriteReviewPopup
+                facilityId = {facilityId}
                 onClose={handleCloseReviewPopup}
                 onSave={handleSaveReview}
-              />
+              /> //리뷰 모달 창에 FacilityId 전달
             )}
           </View>
           <ScrollView
@@ -156,13 +175,13 @@ const FacilityDetailScreen = ({ route }) => {
             style={styles.reviewContainer}
             contentContainerStyle={{ alignItems: 'center' }}
           >
-            {facility.review.map((review, index) => (
-              <View style={styles.review} key={index}>
+            {facility.facilityReviewList.map((review, id) => (
+              <View style={styles.review} key={id}>
                 <Text style={{ fontSize: 15, fontWeight: '700' }}>
                   {review.title}
                 </Text>
                 <Text style={{ color: PRIMARY.DARK }}>
-                  {review.reviewscore}
+                  {review.star}
                 </Text>
                 <Text>{review.content}</Text>
               </View>

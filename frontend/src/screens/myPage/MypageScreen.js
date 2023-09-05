@@ -11,13 +11,8 @@ const MyPageScreen = () => {
   const { bottom } = useSafeAreaInsets();
   const navigation = useNavigation();
   const { token } = useUserContext();
-  const [userInfo, setUserInfo] = useState({
-      username: '',
-      password: '',
-      email: '',
-      nickname: '',
-      age: '',
-    });
+  const [userInfo, setUserInfo] = useState(
+  );
 
   const userInfoGetApi = async () => {
     try {
@@ -28,7 +23,7 @@ const MyPageScreen = () => {
         },
       }
       );
-      console.log(response.userInfo);
+      console.log(response.data);
       setUserInfo(response.data);
 
     } catch (error) {
