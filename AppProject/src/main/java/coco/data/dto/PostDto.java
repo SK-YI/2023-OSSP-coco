@@ -29,6 +29,8 @@ public class PostDto {
     private UserDto user;
     private String createdDate;
     private int userNumber;
+    private int postReplyCount;
+
 
     @Getter
     @NoArgsConstructor
@@ -58,6 +60,13 @@ public class PostDto {
 
         postFileList=new ArrayList<>();
 
+        ArrayList<Object> postReplyList;
+        postReplyList = new ArrayList<>();
+        if (post.getPostReplyList() != null) {
+            postReplyList.addAll(post.getPostReplyList());
+        }
+        postReplyCount = postReplyList.size();
+
         for(PostFile postFile:post.getPostFileList()){
             postFileList.add(new PostFileDto(postFile));
         }
@@ -78,6 +87,13 @@ public class PostDto {
         for(PostFile postFile:post.getPostFileList()){
             postFileList.add(new PostFileDto(postFile));
         }
+
+        ArrayList<Object> postReplyList;
+        postReplyList = new ArrayList<>();
+        if (post.getPostReplyList() != null) {
+            postReplyList.addAll(post.getPostReplyList());
+        }
+        postReplyCount = postReplyList.size();
     }
 
 
