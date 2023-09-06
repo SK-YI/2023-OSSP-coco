@@ -21,10 +21,10 @@ public class FavoriteFacilityResponseDto {
 
 
     public FavoriteFacilityResponseDto(List<Facility> likeFacilities, List<UserFavoriteFacility> userFavoriteFacilities) {
-        this.likedFacilityList = mapToLikeCocktailDtoList(likeFacilities, userFavoriteFacilities);
+        this.likedFacilityList = mapToLikeFacilityDtoList(likeFacilities, userFavoriteFacilities);
     }
 
-    private List<LikedFacilityDto> mapToLikeCocktailDtoList(List<Facility> likeFacilities, List<UserFavoriteFacility> userFavoriteFacilities) {
+    private List<LikedFacilityDto> mapToLikeFacilityDtoList(List<Facility> likeFacilities, List<UserFavoriteFacility> userFavoriteFacilities) {
         List<LikedFacilityDto> likeFacilityDtoList = new ArrayList<>();
 
         for (UserFavoriteFacility userLikeFacility : userFavoriteFacilities) {

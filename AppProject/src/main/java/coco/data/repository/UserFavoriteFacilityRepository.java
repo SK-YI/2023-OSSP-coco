@@ -13,7 +13,7 @@ public interface UserFavoriteFacilityRepository extends JpaRepository<UserFavori
     void deleteByFacilityFacilityIdAndUserUserNumber(int facilityId,int userId);
 
     @SuppressWarnings("all")
-    UserFavoriteFacility save(UserFavoriteFacility userLikeCocktail);
+    UserFavoriteFacility save(UserFavoriteFacility userLikeFacility);
     Optional<UserFavoriteFacility> findByFacilityFacilityIdAndUserUserNumber(int facilityId, int userId);
     List<UserFavoriteFacility> findFacilityFacilityByUserUserNumber(int userId);
 }

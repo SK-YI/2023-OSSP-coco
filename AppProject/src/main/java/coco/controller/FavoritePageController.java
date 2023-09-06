@@ -3,12 +3,11 @@ package coco.controller;
 
 import coco.data.dto.FacilityReviewDto;
 import coco.data.dto.FavoriteFacilityResponseDto;
-import coco.data.entity.Facility;
-import coco.data.entity.FacilityReview;
-import coco.data.entity.User;
-import coco.data.entity.UserFavoriteFacility;
+import coco.data.dto.LikePostResponseDto;
+import coco.data.entity.*;
 import coco.data.repository.FacilityReviewRepository;
 import coco.data.repository.UserFavoriteFacilityRepository;
+import coco.data.repository.UserLikePostRepository;
 import coco.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +31,14 @@ public class FavoritePageController {
 
     private final FacilityReviewRepository facilityReviewRepository;
 
+    private final UserLikePostRepository userLikePostRepository;
+
     @Autowired
-    public FavoritePageController(UserRepository userRepository, UserFavoriteFacilityRepository userFavoriteFacilityRepository, FacilityReviewRepository facilityReviewRepository) {
+    public FavoritePageController(UserRepository userRepository, UserFavoriteFacilityRepository userFavoriteFacilityRepository, FacilityReviewRepository facilityReviewRepository, UserLikePostRepository userLikePostRepository) {
         this.userRepository = userRepository;
         this.userFavoriteFacilityRepository = userFavoriteFacilityRepository;
         this.facilityReviewRepository = facilityReviewRepository;
+        this.userLikePostRepository = userLikePostRepository;
     }
 
     @GetMapping("/user/favoriteFacility")
@@ -58,6 +60,25 @@ public class FavoritePageController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @GetMapping("/user/likedPost")
+    public ResponseEntity<LikePostResponseDto> getUserFavoritePostsByUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username);
+
+        int userId = user.getUserNumber();
+
+        List<UserLikePost> userLikePosts = userLikePostRepository.findPostsByUserUserNumber(userId);
+
+        List<Post> likedPost = userLikePosts.stream()
+                .map(UserLikePost::getPost)
+                .collect(Collectors.toList());
+
+        LikePostResponseDto responseDto = new LikePostResponseDto(likedPost, userLikePosts);
+
+        return ResponseEntity.ok(responseDto);
+    }
+
     @GetMapping("/user/reviewedFacility")
     public ResponseEntity<List<FacilityReviewDto>> findFacilityReviewByUserUserNumber() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -72,5 +93,7 @@ public class FavoritePageController {
 
         return ResponseEntity.ok(reviewDtos);
     }
+
+
 
 }
