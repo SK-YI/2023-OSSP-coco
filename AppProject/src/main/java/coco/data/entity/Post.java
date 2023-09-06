@@ -34,11 +34,25 @@ public class Post {
     private User user;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
-    private List<PostReply> postReplyList = new ArrayList<PostReply>();
+    private List<PostReply> postReplyList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
-    private List<UserLikePost> likeUserList = new ArrayList<UserLikePost>();
-
+    private List<UserLikePost> likeUserList = new ArrayList<>();
+    //    private List<UserLikePost> likeUserList = new ArrayList<UserLikePost>();
     @CreationTimestamp
     private Timestamp createdDate;
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE)
+    private List<PostFile> postFileList = new ArrayList<>();
+
+    // Board에서 파일 처리 위함
+    public void addPostFile(PostFile postFile) {
+        this.postFileList.add(postFile);
+
+        // 게시글에 파일이 저장되어있지 않은 경우
+        if(postFile.getPost() != this)
+            // 파일 저장
+            postFile.setPost(this);
+    }
+
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,20 +26,18 @@ public class CommunityDetailService {
     @Autowired
     private UserRepository userRepository;
 
-
-    //findById 작동 X ㅋㅋㅋ
     //게시글 조회
     @Transactional
-    public PostDetailResponseDto getPostDetail(int postId){
-        // postReply와 같은구조인데 왜 안될까?
+    public PostDetailResponseDto getPostDetail(int postId, List<Integer> fileId){
         Post post= postRepository.findById(postId);
-        return new PostDetailResponseDto(post);
+        return new PostDetailResponseDto(post, fileId);
     }
 
-    public PostDetailResponseDto getPostDetailAndLike(int postId, Authentication authentication){
+    public PostDetailResponseDto getPostDetailAndLike(int postId, Authentication authentication,List<Integer> fileId){
         Optional<UserLikePost> userLikePost=userLikePostRepository.findByPostIdAndUserUserNumber(postId,userRepository.findByUsername(authentication.getName()).getUserNumber());
-        return new PostDetailResponseDto(postRepository.findById(postId),userLikePost);
+        //return new PostDetailResponseDto(postRepository.findById(postId),userLikePost);
+        int accessUserNumber=userRepository.findByUsername(authentication.getName()).getUserNumber();
+        return new PostDetailResponseDto(postRepository.findById(postId),userLikePost,accessUserNumber,fileId);
     }
-
 
 }

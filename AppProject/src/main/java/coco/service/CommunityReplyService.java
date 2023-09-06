@@ -31,24 +31,26 @@ public class CommunityReplyService {
     public PostReplyDto createReply(PostReplyRequestDto postReplyRequestDto, int postId , Authentication authentication){
         String content=postReplyRequestDto.getContent();
         User user=userRepository.findByUsername(authentication.getName());
+
         PostReply PostReply=new PostReply();
         PostReply.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         PostReply.setUser(user);
         PostReply.setContent(content);
         PostReply.setPost(PostRepository.findById(postId));
+
         PostReply saveReply=PostReplyRepository.save(PostReply);
         return new PostReplyDto(saveReply,postId,user.getUserNumber());
     }
 
     //댓글 삭제
     @Transactional
-    public String deleteReply(int replyId,int postId,Authentication authentication){
+    public Boolean deleteReply(int replyId,int postId,Authentication authentication){
         PostReply postReply=PostReplyRepository.findById(replyId);
         if(postId==postReply.getPost().getId()&&postReply.getUser().getUserNumber()==userRepository.findByUsername(authentication.getName()).getUserNumber()){
             PostReplyRepository.deleteById(replyId);
-            return "success";
+            return true;
         }
-        return "fail";
+        return false;
     }
 
     @Transactional

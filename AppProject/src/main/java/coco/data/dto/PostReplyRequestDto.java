@@ -8,5 +8,4 @@ import lombok.NoArgsConstructor;
 
 public class PostReplyRequestDto {
     String content;
-
 }

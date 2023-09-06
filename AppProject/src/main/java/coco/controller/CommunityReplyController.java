@@ -28,12 +28,12 @@ public class CommunityReplyController {
     }
     // 댓글 삭제 - 완료
     @DeleteMapping("/reply/{replyId}")
-    public ResponseEntity<String> delete(@PathVariable int replyId,@PathVariable int postId){
+    public ResponseEntity<Boolean> delete(@PathVariable int replyId,@PathVariable int postId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() != "anonymousUser") {
             return ResponseEntity.ok(communityReplyService.deleteReply(replyId,postId,authentication));
         }
-        return ResponseEntity.ok("fail");
+        return ResponseEntity.ok(false);
     }
     // 댓글 수정 - 완료
     @PutMapping("/reply/{replyId}")

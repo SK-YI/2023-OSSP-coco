@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -19,16 +20,18 @@ public class PostReplyDto {
     private int postId;
     private int userNumber;
 
+    private boolean myReply;
+
     @Getter
     @NoArgsConstructor
     static
     class UserDto {
-        private int userNumber;
-        private String username;
+       //private int userNumber;
+        //private String username;
         private String nickname;
         public UserDto(User user) {
-            userNumber = user.getUserNumber();
-            username=user.getUsername();
+            //userNumber = user.getUserNumber();
+            //username=user.getUsername();
             nickname = user.getNickname();
         }
     }
@@ -53,6 +56,23 @@ public class PostReplyDto {
 
         this.postId=postId;
         this.userNumber=userNumber;
+    }
+
+    //게시글 조회 시 본인의 댓글인지 확인하는 기능 추가
+    public PostReplyDto(PostReply postReply, int accessUserNumber){
+        id=postReply.getId();
+        content= postReply.getContent();
+        user=new UserDto(postReply.getUser());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+        createdDate = dateFormat.format(postReply.getCreatedDate());
+        //createdDate=postReply.getCreatedDate();
+        postId=postReply.getPost().getId();
+        userNumber=postReply.getUser().getUserNumber();
+        if(accessUserNumber==userNumber){
+            myReply=true;
+        }else{
+            myReply=false;
+        }
     }
 
 }

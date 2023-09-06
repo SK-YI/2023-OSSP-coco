@@ -1,9 +1,6 @@
 package coco.data.dto;
 //파일 체크 완료
-import coco.data.entity.Post;
-import coco.data.entity.PostReply;
-import coco.data.entity.User;
-import coco.data.entity.UserLikePost;
+import coco.data.entity.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,10 +16,12 @@ public class PostDetailDto {
     private String content;
     private int liked;
     private UserDto user;
-    private List<PostReplyDto> PostReplyList;
+    private List<PostReplyDto> postReplyList;
     private String createdDate;
     //private Timestamp createdDate;
     private boolean userLikePost;
+    private List<PostFileDto> postFileList;
+
     @Getter
     @NoArgsConstructor
     static
@@ -44,15 +43,21 @@ public class PostDetailDto {
         liked= post.getLiked();
 
         user=new UserDto(post.getUser());
-        PostReplyList=new ArrayList<>();
 
+        postReplyList=new ArrayList<>();
         for(PostReply postReply:post.getPostReplyList()){
-            PostReplyList.add(new PostReplyDto(postReply));
+            postReplyList.add(new PostReplyDto(postReply));
         }
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
         createdDate = dateFormat.format(post.getCreatedDate());
         //createdDate=post.getCreatedDate();
         userLikePost=userLike.isPresent();
+
+        postFileList=new ArrayList<>();
+        for(PostFile postFile:post.getPostFileList()){
+            postFileList.add(new PostFileDto(postFile));
+        }
     }
     //PostDetailResponseDto
     public PostDetailDto(Post post){
@@ -62,14 +67,20 @@ public class PostDetailDto {
         liked= post.getLiked();
 
         user=new UserDto(post.getUser());
-        PostReplyList=new ArrayList<>();
+
+        postReplyList=new ArrayList<>();
         for(PostReply postReply:post.getPostReplyList()){
-            PostReplyList.add(new PostReplyDto(postReply));
+            postReplyList.add(new PostReplyDto(postReply));
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
         createdDate = dateFormat.format(post.getCreatedDate());
         //createdDate=post.getCreatedDate();
         userLikePost=false;
+
+        postFileList=new ArrayList<>();
+        for(PostFile postFile:post.getPostFileList()){
+            postFileList.add(new PostFileDto(postFile));
+        }
     }
 
 }

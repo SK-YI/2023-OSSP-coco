@@ -1,4 +1,9 @@
 spring:
+    servlet:
+        multipart:
+            maxFileSize: 10MB
+            maxRequestSize: 20MB
+
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://coco-mysql.ckoldtvydv7j.ap-northeast-2.rds.amazonaws.com:3306/cocodb
@@ -13,6 +18,19 @@ spring:
         properties:
             hibernate:
                 format_sql: true
+
+#    cloud:
+#        aws:
+#            s3:
+#                bucket: cocos3bucket
+#            credentials:
+#                access-key: AKIA4NAI35J6MFWN4AWR
+#                secret-key: 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
+#            region:
+#                static: ap-northeast-2
+#                auto: false
+#            stack:
+#                auto: false
 logging:
     level:
         com.tutorial: debug

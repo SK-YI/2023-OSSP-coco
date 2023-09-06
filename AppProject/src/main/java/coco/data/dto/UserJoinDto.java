@@ -18,7 +18,6 @@ public class UserJoinDto {
     private int age;
 
     private String userType;
-
     private Gender gender;
 
     public User toEntity(String encryptPassword, UserRole role) {
