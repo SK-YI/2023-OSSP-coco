@@ -28,6 +28,10 @@ public class Facility {
     @ColumnDefault("0")
     private int liked;
 
+    @Column
+    @ColumnDefault("0")
+    private float avgReview;
+
     @Column(nullable = false)
     private String address;
 
@@ -42,6 +46,8 @@ public class Facility {
 
     @Column(nullable = false)
     private int code;
+
+
 
     @OneToMany(mappedBy = "facility")
     private List<FacilityReview> facilityReviewList = new ArrayList<FacilityReview>();

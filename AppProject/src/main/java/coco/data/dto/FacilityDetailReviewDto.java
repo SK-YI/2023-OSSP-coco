@@ -28,6 +28,8 @@ public class FacilityDetailReviewDto {
 
     private String equipment;
 
+    private float avgReview;
+    
     private boolean userFavoriteFacility;
 
     private List<FacilityReviewDto> facilityReviewList;
@@ -43,6 +45,7 @@ public class FacilityDetailReviewDto {
         equipment = facility.getEquipment();
         latitude =facility.getLatitude();
         longitude = facility.getLongitude();
+        avgReview = facility.getAvgReview();
 
         facilityReviewList=new ArrayList<>();
         for (FacilityReview facilityReview : facility.getFacilityReviewList()){

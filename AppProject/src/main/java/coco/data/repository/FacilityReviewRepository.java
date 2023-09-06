@@ -18,5 +18,7 @@ public interface FacilityReviewRepository extends JpaRepository<FacilityReview,I
     void deleteById(int id);
     FacilityReview findById(int replyId);
 
+    List<FacilityReview> findFacilityReviewsByFacilityFacilityId(int facilityId);
+
     List<FacilityReview> findByUserUserNumber(int userNumber);
 }

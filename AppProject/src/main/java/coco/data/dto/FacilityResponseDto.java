@@ -29,6 +29,8 @@ public class FacilityResponseDto {
 
         private boolean userFavoriteFacility;
 
+        private float avgReview;
+
         public FacilityResponseDto(Facility facility) {
                 facilityId = facility.getFacilityId();
                 type = facility.getType();
@@ -38,6 +40,7 @@ public class FacilityResponseDto {
                 latitude = facility.getLatitude();
                 longitude = facility.getLongitude();
                 equipment = facility.getEquipment();
+                avgReview = facility.getAvgReview();
                 userFavoriteFacility = false;
         }
 
@@ -50,6 +53,7 @@ public class FacilityResponseDto {
                 latitude = facility.getLatitude();
                 longitude = facility.getLongitude();
                 equipment = facility.getEquipment();
+                avgReview = facility.getAvgReview();
                 userFavoriteFacility = userFavoritedFacility.isPresent();
         }
 
