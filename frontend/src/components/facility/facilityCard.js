@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
   },
   faciltyContainer: {
     padding: 14,
-    height: 120,
     borderRadius: 25,
     marginHorizontal: 30,
     marginVertical: 10,

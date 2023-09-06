@@ -5,16 +5,18 @@ import {
   Text,
   Platform,
   ActivityIndicator,
+  TouchableOpacity
 } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
-import { ScrollView, TextInput, FlatList } from 'react-native-gesture-handler';
+import { TextInput, FlatList } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { URL } from '../../../env';
 import FacilityCard from '../../components/facility/facilityCard';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { useUserContext } from '../../contexts/UserContext';
 import FacilityDropdown from '../../components/facility/facilityDropdown'
+import { useNavigation } from '@react-navigation/native';
+
 
 //드롭다운, 검색 구현해야함!
 const FacilityScreen = () => {
@@ -22,24 +24,17 @@ const FacilityScreen = () => {
   const { top } = useSafeAreaInsets();
   const [token] = useUserContext();
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
-  const [items, setItems] = useState(options);
+  const navigation = useNavigation();
 
-  const options = [
-    {
-      label: '한국장애인고용공단 및 지사',
-      value: '한국장애인고용공단 및 지사',
-    },
-    { label: '특수학교', value: '특수학교' },
-    { label: '종합병원', value: '종합병원' },
-    { label: '장애인복지시설', value: '장애인복지시설' },
-    {
-      label: '병원·치과병원·한방병원·정신병원·요양병원',
-      value: '병원·치과병원·한방병원·정신병원·요양병원',
-    },
-    { label: '노인복지시설(경로당포함)', value: '노인복지시설(경로당포함)' },
-  ];
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+  const handleSearch = () => {
+    // 검색 아이콘을 눌렀을 때 호출되는 함수
+    if (searchKeyword) {
+      // 검색어가 비어있지 않은 경우에만 검색 결과 스크린으로 이동
+      navigation.navigate('검색 결과', { searchKeyword });
+    }
+  };
 
   const recommendFacilityGetApi = () => {
     console.log(token);
@@ -74,13 +69,17 @@ const FacilityScreen = () => {
             style={{ flex: 1 }}
             placeholderTextColor={GRAY.DARK}
             placeholder="검색어를 입력하세요"
+            value={searchKeyword}
+            onChangeText={(text) => setSearchKeyword(text)} // 검색어 입력 시 상태 업데이트
           />
-          <AntDesign
-            style={styles.searchIcon}
-            name="search1"
-            size={24}
-            color={PRIMARY.DARK}
-          />
+          <TouchableOpacity onPress={handleSearch}>
+            <AntDesign
+              style={styles.searchIcon}
+              name="search1"
+              size={24}
+              color={PRIMARY.DARK}
+            />
+          </TouchableOpacity>
         </View>
         <FacilityDropdown/>
       </View>

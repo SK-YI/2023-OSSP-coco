@@ -12,9 +12,12 @@ const FaciltyStackNavigation = () => {
       initialRouteName="시설 메인"
     >
       <FaciltyStack.Screen
-        name="시설 검색"
+        name="검색 결과"
         component={FacilitySearchScreen}
-        options={{headerShown: false, headerTintColor: PRIMARY.DARK}}
+        options={{headerTintColor: PRIMARY.DARK,
+          headerTitleStyle: {
+            color: BLACK
+          },}}
       />
       <FaciltyStack.Screen
         name="시설 정보"
