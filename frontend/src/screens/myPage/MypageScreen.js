@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { URL } from '../../../env';
 import { useUserContext } from '../../contexts/UserContext';
 
+
 const MyPageScreen = () => {
   const dummy = [
     {
@@ -23,6 +24,8 @@ const MyPageScreen = () => {
   const navigation = useNavigation();
   const [token] = useUserContext();
   const [userInfo, setUserInfo] = useState(dummy);
+  const [, setToken] = useUserContext();
+
 
   const userInfoGetApi = () => {
     console.log(token);
@@ -45,6 +48,7 @@ const MyPageScreen = () => {
       });
   };
 
+
   /* const userDel = async (username) => {
     try {
         const response = await axios.delete(`${URL}/user/${username}`);
@@ -58,6 +62,36 @@ const MyPageScreen = () => {
     userInfoGetApi();
   }, []);
 
+  const logoutGet = async () => {
+    try {
+      const response = await fetch(`${URL}/user/logout`, {
+        method: 'GET', 
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          Authorization: `Bearer ${token}`, 
+        },
+      });
+  
+      if (response.ok) {
+        // 로그아웃 성공
+        setToken(''); //토큰 비우기
+        // 
+      } else {
+        console.error('로그아웃 실패:', response.status);
+      }
+    } catch (error) {
+      console.error('로그아웃 오류:', error);
+    }
+  };
+
+  const handleLogout = async () => {
+    // 로그아웃 API 호출
+    await logoutGet();
+  
+    // AuthStack으로 이동
+    navigation.navigate('AuthStack');
+  };
+
   return (
     <View style={{ paddingBottom: bottom, flex: 1 }}>
       <UserProfile
@@ -66,32 +100,40 @@ const MyPageScreen = () => {
       ></UserProfile>
       <View style={styles.MyPageMenuContainter}>
         <Text style={{ ...styles.MyPageTitle, paddingTop: 25 }}>계정</Text>
-        <Pressable onPress={() => navigation.navigate('계정 정보')}>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('계정 정보', { userInfo: userInfo })
+          }
+        >
           <Text style={styles.MyPageMenu}>계정 정보</Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('계정 정보')}>
+        
+        <Pressable onPress={() => {handleLogout}}>
           <Text style={styles.MyPageMenu}>로그아웃</Text>
         </Pressable>
         <Pressable
-          /* onPress={() => {
+        /* onPress={() => {
             userDel(userInfo.username);
           }} */
         >
           <Text style={styles.MyPageMenu}>탈퇴하기</Text>
         </Pressable>
+
         <Text style={styles.MyPageTitle}>커뮤니티</Text>
         <Pressable onPress={() => navigation.navigate('내가 작성한 글 리스트')}>
           <Text style={styles.MyPageMenu}>내가 작성한 글</Text>
         </Pressable>
+
         <Pressable
-          onPress={() => navigation.navigate('내가 작성한 댓글 리스트')}
-        >
+          onPress={() => navigation.navigate('내가 작성한 댓글 리스트')}>
           <Text style={styles.MyPageMenu}>내가 작성한 댓글</Text>
         </Pressable>
+
         <Text style={styles.MyPageTitle}>시설</Text>
         <Pressable onPress={() => navigation.navigate('내가 즐겨찾기한 시설')}>
           <Text style={styles.MyPageMenu}>내가 즐겨찾기한 시설</Text>
         </Pressable>
+
         <Pressable onPress={() => navigation.navigate('내가 작성한 리뷰')}>
           <Text style={styles.MyPageMenu}>내가 작성한 리뷰</Text>
         </Pressable>

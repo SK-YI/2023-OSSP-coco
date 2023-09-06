@@ -5,7 +5,7 @@ import {
   Text,
   Platform,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 import { TextInput, FlatList } from 'react-native-gesture-handler';
@@ -14,11 +14,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { URL } from '../../../env';
 import FacilityCard from '../../components/facility/facilityCard';
 import { useUserContext } from '../../contexts/UserContext';
-import FacilityDropdown from '../../components/facility/facilityDropdown'
+import FacilityDropdown from '../../components/facility/facilityDropdown';
 import { useNavigation } from '@react-navigation/native';
 
-
-//드롭다운, 검색 구현해야함!
+//드롭다운 구현해야함!
 const FacilityScreen = () => {
   const [recommendFacility, setRecommendFacility] = useState(null);
   const { top } = useSafeAreaInsets();
@@ -81,20 +80,25 @@ const FacilityScreen = () => {
             />
           </TouchableOpacity>
         </View>
-        <FacilityDropdown/>
+        <FacilityDropdown />
       </View>
 
       <View style={styles.recommendFacilityContainer}>
         <AntDesign name="home" size={24} color={WHITE} />
         <Text
           style={{
-            fontSize: 22,
+            fontSize: 23,
             fontWeight: '700',
             color: WHITE,
             paddingLeft: 10,
           }}
         >
           추천 시설
+        </Text>
+      </View>
+      <View style={{ marginHorizontal: 30, marginBottom: 10 }}>
+        <Text style={{ color: WHITE, fontSize: 16, fontWeight: '500' }}>
+          사용자의 정보를 바탕으로 시설을 추천해드려요.
         </Text>
       </View>
       {recommendFacility !== null ? (
@@ -104,7 +108,7 @@ const FacilityScreen = () => {
           renderItem={({ item }) => <FacilityCard facility={item} />}
         />
       ) : (
-        <ActivityIndicator /> // or a loading spinner
+        <ActivityIndicator />
       )}
     </View>
   );
@@ -211,7 +215,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   image: {
     width: 35,

@@ -54,12 +54,12 @@ const MyReviewCard = ({review}) => {
       style={styles.reviewContainer}
     >
       <View>
-        <Text style={styles.FacilityTitle}>{review.title}</Text>
+        <Text style={{fontWeight: '700'}}>{review.title}</Text>
         <Text style={{ fontSize: 14, color: GRAY.DARK, marginVertical: 5 }}>
           {review.content}
         </Text>
       </View>
-      <Text style={{ paddingTop: 22 }}>{review.facilityName}</Text>
+      <Text style={{ paddingTop: 22, fontWeight: '500' }}>{review.facilityName}</Text>
       <View
         style={{
           flexDirection: 'row',

@@ -5,7 +5,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { URL } from '../../../env';
 import { useUserContext } from '../../contexts/UserContext';
 import FacilityCard from '../../components/facility/facilityCard';
-import PropTypes from 'prop-types'; // prop-types 라이브러리를 import
+import PropTypes from 'prop-types'; 
 
 //드롭다운 적용해야함
 const FacilitySearchScreen = ({ route }) => {
@@ -70,7 +70,7 @@ const FacilitySearchScreen = ({ route }) => {
 FacilitySearchScreen.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
-      searchKeyword: PropTypes.string.isRequired, // searchKeyword는 문자열이며 필수입니다.
+      searchKeyword: PropTypes.string.isRequired, 
     }).isRequired,
   }).isRequired,
 };

@@ -6,7 +6,7 @@ import {
   Platform,
   Image,
 } from 'react-native';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { GRAY, WHITE } from '../../colors';
 import toiletIcon from 'frontend/assets/facilityIcons/toilet.png';
@@ -73,7 +73,7 @@ FacilityCard.propTypes = {
     facilityId: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     address: PropTypes.string.isRequired,
-    equipment: PropTypes.string, // Change the type if it's not a string
+    equipment: PropTypes.string,
   }).isRequired,
 };
 

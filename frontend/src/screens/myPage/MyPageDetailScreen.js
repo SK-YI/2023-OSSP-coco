@@ -1,40 +1,19 @@
 import { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { GRAY } from '../../colors';
-
+import { useRoute } from '@react-navigation/native';
 import { URL } from '../../../env';
 import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
 
 
 const MyPageDetailScreen = () => {
-  const { token } = useUserContext();
-  const [userInfo, setUserInfo] = useState({
-    username: 'mummung',
-    password: '1234',
-    email: 'email@email.com',
-    nickname: '고구마멈멍',
-    age: '20',
-    gender: '남',
-    type: '',
-  });
+  const route = useRoute();
+  const { userInfo } = route.params;
+  const [token] = useUserContext();
 
   const handleSave = () => {
     setIsEditing(false);
-  };
-
-  const userInfoGetApi = async () => {
-    try {
-      const response = await axios.get(`${URL}/user/info`, {
-        headers: {
-          accessToken: token,
-        },
-      });
-      console.log(response.userInfo);
-      setUserInfo(response.data);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const userInfoPutApi = async (data) => {
@@ -45,10 +24,6 @@ const MyPageDetailScreen = () => {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    userInfoGetApi();
-  }, []);
 
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [username, setUsername] = useState(userInfo.username);
