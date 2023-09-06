@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { /* useEffect */ useState } from 'react';
 import {
   View,
   Text,
@@ -11,34 +11,54 @@ import { PRIMARY, WHITE } from '../../colors';
 import PropTypes from 'prop-types';
 import { Rating } from 'react-native-ratings';
 import { URL } from '../../../env';
-import axios from 'axios';
-/* import { useUserContext } from '../../contexts/UserContext'; */
+import { useUserContext } from '../../contexts/UserContext';
+import { useRoute } from '@react-navigation/native';
 
-const ModifyReviewPopup = ( review, { onClose, onSave }) => {
+const ModifyReviewPopup = ({ onClose, onSave }) => {
+  const route = useRoute(); // route 프롭스를 사용하여 facilityId를 받아옴
+  const facilityId = route.params.facilityId; // facilityId를 route.params에서 추출
+  const reviewId = route.params.id; // facilityId를 route.params에서 추출
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [score, setScore] = useState();
+  const [star, setStar] = useState(5);
 
+  const [token] = useUserContext();
+
+  //리뷰 작성 API
   const reviewPut = async () => {
+    const data = {
+      title,
+      content,
+      star,
+    };
+  
     try {
-      const response = await axios.put(
-        `${URL}/user/${review.facilityId}/review/${review.id}`,
-        {
-          title,
-          content,
-          score,
-        }
-      );
-      console.log(response.data);
+      const response = await fetch(`${URL}/user/${facilityId}/review/${reviewId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+      } else {
+        console.error('Failed to update review');
+      }
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   const handleSave = () => {
-    onSave({ title, content, score });
-    reviewPut(); 
-    onClose();
+    onSave({ title, content, star }); //작성한 리뷰 저장 후
+    reviewPut(); //리뷰 등록
+    onClose(); //리뷰 모달창 닫기
   };
 
   const handleClose = () => {
@@ -49,7 +69,7 @@ const ModifyReviewPopup = ( review, { onClose, onSave }) => {
     <Modal transparent={true} animationType="slide">
       <View style={styles.modalContainer}>
         <View style={styles.popupContainer}>
-          <Text style={styles.popupTitle}>리뷰 수정</Text>
+          <Text style={styles.popupTitle}>리뷰 작성</Text>
           <TextInput
             placeholder="제목"
             value={title}
@@ -59,7 +79,7 @@ const ModifyReviewPopup = ( review, { onClose, onSave }) => {
           <Rating
             startingValue={5}
             showRating
-            onFinishRating={setScore}
+            onFinishRating={setStar}
             jumpValue={0.5}
             style={{ paddingVertical: 10 }}
             fractions={1}
@@ -73,7 +93,7 @@ const ModifyReviewPopup = ( review, { onClose, onSave }) => {
           />
           <View style={styles.buttonContainer}>
             <Pressable style={styles.saveButton} onPress={handleSave}>
-              <Text style={styles.saveButtonText}>수정</Text>
+              <Text style={styles.saveButtonText}>저장</Text>
             </Pressable>
             <Pressable style={styles.cancelButton} onPress={handleClose}>
               <Text style={styles.cancelButtonText}>취소</Text>

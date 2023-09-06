@@ -1,35 +1,45 @@
 import { ActivityIndicator } from 'react-native';
 import { URL } from '../../../env';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { useUserContext } from '../../contexts/UserContext';
 import MyReviewCard from '../../components/myPage/myReviewCard';
 
 const MyReviewScreen = () => {
-  const [review, setReview] = useState();
-  const { token } = useUserContext();
+  const [review, setReview] = useState([]);
+  const [token] = useUserContext();
   const [isLoading, setIsLoading] = useState(true);
 
-  //리뷰 목록 GET
-  const myReviewGetApi = async () => {
-    try {
-      const response = await axios.get(`${URL}/user/reviewedFacility`, {
-        headers: {
-          accessToken: token,
-        },
+  const myReviewGet = () => {
+    console.log(token);
+    fetch(`${URL}/user/reviewedFacility`, {
+      method: 'GET', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        setReview(res);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      console.log(response.data);
-      setReview(response.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
+  };
+
+  useEffect(() => {
+    myReviewGet();
+  }, []);
+
+  useEffect(() => {
+    if (review) {
       setIsLoading(false);
     }
-  };
-  useEffect(() => { //리뷰 정보 GET
-    myReviewGetApi();
-  }, []);
+  }, [review]);
 
   return (
     <>
@@ -39,51 +49,11 @@ const MyReviewScreen = () => {
         <FlatList
           data={review}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <MyReviewCard review={item} />} //리뷰카드 렌더링!!
+          renderItem={({ item }) => <MyReviewCard review={item} />}
         />
       )}
     </>
   );
 };
-
-/* const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: WHITE,
-  },
-  reviewContainer: {
-    padding: 13,
-    borderRadius: 25,
-    marginHorizontal: 30,
-    marginVertical: 10,
-    backgroundColor: WHITE,
-    flexDirection: 'column',
-    zIndex: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: GRAY.DARK,
-        shadowOffset: {
-          width: 3,
-          height: 3,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 7,
-      },
-    }),
-  },
-  button: {
-    backgroundColor: 'fff',
-    zIndex: 1,
-    marginTop: 6,
-    color: GRAY.DARK,
-    padding: 7,
-    marginHorizontal: 6,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-  },
-}); */
 
 export default MyReviewScreen;

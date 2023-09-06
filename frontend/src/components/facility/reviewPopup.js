@@ -11,13 +11,18 @@ import { PRIMARY, WHITE } from '../../colors';
 import PropTypes from 'prop-types';
 import { Rating } from 'react-native-ratings';
 import { URL } from '../../../env';
-import axios from 'axios';
-/* import { useUserContext } from '../../contexts/UserContext'; */
+import { useUserContext } from '../../contexts/UserContext';
+import { useRoute } from '@react-navigation/native';
 
-const WriteReviewPopup = ( facilityId, { onClose, onSave }) => {
+const WriteReviewPopup = ({ onClose, onSave }) => {
+  const route = useRoute(); // route 프롭스를 사용하여 facilityId를 받아옴
+  const facilityId = route.params.facilityId; // facilityId를 route.params에서 추출
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [star, setStar] = useState();
+  const [star, setStar] = useState(5);
+
+  const [token] = useUserContext();
 
   //리뷰 작성 API
   const reviewPost = async () => {
@@ -28,11 +33,21 @@ const WriteReviewPopup = ( facilityId, { onClose, onSave }) => {
     };
 
     try {
-      const response = await axios.post(
-        `${URL}/user/${facilityId}/review`,
-        data
-      );
-      console.log(response.data);
+      const response = await fetch(`${URL}/user/${facilityId}/review`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+      } else {
+        console.error('Failed to post review');
+      }
     } catch (error) {
       console.error(error);
     }
@@ -76,7 +91,7 @@ const WriteReviewPopup = ( facilityId, { onClose, onSave }) => {
           />
           <View style={styles.buttonContainer}>
             <Pressable style={styles.saveButton} onPress={handleSave}>
-              <Text style={styles.saveButtonText}>등록</Text>
+              <Text style={styles.saveButtonText}>저장</Text>
             </Pressable>
             <Pressable style={styles.cancelButton} onPress={handleClose}>
               <Text style={styles.cancelButtonText}>취소</Text>

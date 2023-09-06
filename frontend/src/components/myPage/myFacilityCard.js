@@ -6,6 +6,7 @@ import {
   Platform,
   Image,
 } from 'react-native';
+import PropTypes from 'prop-types'; // Import PropTypes
 import { useNavigation } from '@react-navigation/native';
 import { GRAY, WHITE } from '../../colors';
 import toiletIcon from 'frontend/assets/facilityIcons/toilet.png';
@@ -15,19 +16,21 @@ import blockIcon from 'frontend/assets/facilityIcons/block.png';
 import escapeIcon from 'frontend/assets/facilityIcons/escape.png';
 import showerIcon from 'frontend/assets/facilityIcons/shower.png';
 import parkingIcon from 'frontend/assets/facilityIcons/parking.png';
-import vendingIcon from 'frontend/assets/facilityIcons/vending.png'
+import vendingIcon from 'frontend/assets/facilityIcons/vending.png';
 
-const MyFacilityCard = (facility) => {
+const MyFacilityCard = ({ facility }) => {
   const navigation = useNavigation();
 
   const handleFacilityDetail = (facilityId) => {
-    navigation.navigate('내 시설 정보', { facilityId });
+    navigation.navigate('내 시설 정보', { facilityId: facilityId });
   };
+
+  const equipment = facility.equipment || [];
 
   return (
     <Pressable
-      key={facility.key}
-      onPress={() => handleFacilityDetail(facility.id)}
+      key={facility.facilityId}
+      onPress={() => handleFacilityDetail(facility.facilityId)}
       style={styles.faciltyContainer}
     >
       <Text style={styles.FacilityTitle}>{facility.name}</Text>
@@ -35,32 +38,42 @@ const MyFacilityCard = (facility) => {
         {facility.address}
       </Text>
       <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-        {facility.equipment.includes('판매기') && (
+        {equipment.includes('판매기') && (
           <Image style={styles.icon} source={vendingIcon} />
         )}
-        {facility.equipment.includes('주차구역') && (
+        {equipment.includes('주차구역') && (
           <Image style={styles.icon} source={parkingIcon} />
         )}
-        {facility.equipment.includes('점자블록') && (
+        {equipment.includes('점자블록') && (
           <Image style={styles.icon} source={blockIcon} />
         )}
-        {facility.equipment.includes('높이차이') && (
+        {equipment.includes('높이차이') && (
           <Image style={styles.icon} source={rampIcon} />
         )}
-        {facility.equipment.includes('승강설비') && (
+        {equipment.includes('승강설비') && (
           <Image style={styles.icon} source={elevatorIcon} />
         )}
-        {facility.equipment.includes('피난설비') && (
+        {equipment.includes('피난설비') && (
           <Image style={styles.icon} source={escapeIcon} />
         )}
-        {facility.equipment.some((equipment) => ['대변기', '소변기'].includes(equipment)
-        ) && <Image style={styles.icon} source={toiletIcon} />}
-        {facility.equipment.includes('샤워실') && (
+        {equipment.includes('대변기') || equipment.includes('소변기') ? (
+          <Image style={styles.icon} source={toiletIcon} />
+        ) : null}
+        {equipment.includes('샤워실') && (
           <Image style={styles.icon} source={showerIcon} />
         )}
       </View>
     </Pressable>
   );
+};
+
+MyFacilityCard.propTypes = {
+  facility: PropTypes.shape({
+    facilityId: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    equipment: PropTypes.string,
+  }).isRequired,
 };
 
 const styles = StyleSheet.create({

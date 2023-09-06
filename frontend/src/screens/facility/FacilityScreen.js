@@ -7,27 +7,23 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { ScrollView, TextInput, FlatList } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { URL } from '../../../env';
-import axios from 'axios';
-import { useUserContext } from '../../contexts/UserContext';
 import FacilityCard from '../../components/facility/facilityCard';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useUserContext } from '../../contexts/UserContext';
+import FacilityDropdown from '../../components/facility/facilityDropdown'
 
-//드롭다운 적용해야함
+//드롭다운, 검색 구현해야함!
 const FacilityScreen = () => {
-  const [isSearched, setIsSearched] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState();
-  const [searchResult, setSearchResult] = useState([]);
-  const [recommendFacility, setRecommendFacility] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [recommendFacility, setRecommendFacility] = useState(null);
   const { top } = useSafeAreaInsets();
-  const { token } = useUserContext();
+  const [token] = useUserContext();
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState('');
   const [items, setItems] = useState(options);
 
   const options = [
@@ -45,41 +41,25 @@ const FacilityScreen = () => {
     { label: '노인복지시설(경로당포함)', value: '노인복지시설(경로당포함)' },
   ];
 
-  const handleSearch = () => {
-    setIsSearched(true);
-    searchFacilityGetApi(searchKeyword);
-  };
-
-  const searchFacilityGetApi = async (searchKeyword) => {
-    try {
-      const response = await axios.get(`${URL}/main/search/${searchKeyword}`, {
-        headers: {
-          accessToken: token,
-        },
+  const recommendFacilityGetApi = () => {
+    console.log(token);
+    fetch(`${URL}/main`, {
+      method: 'GET', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        setRecommendFacility(res);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      console.log(response.data);
-      setSearchResult(response.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const recommendFacilityGetApi = async () => {
-    try {
-      const response = await axios.get(`${URL}/main`, {
-        headers: {
-          accessToken: token,
-        },
-      });
-      console.log(response.data);
-      setRecommendFacility(response.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   useEffect(() => {
@@ -94,49 +74,15 @@ const FacilityScreen = () => {
             style={{ flex: 1 }}
             placeholderTextColor={GRAY.DARK}
             placeholder="검색어를 입력하세요"
-            onChangeText={setSearchKeyword}
           />
           <AntDesign
             style={styles.searchIcon}
             name="search1"
             size={24}
             color={PRIMARY.DARK}
-            onPress={handleSearch}
           />
         </View>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingHorizontal: 30,
-            borderRadius: 25,
-          }}
-        >
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            placeholder="시설 타입을 선택해주세요"
-            placeholderStyle={{ color: GRAY.DARK }}
-            multiple={false}
-            mode="BADGE"
-            badgeColors={GRAY.LIGHT}
-            badgeDotColors={[
-              '#e76f51',
-              '#00b4d8',
-              '#e9c46a',
-              '#e76f51',
-              '#8ac926',
-              '#00b4d8',
-              '#e9c46a',
-            ]}
-            style={styles.dropdown}
-          />
-        </View>
+        <FacilityDropdown/>
       </View>
 
       <View style={styles.recommendFacilityContainer}>
@@ -149,22 +95,18 @@ const FacilityScreen = () => {
             paddingLeft: 10,
           }}
         >
-          {isSearched ? '검색 결과' : '추천 시설'}
+          추천 시설
         </Text>
-        {isLoading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
-        ) : (
-          <ScrollView>
-            {isSearched
-              ? searchResult.map((facility) => (
-                  <FacilityCard key={facility.id} facility={facility} />
-                ))
-              : recommendFacility.content.map((facility) => (
-                  <FacilityCard key={facility.id} facility={facility} />
-                ))}
-          </ScrollView>
-        )}
       </View>
+      {recommendFacility !== null ? (
+        <FlatList
+          data={recommendFacility.content}
+          keyExtractor={(item) => item.facilityId.toString()}
+          renderItem={({ item }) => <FacilityCard facility={item} />}
+        />
+      ) : (
+        <ActivityIndicator /> // or a loading spinner
+      )}
     </View>
   );
 };
@@ -211,7 +153,7 @@ const styles = StyleSheet.create({
     width: 28,
     marginHorizontal: 3,
   },
-  dropdown:{
+  dropdown: {
     borderRadius: 25,
     borderColor: 'transparent',
     ...Platform.select({

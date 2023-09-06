@@ -2,35 +2,39 @@ import { View, Text, StyleSheet, Platform, Pressable } from 'react-native';
 import { WHITE, GRAY } from '../../colors';
 import { useNavigation } from '@react-navigation/native';
 import { URL } from '../../../env';
-import axios from 'axios';
 import { useState } from 'react';
 import ModifyReviewPopup from '../../components/myPage/modifyPopup';
 import { useUserContext } from '../../contexts/UserContext';
+import PropTypes from 'prop-types';
 
-const MyReviewCard = (review) => {
+const MyReviewCard = ({review}) => {
   const navigation = useNavigation();
-  const { token } = useUserContext();
+  const [token] = useUserContext();
 
-  const handleFacilityDetail = (facilityId) => {
+  const handleFacilityDetail = () => {
+    const facilityId = review.facilityId;
     navigation.navigate('내 시설 정보', { facilityId });
   };
 
   const reviewDelete = async () => {
-    //review key값 보내서 삭제?
     try {
-      const response = await axios.delete(
-        `${URL}/user/${review.facilityId}/review/${review.id}`,
-        {
-          headers: {
-            accessToken: token,
-          },
-        }
-      );
-      console.log(response.data);
+      const response = await fetch(`${URL}/user/${review.facilityId}/review/${review.id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+      } else {
+        console.error('Failed to delete review');
+      }
     } catch (error) {
       console.error(error);
     }
-  };
+  };  
 
   const [isReviewPopupVisible, setReviewPopupVisible] = useState(false);
   const handleOpenReviewPopup = () => {
@@ -82,6 +86,17 @@ const MyReviewCard = (review) => {
       </View>
     </Pressable>
   );
+};
+
+MyReviewCard.propTypes = {
+  review: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    content: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    facilityId: PropTypes.number.isRequired,
+    facilityName: PropTypes.string.isRequired,
+    star: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 const styles = StyleSheet.create({

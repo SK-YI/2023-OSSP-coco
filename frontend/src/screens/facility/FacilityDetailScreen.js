@@ -10,6 +10,7 @@ import {
   Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { useRoute } from '@react-navigation/native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
 import WriteReviewPopup from '../../components/facility/reviewPopup';
 import { AntDesign } from '@expo/vector-icons';
@@ -21,42 +22,62 @@ import blockIcon from 'frontend/assets/facilityIcons/block.png';
 import escapeIcon from 'frontend/assets/facilityIcons/escape.png';
 import showerIcon from 'frontend/assets/facilityIcons/shower.png';
 import parkingIcon from 'frontend/assets/facilityIcons/parking.png';
-import vendingIcon from 'frontend/assets/facilityIcons/vending.png'
+import vendingIcon from 'frontend/assets/facilityIcons/vending.png';
 import { URL } from '../../../env';
-import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
 
-const FacilityDetailScreen = ({ facilityId }) => {
+const FacilityDetailScreen = () => {
+  const route = useRoute(); // route 프롭스를 사용하여 facilityId를 받아옴
+  const facilityId = route.params.facilityId; // facilityId를 route.params에서 추출
 
-  const [facility, setFacility] = useState('');
-  const { token } = useUserContext();
+  const [facility, setFacility] = useState({
+    facilityId: 0,
+    type: '시설 타입',
+    liked: 0,
+    name: '시설 이름',
+    address: '시설 주소',
+    latitude: 37.51432676,
+    longitude: 127.054402,
+    equipment: '시설 정보',
+    userFavoriteFacility: false,
+    facilityReviewList: [],
+  });
+  const [token] = useUserContext();
 
-  const facilityInfoGetApi = async () => {
-    try {
-      const response = await axios.get(`${URL}/facility/${facilityId}`, {
-        headers: {
-          accessToken: token,
-        },
+  const equipment = facility.equipment || [];
+
+  const facilityInfoGetApi = () => {
+    console.log(token);
+    fetch(`${URL}/user/facilities/${facilityId}`, {
+      method: 'GET', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        setFacility(res);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      console.log(response.facilityInfo);
-      setFacility(response.data);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
-  useEffect(() => { //시설 정보 GET
-    facilityInfoGetApi();
-  }, []);
-
+  useEffect(() => {
+    facilityInfoGetApi(facilityId); // facilityId를 매개변수로 전달
+    console.log(facilityId);
+  }, [facilityId]); // facilityId가 변경될 때마다 실행
 
   //즐겨찾기 API와 연결필요
   const [isFavorite, setIsFavorite] = useState(false);
 
-    const toggleFavorite = () => {
-      setIsFavorite((prevState) => !prevState);
-    };
-
+  const toggleFavorite = () => {
+    setIsFavorite((prevState) => !prevState);
+  };
 
   //리뷰 작성 모달 관련 함수들
   const [isReviewPopupVisible, setReviewPopupVisible] = useState(false);
@@ -95,31 +116,34 @@ const FacilityDetailScreen = ({ facilityId }) => {
         <View style={{ alignItems: 'center', paddingVertical: 30 }}>
           <FacilityMap />
         </View>
-        <View style={{ flexDirection: 'row', paddingTop: 8 }}>
-        {facility.equipment.includes('판매기') && (
-          <Image style={styles.icon} source={vendingIcon} />
-        )}
-        {facility.equipment.includes('주차구역') && (
-          <Image style={styles.icon} source={parkingIcon} />
-        )}
-        {facility.equipment.includes('점자블록') && (
-          <Image style={styles.icon} source={blockIcon} />
-        )}
-        {facility.equipment.includes('높이차이') && (
-          <Image style={styles.icon} source={rampIcon} />
-        )}
-        {facility.equipment.includes('승강설비') && (
-          <Image style={styles.icon} source={elevatorIcon} />
-        )}
-        {facility.equipment.includes('피난설비') && (
-          <Image style={styles.icon} source={escapeIcon} />
-        )}
-        {facility.equipment.some((equipment) => ['대변기', '소변기'].includes(equipment)
-        ) && <Image style={styles.icon} source={toiletIcon} />}
-        {facility.equipment.includes('샤워실') && (
-          <Image style={styles.icon} source={showerIcon} />
-        )}
-      </View>
+        <View
+          style={{ flexDirection: 'row', paddingTop: 8, marginHorizontal: 25 }}
+        >
+          {equipment.includes('판매기') && (
+            <Image style={styles.icon} source={vendingIcon} />
+          )}
+          {equipment.includes('주차구역') && (
+            <Image style={styles.icon} source={parkingIcon} />
+          )}
+          {equipment.includes('점자블록') && (
+            <Image style={styles.icon} source={blockIcon} />
+          )}
+          {equipment.includes('높이차이') && (
+            <Image style={styles.icon} source={rampIcon} />
+          )}
+          {equipment.includes('승강설비') && (
+            <Image style={styles.icon} source={elevatorIcon} />
+          )}
+          {equipment.includes('피난설비') && (
+            <Image style={styles.icon} source={escapeIcon} />
+          )}
+          {equipment.includes('대변기') || equipment.includes('소변기') ? (
+            <Image style={styles.icon} source={toiletIcon} />
+          ) : null}
+          {equipment.includes('샤워실') && (
+            <Image style={styles.icon} source={showerIcon} />
+          )}
+        </View>
         <Text style={styles.info}>{facility.equipment}</Text>
         <View style={{}}>
           <View
@@ -136,10 +160,10 @@ const FacilityDetailScreen = ({ facilityId }) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 paddingVertical: 10,
-                flex: 1
+                flex: 1,
               }}
             >
-              <View style={{flexDirection: 'row',}}>
+              <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.reviewTitle}>리뷰</Text>
                 <Text
                   style={{
@@ -161,10 +185,10 @@ const FacilityDetailScreen = ({ facilityId }) => {
                 <Text>리뷰 쓰기</Text>
               </Pressable>
             </View>
-            
+
             {isReviewPopupVisible && (
               <WriteReviewPopup
-                facilityId = {facilityId}
+                facilityId={facilityId}
                 onClose={handleCloseReviewPopup}
                 onSave={handleSaveReview}
               /> //리뷰 모달 창에 FacilityId 전달
@@ -175,17 +199,21 @@ const FacilityDetailScreen = ({ facilityId }) => {
             style={styles.reviewContainer}
             contentContainerStyle={{ alignItems: 'center' }}
           >
-            {facility.facilityReviewList.map((review, id) => (
-              <View style={styles.review} key={id}>
-                <Text style={{ fontSize: 15, fontWeight: '700' }}>
-                  {review.title}
-                </Text>
-                <Text style={{ color: PRIMARY.DARK }}>
-                  {review.star}
-                </Text>
-                <Text>{review.content}</Text>
-              </View>
-            ))}
+            {facility.facilityReviewList.length === 0 ? (
+              <Text style={{ alignItems: 'center', marginHorizontal: 90, fontSize: 18 }}>
+                시설의 첫 리뷰를 남겨보세요!
+              </Text>
+            ) : (
+              facility.facilityReviewList.map((review, id) => (
+                <View style={styles.review} key={id}>
+                  <Text style={{ fontSize: 15, fontWeight: '700' }}>
+                    {review.title}
+                  </Text>
+                  <Text style={{ color: PRIMARY.DARK }}>{review.star}</Text>
+                  <Text>{review.content}</Text>
+                </View>
+              ))
+            )}
           </ScrollView>
         </View>
       </View>
@@ -226,7 +254,7 @@ const styles = StyleSheet.create({
   icon: {
     height: 30,
     width: 30,
-    marginHorizontal: 3
+    marginHorizontal: 3,
   },
   reviewTitle: {
     fontSize: 23,
@@ -237,14 +265,14 @@ const styles = StyleSheet.create({
     backgroundColor: GRAY.LIGHT,
     height: 190,
   },
-  reviewButton:{
-    alignItems: 'center', 
+  reviewButton: {
+    alignItems: 'center',
     justifyContent: 'center',
     padding: 7,
     borderColor: PRIMARY.DEFAULT,
     borderWidth: 2,
     marginRight: 15,
-    borderRadius: 10
+    borderRadius: 10,
   },
   review: {
     width: 170,
