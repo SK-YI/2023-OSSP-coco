@@ -86,6 +86,14 @@
 </br>
 </br>
 </br>
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/d01e7a09-0e03-4e92-bf0e-eed4c97805ab">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/c198b199-728a-45ff-b1c5-b44244e1862a">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/b3704379-5b2f-4ba8-bdd0-238865b71aa2">
+</br>
+<b>　　　커뮤니티 페이지　　　　　　글 작성하기　　　　　　키워드로 커뮤니티 검색　　　　</b>
+</br>
+</br>
+</br>
 <img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/b022ddc7-0b89-4171-a580-c1e9e4e2f7f7">
 <img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/81f85d8f-f251-4257-a627-95f8fe38f973">
 <img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/7934c62b-1b6e-4979-957a-bc00a0ddf7b1">
