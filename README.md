@@ -101,6 +101,14 @@
 <img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/7934c62b-1b6e-4979-957a-bc00a0ddf7b1">
 </br>
 <b>　　맵 페이지 (현재 위치)　　　　특정 위치 검색　　　　　위치 주변 시설 추천(노란핑)　　해당 시설 정보 제공　</b>
+</br>
+</br>
+</br>
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/d59b20ea-2159-4e49-a6a6-0d4328b62ded">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/5383d027-079a-4eed-a28f-40519e4f203d">
+</br>
+<b>　　　내가 작성한 게시글　　　　　　내가 쓴 댓글　　</b>
+</br>
 
 </br>
 </br>
