@@ -35,7 +35,7 @@ public class CommunityController {
     //커뮤니티 메인페이지 - 완료. 썸네일 fileId만 보여줘도 되는지, 이미지를 보여줘야하는지.
     @GetMapping("/community")
     @ResponseBody
-    public ResponseEntity<Page<PostResponseDto>> getPostList(@PageableDefault Pageable pageable) throws IOException{
+    public ResponseEntity<Page<PostResponseDto>> getPostList(@PageableDefault Pageable pageable) throws Exception{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Pageable modifiedPageable = PageRequest.of(pageable.getPageNumber(), defaultPageSize);
         Page<PostResponseDto> postList = communityService.getPostList(modifiedPageable, authentication);

@@ -44,8 +44,21 @@ public class PostFileController {
 
 
         if(id != 0) {  // 전달되어 온 이미지가 기본 썸네일이 아닐 경우
-            PostFileDto postFileDto= postFileService.findByFileId(id);
-            path = postFileDto.getFilePath();
+            PostFileDto postFileDto = postFileService.findByFileId(id);
+            String filePath = postFileDto.getFilePath();
+
+            // 파일 경로를 운영체제에 맞게 수정
+            String modifiedFilePath;
+            if (absolutePath.contains("/")) {
+                modifiedFilePath = filePath.replace("\\", "/");
+            } else {
+                modifiedFilePath = filePath.replace("/", "\\");
+            }
+
+            path = modifiedFilePath;
+
+
+            //path = postFileDto.getFilePath();
         }
         else {  // 전달되어 온 이미지가 기본 썸네일일 경우
             path = "images" + File.separator + "thumbnail" + File.separator + "thumbnail.png";
@@ -73,7 +86,19 @@ public class PostFileController {
         PostFileDto postFileDto = postFileService.findByFileId(id);
         String absolutePath
                 = new File("").getAbsolutePath() + File.separator + File.separator;
-        String path = postFileDto.getFilePath();
+        String filePath = postFileDto.getFilePath();
+
+        String path;
+
+        String modifiedFilePath;
+        if (absolutePath.contains("/")) {
+            modifiedFilePath = filePath.replace("\\", "/");
+        } else {
+            modifiedFilePath = filePath.replace("/", "\\");
+        }
+
+        path = modifiedFilePath;
+
 
         InputStream imageStream = new FileInputStream(absolutePath + path);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
@@ -81,11 +106,6 @@ public class PostFileController {
 
         return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
     }
-
-
-
-
-
 
 
 }
