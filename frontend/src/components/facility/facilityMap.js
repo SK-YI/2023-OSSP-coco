@@ -1,25 +1,25 @@
+import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
-const location = {
-  name: '동국대학교 서울캠퍼스 본관',
-  latitude: 37.54822739839277,
-  longitude: 127.02253064209256,
-  latitudeDelta: 0.005,
-  longitudeDelta: 0.005,
-};
+const FacilityMap = ({ facility }) => {
+  const location = {
+    name: facility.name,
+    latitude: facility.latitude,
+    longitude: facility.longitude,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005,
+  };
 
-const FacilityMap = () => {
   return (
     <View>
       <MapView
         showsUserLocation={true}
-        followsUserLocation={true}
+        followsUserLocation={false}
         showsMyLocationButton={true}
         showsCompass={true}
         zoomEnabled={true}
         rotateEnabled={true}
-        // onMarkerDragStart={}
         style={styles.map}
         region={location.latitude && location.longitude ? location : null}
       >
@@ -27,12 +27,19 @@ const FacilityMap = () => {
           <Marker
             coordinate={location}
             title={location.name}
-            description={'설명~~~'}
+            description={''}
           />
         )}
       </MapView>
     </View>
   );
+};
+FacilityMap.propTypes = {
+  facility: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 const styles = StyleSheet.create({

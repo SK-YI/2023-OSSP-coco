@@ -1,9 +1,10 @@
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, RefreshControl } from 'react-native'; // RefreshControl 추가
 import { URL } from '../../../env';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { useUserContext } from '../../contexts/UserContext';
 import MyReviewCard from '../../components/myPage/myReviewCard';
+import { PRIMARY } from '../../colors';
 
 const MyReviewScreen = () => {
   const [review, setReview] = useState([]);
@@ -13,17 +14,15 @@ const MyReviewScreen = () => {
   const myReviewGet = () => {
     console.log(token);
     fetch(`${URL}/user/reviewedFacility`, {
-      method: 'GET', //메소드 지정
+      method: 'GET',
       headers: {
-        //데이터 타입 지정
         'Content-Type': 'application/json; charset=utf-8',
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => res.json())
       .then((res) => {
-        console.log(res); // 리턴값에 대한 처리
-        // 성공하면!
+        console.log(res);
         setReview(res);
       })
       .catch((error) => {
@@ -41,15 +40,30 @@ const MyReviewScreen = () => {
     }
   }, [review]);
 
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    myReviewGet(); // 데이터를 다시 불러올 때 review 매개변수 삭제
+    setIsRefreshing(false);
+  }, []);
+
   return (
     <>
-      {isLoading ? ( //로딩중일때
-        <ActivityIndicator size="large" color="#0000ff" />
+      {isLoading ? (
+        <ActivityIndicator size="large" color={PRIMARY.DEFAULT} />
       ) : (
         <FlatList
           data={review}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <MyReviewCard review={item} />}
+          refreshControl={ // RefreshControl 추가
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}
+              tintColor={PRIMARY.DEFAULT} // 새로고침 인디케이터 색상 설정
+            />
+          }
         />
       )}
     </>

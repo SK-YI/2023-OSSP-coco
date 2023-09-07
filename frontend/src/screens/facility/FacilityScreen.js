@@ -108,7 +108,8 @@ const FacilityScreen = () => {
           renderItem={({ item }) => <FacilityCard facility={item} />}
         />
       ) : (
-        <ActivityIndicator />
+        <ActivityIndicator
+        color={WHITE} />
       )}
     </View>
   );

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Pressable,
   TouchableOpacity,
   Image,
+  RefreshControl,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { useRoute } from '@react-navigation/native';
@@ -27,7 +28,7 @@ import { URL } from '../../../env';
 import { useUserContext } from '../../contexts/UserContext';
 
 const FacilityDetailScreen = () => {
-  const route = useRoute(); // route 프롭스를 사용하여 facilityId를 받아옴
+  const route = useRoute(); // route로 FacilityScreen에서 facility를 받아옴
   const facilityId = route.params.facilityId; // facilityId를 route.params에서 추출
 
   const [facility, setFacility] = useState({
@@ -46,6 +47,7 @@ const FacilityDetailScreen = () => {
 
   const equipment = facility.equipment || [];
 
+  //시설 상세정보 GET
   const facilityInfoGetApi = () => {
     console.log(token);
     fetch(`${URL}/user/facilities/${facilityId}`, {
@@ -95,8 +97,30 @@ const FacilityDetailScreen = () => {
   FacilityDetailScreen.propTypes = {
     facilityId: PropTypes.number,
   };
+
+  const [isRefreshing, setIsRefreshing] = useState(false); // 새로고침 상태를 관리
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true); // 새로고침 시작
+    facilityInfoGetApi(facilityId);
+    setIsRefreshing(false); // 새로고침 종료
+  }, [facilityId]);
+
+  useEffect(() => {
+    facilityInfoGetApi(facilityId);
+    console.log(facilityId);
+  }, [facilityId]);
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing} // 새로고침 여부
+          onRefresh={onRefresh}
+          tintColor={PRIMARY.DEFAULT}
+        />
+      }
+    >
       <View style={styles.container}>
         <Text style={styles.title}>{facility.name}</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -114,7 +138,7 @@ const FacilityDetailScreen = () => {
           {facility.address}
         </Text>
         <View style={{ alignItems: 'center', paddingVertical: 30 }}>
-          <FacilityMap />
+          <FacilityMap facility={facility} />
         </View>
         <View
           style={{ flexDirection: 'row', paddingTop: 8, marginHorizontal: 25 }}
@@ -144,6 +168,14 @@ const FacilityDetailScreen = () => {
             <Image style={styles.icon} source={showerIcon} />
           )}
         </View>
+        <Text
+          style={[
+            styles.info,
+            { fontSize: 20, fontWeight: '500', paddingTop: 15 },
+          ]}
+        >
+          시설 정보
+        </Text>
         <Text style={styles.info}>{facility.equipment}</Text>
         <View style={{}}>
           <View
@@ -200,19 +232,42 @@ const FacilityDetailScreen = () => {
             contentContainerStyle={{ alignItems: 'center' }}
           >
             {facility.facilityReviewList.length === 0 ? (
-              <Text style={{ alignItems: 'center', marginHorizontal: 90, fontSize: 18 }}>
+              <Text
+                style={{
+                  alignItems: 'center',
+                  marginHorizontal: 90,
+                  fontSize: 18,
+                }}
+              >
                 시설의 첫 리뷰를 남겨보세요!
               </Text>
             ) : (
-              facility.facilityReviewList.map((review, id) => (
-                <View style={styles.review} key={id}>
-                  <Text style={{ fontSize: 15, fontWeight: '700' }}>
-                    {review.title}
-                  </Text>
-                  <Text style={{ color: PRIMARY.DARK }}>{review.star}</Text>
-                  <Text>{review.content}</Text>
-                </View>
-              ))
+              facility.facilityReviewList
+                .slice()
+                .reverse() // 역순(최신순)으로 리뷰 배열
+                .map((review, id) => (
+                  <View style={styles.review} key={id}>
+                    <Text style={{ fontSize: 15, fontWeight: '700' }}>
+                      {review.title}
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingVertical: 5,
+                      }}
+                    >
+                      <AntDesign
+                        name="star"
+                        size={18}
+                        color={PRIMARY.DEFAULT}
+                        style={{ marginRight: 2 }}
+                      />
+                      <Text style={{ color: PRIMARY.DARK }}>{review.star}</Text>
+                    </View>
+                    <Text>{review.content}</Text>
+                  </View>
+                ))
             )}
           </ScrollView>
         </View>
@@ -270,7 +325,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 7,
     borderColor: PRIMARY.DEFAULT,
-    borderWidth: 2,
+    borderWidth: 1.3,
     marginRight: 15,
     borderRadius: 10,
   },
@@ -299,7 +354,8 @@ const styles = StyleSheet.create({
   info: {
     fontSize: 18,
     paddingHorizontal: 25,
-    paddingVertical: 20,
+    paddingTop: 12,
+    lineHeight: '25%',
   },
 });
 export default FacilityDetailScreen;
