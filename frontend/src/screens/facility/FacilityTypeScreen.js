@@ -71,8 +71,8 @@ FacilityTypeScreen.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       typeKeyword: PropTypes.string.isRequired, 
-    }).isRequired,
-  }).isRequired,
+    }),
+  })
 };
 
 const styles = StyleSheet.create({

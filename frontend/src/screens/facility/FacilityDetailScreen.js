@@ -233,7 +233,7 @@ const FacilityDetailScreen = () => {
                     fontWeight: '700',
                   }}
                 >
-                  {facilityId.avgReview}
+                  {facility.avgReview.toFixed(1)}
                 </Text>
               </View>
 
@@ -382,7 +382,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingHorizontal: 25,
     paddingTop: 12,
-    lineHeight: '25%',
   },
 });
 export default FacilityDetailScreen;

@@ -5,7 +5,7 @@ import { GRAY } from '../../colors';
 
 const FacilityDropdown = ({ onDropdownClose }) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(null);
 
   const options = [
     { label: '한국장애인고용공단 및 지사', value: '한국장애인고용공단 및 지사' },

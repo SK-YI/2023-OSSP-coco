@@ -75,6 +75,7 @@ const MyPageScreen = () => {
       if (response.ok) {
         // 로그아웃 성공
         setToken(''); //토큰 비우기
+        console.log('로그아웃 성공')
         // 
       } else {
         console.error('로그아웃 실패:', response.status);
@@ -87,9 +88,6 @@ const MyPageScreen = () => {
   const handleLogout = async () => {
     // 로그아웃 API 호출
     await logoutGet();
-  
-    // AuthStack으로 이동
-    navigation.navigate('AuthStack');
   };
 
   return (
