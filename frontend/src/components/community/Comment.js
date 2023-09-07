@@ -9,36 +9,56 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { PRIMARY } from '../../colors';
-import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
 import { useState } from 'react';
+import { URL } from '../../../env';
 
-const Comment = ({ data, postId, setRerendering, rerendering }) => {
-  const { token } = useUserContext();
+const Comment = ({ comment, postId, setRerendering, rerendering }) => {
+  const [token] = useUserContext();
 
   const windowWidth = Dimensions.get('window').width;
 
   const [isWrite, setIsWrite] = useState(false);
-  const [text, setText] = useState(data.content);
+  const [text, setText] = useState(comment.content);
 
-  const deleteCommentApi = async () => {
-    try {
-      const response = await axios.delete(
-        `${URL}/community/${postId}/reply/${data.id}`,
-        {
-          headers: {
-            accessToken: token,
-          },
-        }
-      );
-      console.log(response.data);
-      // 실패하면 ..?
-      // 성공하면! 다시 리렌더링
-      setRerendering(!rerendering);
-    } catch (error) {
-      console.error(error);
-    }
+  const deleteCommentApi = () => {
+    fetch(`${URL}/community/${postId}/reply/${comment.id}`, {
+      method: 'DELETE', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        res && setRerendering(!rerendering);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  // const deleteCommentApi = async () => {
+  //   try {
+  //     const response = await axios.delete(
+  //       `${URL}/community/${postId}/reply/${data.id}`,
+  //       {
+  //         headers: {
+  //           accessToken: token,
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data);
+  //     // 실패하면 ..?
+  //     // 성공하면! 다시 리렌더링
+  //     setRerendering(!rerendering);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const askDelete = () => {
     if (isWrite) {
@@ -59,29 +79,54 @@ const Comment = ({ data, postId, setRerendering, rerendering }) => {
     ]);
   };
 
-  const modifyCommentApi = async () => {
+  const modifyCommentApi = () => {
     const data = {
       content: text,
     };
-
-    try {
-      const response = await axios.put(
-        `${URL}/community/${postId}/reply/${data.id}`,
-        data,
-        {
-          headers: {
-            accessToken: token,
-          },
-        }
-      );
-      console.log(response.data);
-      setIsWrite(false);
-      // 성공하면 리렌더링
-      setRerendering(!rerendering);
-    } catch (error) {
-      console.error(error);
-    }
+    fetch(`${URL}/community/${postId}/reply/${comment.id}`, {
+      method: 'PUT', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        setRerendering(!rerendering);
+        setIsWrite(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  // const modifyCommentApi = async () => {
+  //   const data = {
+  //     content: text,
+  //   };
+
+  //   try {
+  //     const response = await axios.put(
+  //       `${URL}/community/${postId}/reply/${data.id}`,
+  //       data,
+  //       {
+  //         headers: {
+  //           accessToken: token,
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data);
+  //     setIsWrite(false);
+  //     // 성공하면 리렌더링
+  //     setRerendering(!rerendering);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const modifyComment = () => {
     if (!isWrite) {
@@ -114,8 +159,8 @@ const Comment = ({ data, postId, setRerendering, rerendering }) => {
     <View style={[styles.container, { width: windowWidth - 50 }]}>
       <View style={styles.textContainer}>
         <View style={styles.topContainer}>
-          <Text style={styles.nickname}>{data.nickname}</Text>
-          {data.myReply && (
+          <Text style={styles.nickname}>{comment.user.nickname}</Text>
+          {comment.myReply && (
             <View style={styles.buttonContainer}>
               <Pressable
                 style={styles.button}
@@ -135,20 +180,20 @@ const Comment = ({ data, postId, setRerendering, rerendering }) => {
           <TextInput
             style={styles.modifycontent}
             value={text}
-            onChangeText={(text) => setText(text.trim())}
+            onChangeText={(text) => setText(text)}
             multiline={true}
           />
         ) : (
-          <Text style={styles.content}>{data.content}</Text>
+          <Text style={styles.content}>{comment.content}</Text>
         )}
-        <Text style={styles.date}>{data.createdDate}</Text>
+        <Text style={styles.date}>{comment.createdDate}</Text>
       </View>
     </View>
   );
 };
 
 Comment.propTypes = {
-  data: PropTypes.object,
+  comment: PropTypes.object,
   postId: PropTypes.number,
   setRerendering: PropTypes.func,
   rerendering: PropTypes.bool,

@@ -17,15 +17,24 @@ const MyPostItem = ({ post, isModify }) => {
 
   const onChangePage = () => {
     if (isModify) {
-      navigation.navigate('내가 작성한 글', { postId: 1, isModify: true });
+      navigation.navigate(
+        '내가 작성한 글',
+        {
+          post,
+        }
+        // { isModify: true }
+      );
     } else {
-      navigation.navigate('내가 작성한 글', { postId: 1, isModify: false });
+      navigation.navigate('내가 작성한 글', {
+        postId: post.Id,
+        isModify: false,
+      });
     }
   };
   return (
     <Pressable
       style={[styles.container, { width: windowWidth - 50 }]}
-      onPress={onChangePage}
+      onPress={() => onChangePage()}
     >
       <View style={styles.textContainer}>
         <Text style={styles.title}>{post.title}</Text>

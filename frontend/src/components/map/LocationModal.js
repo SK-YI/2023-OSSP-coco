@@ -1,8 +1,12 @@
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useEffect } from 'react';
 
-const LocationModal = ({ modalOpen, setModalOpen }) => {
+const LocationModal = ({ item, modalOpen, setModalOpen }) => {
+  useEffect(() => {
+    console.log(item);
+  }, [item]);
   return (
     <Modal
       visible={modalOpen}
@@ -31,6 +35,7 @@ const LocationModal = ({ modalOpen, setModalOpen }) => {
 };
 
 LocationModal.propTypes = {
+  item: PropTypes.object,
   modalOpen: PropTypes.bool,
   setModalOpen: PropTypes.func,
 };

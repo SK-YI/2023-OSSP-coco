@@ -5,50 +5,65 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 import LocationModal from '../../components/map/LocationModal';
-import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
-// 더미데이터
-const facilityData = {
-  name: '이마트 산본점',
-  latitude: 37.3610506,
-  longitude: 126.9314088,
-};
+import { URL } from '../../../env';
+
 const MapScreen = () => {
-  const { token } = useUserContext();
+  const [token] = useUserContext();
 
   const { top } = useSafeAreaInsets();
 
   const [location, setLocation] = useState({
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
   });
 
   const [searchLocation, setSearchLocation] = useState({
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
   });
 
   const [facilityList, setFacilityList] = useState([]);
 
   const [modalOpen, setModalOpen] = useState(false);
 
-  const findFacilifyListApi = async (longitude, latitude) => {
-    try {
-      const response = await axios.get(
-        `${URL}/user/map/${longitude}/${latitude}`,
-        {
-          headers: {
-            accessToken: token,
-          },
-        }
-      );
-      console.log(response.data);
-      // 성공하면 목록 저장하기
-      setFacilityList(response.data); // ?
-    } catch (error) {
-      console.error(error);
-    }
+  const findFacilifyListApi = (longitude, latitude) => {
+    fetch(`${URL}/user/map/${longitude}/${latitude}`, {
+      method: 'GET', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        setFacilityList(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  // const findFacilifyListApi = async (longitude, latitude) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${URL}/user/map/${longitude}/${latitude}`,
+  //       {
+  //         headers: {
+  //           accessToken: token,
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data);
+  //     // 성공하면 목록 저장하기
+  //     setFacilityList(response.data); // ?
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
     // async function fetchAndSetUser() {
@@ -138,21 +153,25 @@ const MapScreen = () => {
             pinColor="blue"
           />
         )}
-        <Marker
-          coordinate={facilityData}
-          title={facilityData.name}
-          description={'편의시설1'}
-          onPress={() => setModalOpen(true)}
-        />
         {facilityList.length > 0 &&
           facilityList.map((item) => (
-            <Marker
-              key={item.id}
-              coordinate={item}
-              title={item.name}
-              description={'편의시설'}
-              onPress={() => setModalOpen(true)}
-            />
+            <View key={item.facilityId}>
+              <Marker
+                coordinate={{
+                  latitude: item.longitude,
+                  longitude: item.latitude,
+                }}
+                title={item.name}
+                description={item.type}
+                onPress={() => setModalOpen(true)}
+                pinColor="orange"
+              />
+              <LocationModal
+                item={item}
+                modalOpen={modalOpen}
+                setModalOpen={setModalOpen}
+              />
+            </View>
           ))}
       </MapView>
 
@@ -177,14 +196,9 @@ const MapScreen = () => {
             longitude: lng,
             name: data.description,
           }));
+          findFacilifyListApi(lng, lat);
         }}
       />
-      {/* {location.name && (
-        <View style={styles.list}>
-          <LocationPostList location={location.name} />
-        </View>
-      )} */}
-      <LocationModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </View>
   );
 };
