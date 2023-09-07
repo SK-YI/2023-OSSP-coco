@@ -16,6 +16,11 @@ public class PostRequestDto {
     String content;
     List<MultipartFile> files;
 
+    //formdata로 받기위해 추가
+    public void setPostRequestDto (String requestTitle, String requestContent) {
+        title=requestTitle;
+        content=requestContent;
+    }
 }
 
 //파일 추가 안하는 원래버전

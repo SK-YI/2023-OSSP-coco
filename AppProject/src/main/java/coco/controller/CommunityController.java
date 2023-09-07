@@ -42,12 +42,32 @@ public class CommunityController {
         return ResponseEntity.ok(postList);
     }
 
-    //게시글 생성 - 이미지 추가하는 ver
+//    //게시글 생성 - 이미지 추가하는 ver
+//    @PostMapping("/community")
+//    public ResponseEntity<PostDto> createPost(@RequestPart(value = "postRequestDto") PostRequestDto postRequestDto,  @RequestParam(value="files", required=false) List<MultipartFile> files) throws Exception {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null && authentication.getPrincipal() != "anonymousUser") {
+//            return ResponseEntity.ok(communityService.createPost(postRequestDto,authentication,files));
+//        }
+//        return ResponseEntity.ok(null);
+//    }
+
+    //제목과 내용도 form data로 받는 버전
     @PostMapping("/community")
-    public ResponseEntity<PostDto> createPost(@RequestPart(value = "postRequestDto") PostRequestDto postRequestDto,  @RequestParam(value="files", required=false) List<MultipartFile> files) throws Exception {
+    public ResponseEntity<PostDto> createPost(
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            // 다른 필드들도 필요에 따라 추가해주세요
+            @RequestParam(value = "files", required = false) List<MultipartFile> files
+    ) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() != "anonymousUser") {
-            return ResponseEntity.ok(communityService.createPost(postRequestDto,authentication,files));
+        if (authentication != null && !"anonymousUser".equals(authentication.getPrincipal())) {
+            // PostRequestDto 객체를 생성하여 필드 값들을 설정
+            PostRequestDto postRequestDto = new PostRequestDto();
+            postRequestDto.setPostRequestDto(title,content);
+            // 다른 필드들도 설정해주세요
+
+            return ResponseEntity.ok(communityService.createPost(postRequestDto, authentication, files));
         }
         return ResponseEntity.ok(null);
     }
