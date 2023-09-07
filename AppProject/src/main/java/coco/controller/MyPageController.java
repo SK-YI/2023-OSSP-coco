@@ -88,7 +88,7 @@ public class MyPageController {
         return ResponseEntity.ok(postDtos);
     }
 
-    @GetMapping("/commentlist")
+    @GetMapping("/commentlist") //내가 작성한 댓글들만 불러오는 API
     public ResponseEntity<List<PostReplyDto>> getCommentList(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -96,11 +96,31 @@ public class MyPageController {
         int userNumber = user.getUserNumber();
 
         List<PostReply> replyList = postReplyRepository.findAllByUserUserNumber(userNumber);
+
         List<PostReplyDto> replyDtos = replyList.stream()
-                .map(PostReplyDto::new) // Convert FacilityReview to FacilityReviewDto
+                .map(PostReplyDto::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(replyDtos);
     }
+
+//    @GetMapping("/commentlist") //내가 작성한 댓글이 달린 게시글 불러오기
+//    public ResponseEntity<List<PostDto>> getCommentList(){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String username = authentication.getName();
+//        User user = userRepository.findByUsername(username);
+//        int userNumber = user.getUserNumber();
+//
+//        List<PostReply> replyList = postReplyRepository.findAllByUserUserNumber(userNumber);
+//
+//        List<Post> postsWithUserComments = postRepository.findDistinctByPostReplyList(replyList);
+//
+//        // 게시글을 DTO로 매핑하여 반환
+//        List<PostDto> userPostDtos = postsWithUserComments.stream()
+//                .map(PostDto::new)
+//                .collect(Collectors.toList());
+//
+//        return ResponseEntity.ok(userPostDtos);
+//    }
 
 }
 
