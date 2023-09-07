@@ -1,4 +1,3 @@
-# 2023-OSSP-COCO-Project
 ### 공개 SW 개발자 대회 TEAM COCO 
 
 <img width="1300" alt="스크린샷 2023-09-07 오후 9 10 24" src="https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/097cb473-fe7b-46ea-8347-0410d3776c01">
@@ -48,6 +47,7 @@
    - 지도 기능을 활용하여 사용자의 현재 위치를 기반으로, 주변에 있는 장애인 관련 시설들을 추천한다. 일반 시설들을 추천하지 않고, 장애인 시설이나 병원 시설만 추천함으로써, 사용자가 필요한 정보만 빠르게 찾을 수 있도록 할 수 있다.
      
 - 장애인 시설 관련 정보 공유
+  
 **4. 시설 리뷰와 커뮤니티**
    - 사용자가 해당 기능을 통해 시설을 방문한 후 리뷰를 작성하거나 커뮤니티에서 정보를 공유할 수 있다. 해당 리뷰와 커뮤니티를 통해 여러 사용자들이 장애인 시설과 관련된 유용한 정보를 얻을 수 있도록 할 수 있다. 또한 리뷰를 통한 평점 별점을 통해, 사용자가 해당 시설을 방문할 지 선택하는데 도움을 주고, 시설의 품질과 편의성을 개선하는 데 기여할 수 있습니다.
      
@@ -58,8 +58,37 @@
 </br>
 
 ## 2. 프로젝트 결과물
-
 </br>
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/bb5b8a9c-559e-49f4-850a-f1356c05c472">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/f2257142-50c1-48cf-8dba-4d3607d54375">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/3a222fb2-b5e7-465a-8609-2309ed961f5c">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/3e2df100-bdcd-4edc-a8a0-1eef475270c3">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/91de5b32-d83e-4b60-988c-31c65bf6dec7">
+</br>
+<b>　　　　로그인 화면　　　　　　　　　메인 화면　　　　　　　시설 정보 화면　　　　　　　시설 정보 (리뷰)　　　　　　　리뷰 작성 　　　　　　</b>　
+</br>
+</br>
+</br>
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/25729486-132c-4119-8ac5-db6171605abd">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/d2c97e6f-d2a4-4970-b71d-3e5ec4919f7d">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/0589d3a4-bdb7-47bb-8d31-1d6e0c33a647">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/7c0fc85b-7d70-4b81-8624-e840113a211c">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/9d84132e-fead-4927-be05-88671d656a2b">
+</br>
+<b>　　　키워드로 검색　　　　　　시설 분류 모달 창　　　　　카테고리를 통한 검색　　　　　　마이페이지　　　　　　　내가 작성한 리뷰</b>
+</br>
+</br>
+</br>
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/7d544b13-1a35-4c58-996e-36d436b11073">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/75d8615c-bdbd-4f61-852c-37892a0913d0">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/b022ddc7-0b89-4171-a580-c1e9e4e2f7f7">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/81f85d8f-f251-4257-a627-95f8fe38f973">
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/7934c62b-1b6e-4979-957a-bc00a0ddf7b1">
+</br>
+<b>　　즐겨찾기 한 시설　　　　　　맵 페이지 (현재 위치)　　　　특정 위치 검색　　　　　　위치 주변 시설 추천　　　　　해당 시설 정보 제공　　　　　　</b>
+</br>
+</br>
+
 
 ## 3. 시스템 구조도
 ![SystemStruct](https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/eb297689-414e-4a80-af6e-574b21f34ad2)
