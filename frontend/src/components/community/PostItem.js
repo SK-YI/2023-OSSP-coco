@@ -10,23 +10,30 @@ import PropTypes from 'prop-types';
 import { GRAY, PRIMARY } from '../../colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
 
 const PostItem = ({ post }) => {
   const navigation = useNavigation();
   const windowWidth = Dimensions.get('window').width;
 
+  useEffect(() => {
+    console.log(post.user);
+  }, [post.user]);
+
   return (
     <Pressable
       style={[styles.container, { width: windowWidth - 50 }]}
-      onPress={() => navigation.navigate('커뮤니티', { postId: 1 })}
+      onPress={() => navigation.navigate('커뮤니티', { post })}
     >
       <View style={styles.textContainer}>
         <Text style={styles.title}>{post.title}</Text>
-        <Text style={styles.content}>{post.name}</Text>
+        {/* <Text style={styles.content}>
+          {post.content.toString().substr(0, 10)}
+        </Text> */}
         <View style={styles.explainContainer}>
-          <Text style={styles.explain}>{post.date}</Text>
+          <Text style={styles.explain}>{post.createdDate}</Text>
           <Text style={styles.explainSeparator}>|</Text>
-          <Text style={styles.explain}>{post.nickname}</Text>
+          <Text style={styles.explain}>{post.user.nickname}</Text>
           <Text style={styles.explainSeparator}>|</Text>
           <MaterialCommunityIcons
             style={[styles.icon, { color: '#991b1b' }]}
@@ -35,7 +42,7 @@ const PostItem = ({ post }) => {
             color={GRAY.DARK}
           />
           <Text style={[styles.explain, { color: '#991b1b' }]}>
-            {post.like}
+            {post.liked}
           </Text>
           <MaterialCommunityIcons
             style={[styles.icon, { color: '#075985' }]}
@@ -44,7 +51,7 @@ const PostItem = ({ post }) => {
             color={GRAY.DARK}
           />
           <Text style={[styles.explain, { color: '#075985' }]}>
-            {post.comment}
+            {post.postReplyCount}
           </Text>
         </View>
       </View>
@@ -80,6 +87,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   title: {
+    marginBottom: 10,
     fontSize: 25,
     lineHeight: 30,
     fontWeight: '700',

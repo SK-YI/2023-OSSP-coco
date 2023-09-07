@@ -12,7 +12,6 @@ import { useUserContext } from '../../contexts/UserContext';
 import { URL } from '../../../env';
 
 const LoginScreen = () => {
-  //const [, setLogin] = useUserContext();
   const [, setToken] = useUserContext();
 
   const [id, setId] = useState('');
@@ -62,34 +61,7 @@ const LoginScreen = () => {
       .catch((error) => {
         console.log(error);
       });
-
-    // try {
-    //   const response = await axios.post(`${URL}/user/login`, data);
-    //   console.log(response.data);
-    //   // 성공하면
-    //   setLogin(true);
-    //   setToken(response.data.accessToken);
-    // } catch (error) {
-    //   console.error(error);
-    // }
   };
-
-  // const loginApi = async () => {
-  //   const data = {
-  //     username: id,
-  //     password: password,
-  //   };
-
-  //   try {
-  //     const response = await axios.post(`${URL}/user/login`, data);
-  //     console.log(response.data);
-  //     // 성공하면
-  //     setLogin(true);
-  //     setToken(response.data.accessToken);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   const onSubmit = () => {
     Keyboard.dismiss();

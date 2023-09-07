@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import { GRAY, PRIMARY, WHITE } from '../../colors';
-// import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PostItem from '../../components/community/PostItem';
 import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -17,96 +16,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUserContext } from '../../contexts/UserContext';
 import { URL } from '../../../env';
 
-// 더미데이터
-const postData = [
-  {
-    id: 1,
-    title: '제목1',
-    name: '내용1',
-    date: '22.02.02',
-    nickname: '닉네임1',
-    like: 0,
-    comment: 0,
-    photo: null,
-  },
-  {
-    id: 2,
-    title: '제목2',
-    name: '내용2',
-    date: '22.02.02',
-    nickname: '닉네임2',
-    like: 2,
-    comment: 0,
-    photo: null,
-  },
-  {
-    id: 3,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-  {
-    id: 4,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-  {
-    id: 5,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-  {
-    id: 6,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-  {
-    id: 7,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-  {
-    id: 8,
-    title: '제목3',
-    name: '내용3',
-    date: '22.02.02',
-    nickname: '닉네임3',
-    like: 0,
-    comment: 3,
-    photo: null,
-  },
-];
-
 const PostListScreen = () => {
-  const { token } = useUserContext();
+  const [token] = useUserContext();
 
   const navigation = useNavigation();
 
-  const [postListData, setPostListData] = useState(postData);
+  const [postListData, setPostListData] = useState([]);
   const { top } = useSafeAreaInsets();
   const [text, setText] = useState('');
 
@@ -116,14 +31,15 @@ const PostListScreen = () => {
       headers: {
         //데이터 타입 지정
         'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
       },
-      // body: JSON.stringify(data), //실제 데이터 파싱하여 body에 저장
     })
       .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
       .then((res) => {
         console.log(res); // 리턴값에 대한 처리
+        console.log(res.content[0].user.nickname);
         // 성공하면!
-        // setPostListData(response.data);
+        setPostListData(res.content);
       })
       .catch((error) => {
         console.log(error);
@@ -150,7 +66,7 @@ const PostListScreen = () => {
     // 목록 조회 api
     getPostApi();
     // 나중에 지워랑!
-    setPostListData(postData);
+    // setPostListData(postData);
   }, []);
 
   const onSearch = () => {

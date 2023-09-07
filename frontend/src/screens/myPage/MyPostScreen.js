@@ -16,7 +16,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import WriteStartButton from '../../components/myPage/WriteStartButton';
 import { useUserContext } from '../../contexts/UserContext';
-import axios from 'axios';
+import { URL } from '../../../env';
 
 // 더미데이터
 const post = {
@@ -55,7 +55,7 @@ const post = {
 };
 
 const MyPostScreen = ({ route }) => {
-  const { token } = useUserContext();
+  const [token] = useUserContext();
 
   const navigation = useNavigation();
 
@@ -66,21 +66,41 @@ const MyPostScreen = ({ route }) => {
 
   const [rerendering, setRerendering] = useState(false);
 
-  const deletePostApi = async (postId) => {
-    try {
-      const response = await axios.delete(`${URL}/community/${postId}`, {
-        headers: {
-          accessToken: token,
-        },
+  const deletePostApi = (postId) => {
+    console.log(token);
+    fetch(`${URL}/community/${postId}`, {
+      method: 'DELETE', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면! res 조건문 넣기!
+        navigation.navigate('내가 작성한 글 리스트');
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      console.log(response.data);
-      // 실패하면 ..?
-      // 성공하면!
-      navigation.navigate('내가 작성한 글 리스트');
-    } catch (error) {
-      console.error(error);
-    }
   };
+  // const deletePostApi = async (postId) => {
+  //   try {
+  //     const response = await axios.delete(`${URL}/community/${postId}`, {
+  //       headers: {
+  //         accessToken: token,
+  //       },
+  //     });
+  //     console.log(response.data);
+  //     // 실패하면 ..?
+  //     // 성공하면!
+  //     navigation.navigate('내가 작성한 글 리스트');
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useLayoutEffect(() => {
     if (route.params.isModify) {
@@ -103,51 +123,95 @@ const MyPostScreen = ({ route }) => {
     }
   });
 
-  const getPostApi = async (postId) => {
-    try {
-      const response = await axios.get(`${URL}/community/${postId}`, {
-        headers: {
-          accessToken: token,
-        },
+  const getPostApi = (postId) => {
+    console.log(token);
+    console.log('postId : ', postId);
+    fetch(`${URL}/community/${postId}`, {
+      method: 'GET', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        setPostData(res);
+        setLike(res.userLikePost);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      console.log(response.data);
-      // 실패하면 ..?
-      // 성공하면!
-      setPostData(response.data);
-      setLike(response.data.userLikePost);
-    } catch (error) {
-      console.error(error);
-    }
   };
+
+  // const getPostApi = async (postId) => {
+  //   try {
+  //     const response = await axios.get(`${URL}/community/${postId}`, {
+  //       headers: {
+  //         accessToken: token,
+  //       },
+  //     });
+  //     console.log(response.data);
+  //     // 실패하면 ..?
+  //     // 성공하면!
+  //     setPostData(response.data);
+  //     setLike(response.data.userLikePost);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
-    console.log(route.params.postId);
-    getPostApi(route.params.postId);
-  }, [route.params.postId, rerendering]);
+    console.log(route.params.post.id);
+    getPostApi(route.params.post.id);
+  }, [rerendering, route.params.post.id]);
 
-  const writeCommentApi = async (postId) => {
-    const data = {
-      content: text,
-    };
-
-    try {
-      const response = await axios.post(
-        `${URL}/community/${postId}/reply`,
-        data,
-        {
-          headers: {
-            accessToken: token,
-          },
-        }
-      );
-      console.log(response.data);
-      // 실패하면 ..?
-      // 성공하면! 다시 리렌더링
-      setRerendering(!rerendering);
-    } catch (error) {
-      console.error(error);
-    }
+  const writeCommentApi = (postId) => {
+    console.log(token);
+    fetch(`${URL}/community/${postId}/reply`, {
+      method: 'POST', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        setRerendering(!rerendering);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  // const writeCommentApi = async (postId) => {
+  //   const data = {
+  //     content: text,
+  //   };
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${URL}/community/${postId}/reply`,
+  //       data,
+  //       {
+  //         headers: {
+  //           accessToken: token,
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data);
+  //     // 실패하면 ..?
+  //     // 성공하면! 다시 리렌더링
+  //     setRerendering(!rerendering);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const onSubmit = () => {
     if (!text) {
@@ -160,23 +224,44 @@ const MyPostScreen = ({ route }) => {
     }
   };
 
-  const likeApi = async (postId) => {
-    // 근데 좋아요하는 건지 아닌지 보내야하는 거 아닌가?
-
-    try {
-      const response = await axios.put(`${URL}/community/${postId}/like`, {
-        headers: {
-          accessToken: token,
-        },
+  const likeApi = (postId) => {
+    console.log(token);
+    fetch(`${URL}/community/${postId}/like`, {
+      method: 'PUT', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        setRerendering(!rerendering);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      console.log(response.data);
-      // 실패하면 ..?
-      // 성공하면! 다시 리렌더링
-      setRerendering(!rerendering);
-    } catch (error) {
-      console.error(error);
-    }
   };
+
+  // const likeApi = async (postId) => {
+  //   // 근데 좋아요하는 건지 아닌지 보내야하는 거 아닌가?
+
+  //   try {
+  //     const response = await axios.put(`${URL}/community/${postId}/like`, {
+  //       headers: {
+  //         accessToken: token,
+  //       },
+  //     });
+  //     console.log(response.data);
+  //     // 실패하면 ..?
+  //     // 성공하면! 다시 리렌더링
+  //     setRerendering(!rerendering);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const onClickLike = () => {
     setLike(!like);
@@ -188,16 +273,16 @@ const MyPostScreen = ({ route }) => {
     <View style={styles.container}>
       <FlatList
         style={styles.commentContainer}
-        data={post.postReplyList}
+        data={postData.postReplyList}
         renderItem={({ item }) => <Comment data={item} />}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
         ListHeaderComponent={
           <View style={styles.postContainer}>
-            <Text style={styles.nickname}>{post.title}</Text>
+            <Text style={styles.nickname}>{postData.title}</Text>
             <View style={styles.explainContainer}>
-              <Text style={styles.explain}>{post.createdDate}</Text>
+              <Text style={styles.explain}>{postData.createdDate}</Text>
               <Text style={styles.explain}>|</Text>
-              <Text style={styles.explain}>{post.nickname}</Text>
+              <Text style={styles.explain}>{postData.nickname}</Text>
             </View>
             <View style={styles.imageContainer}>
               <Image
@@ -206,7 +291,7 @@ const MyPostScreen = ({ route }) => {
                 // resizeMode={'cover'}
               />
             </View>
-            <Text style={styles.content}>{post.content}</Text>
+            <Text style={styles.content}>{postData.content}</Text>
             <View style={styles.buttonContainer}>
               <Pressable
                 style={styles.button}
@@ -236,7 +321,7 @@ const MyPostScreen = ({ route }) => {
                   color={GRAY.DARK}
                 />
                 <Text style={[styles.number, { color: '#991b1b' }]}>
-                  {post.liked}
+                  {postData.liked}
                 </Text>
                 <MaterialCommunityIcons
                   style={[styles.icon, { color: '#075985' }]}
@@ -245,7 +330,7 @@ const MyPostScreen = ({ route }) => {
                   color={GRAY.DARK}
                 />
                 <Text style={[styles.number, { color: '#075985' }]}>
-                  {post.commentNumber}
+                  {postData.commentNumber}
                 </Text>
               </View>
             </View>
