@@ -14,9 +14,10 @@ import { URL } from '../../../env';
 import { useUserContext } from '../../contexts/UserContext';
 import { useRoute } from '@react-navigation/native';
 
-const WriteReviewPopup = ({ onClose, onSave }) => {
+const ModifyReviewPopup = ({ onClose, onSave }) => {
   const route = useRoute(); // route 프롭스를 사용하여 facilityId를 받아옴
   const facilityId = route.params.facilityId; // facilityId를 route.params에서 추출
+  const reviewId = route.params.id; // facilityId를 route.params에서 추출
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -25,37 +26,38 @@ const WriteReviewPopup = ({ onClose, onSave }) => {
   const [token] = useUserContext();
 
   //리뷰 작성 API
-  const reviewPost = async () => {
+  const reviewPut = async () => {
     const data = {
-      title: title,
-      content: content,
-      star: star,
+      title,
+      content,
+      star,
     };
-
+  
     try {
-      const response = await fetch(`${URL}/user/${facilityId}/review`, {
-        method: 'POST',
+      const response = await fetch(`${URL}/user/${facilityId}/review/${reviewId}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
         const responseData = await response.json();
         console.log(responseData);
       } else {
-        console.error('Failed to post review');
+        console.error('Failed to update review');
       }
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   const handleSave = () => {
     onSave({ title, content, star }); //작성한 리뷰 저장 후
-    reviewPost(); //리뷰 등록
+    reviewPut(); //리뷰 등록
     onClose(); //리뷰 모달창 닫기
   };
 
@@ -103,7 +105,7 @@ const WriteReviewPopup = ({ onClose, onSave }) => {
   );
 };
 
-WriteReviewPopup.propTypes = {
+ModifyReviewPopup.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
 };
@@ -169,4 +171,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WriteReviewPopup;
+export default ModifyReviewPopup;

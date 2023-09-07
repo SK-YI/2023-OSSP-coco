@@ -1,65 +1,73 @@
-import { View, Text, StyleSheet, Platform, Pressable } from 'react-native';
-import facilityData from '../../sample/facilitySampledata';
-import { WHITE, GRAY } from '../../colors';
-import { useNavigation } from '@react-navigation/native';
+import { ActivityIndicator, RefreshControl } from 'react-native'; // RefreshControl 추가
+import { URL } from '../../../env';
+import { useState, useEffect, useCallback } from 'react';
+import { FlatList } from 'react-native-gesture-handler';
+import { useUserContext } from '../../contexts/UserContext';
+import MyReviewCard from '../../components/myPage/myReviewCard';
+import { PRIMARY } from '../../colors';
 
 const MyReviewScreen = () => {
-  const navigation = useNavigation();
+  const [review, setReview] = useState([]);
+  const [token] = useUserContext();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleFacilityDetail = (facilityId) => {
-    navigation.navigate('내 시설 정보', { facilityId });
+  const myReviewGet = () => {
+    console.log(token);
+    fetch(`${URL}/user/reviewedFacility`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setReview(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
+  useEffect(() => {
+    myReviewGet();
+  }, []);
+
+  useEffect(() => {
+    if (review) {
+      setIsLoading(false);
+    }
+  }, [review]);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    myReviewGet(); // 데이터를 다시 불러올 때 review 매개변수 삭제
+    setIsRefreshing(false);
+  }, []);
+
   return (
-    <View style={styles.container}>
-      {facilityData.map((facility) => (
-        <Pressable
-          key={facility.key}
-          onPress={() => handleFacilityDetail(facility.key)}
-          style={styles.reviewContainer}
-        >
-          <View>
-            <Text style={styles.FacilityTitle}>{facility.review[0].title}</Text>
-            <Text style={{ fontSize: 14, color: GRAY.DARK, marginVertical: 5 }}>
-              {facility.review[0].content}
-            </Text>
-          </View>
-          <Text style={{paddingTop: 22}}>{facility.name}</Text>
-        </Pressable>
-      ))}
-    </View>
+    <>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={PRIMARY.DEFAULT} />
+      ) : (
+        <FlatList
+          data={review}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <MyReviewCard review={item} />}
+          refreshControl={ 
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}
+              tintColor={PRIMARY.DEFAULT} 
+            />
+          }
+        />
+      )}
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: WHITE,
-  },
-  reviewContainer: {
-    padding: 14,
-    height: 120,
-    borderRadius: 25,
-    marginHorizontal: 30,
-    marginVertical: 10,
-    backgroundColor: WHITE,
-    flexDirection: 'column',
-    zIndex: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: GRAY.DARK,
-        shadowOffset: {
-          width: 3,
-          height: 3,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 7,
-      },
-    }),
-  },
-});
 
 export default MyReviewScreen;

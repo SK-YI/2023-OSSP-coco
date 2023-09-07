@@ -103,3 +103,24 @@
   ]
 
   export default facilityData;
+
+ /*  {
+    "likedFacilityList": [
+      {
+        "id": 2,
+        "name": "논현 노인복지관",
+        "latitued": "37",
+        "longitude": "127",
+        "equipment": "계단 또는 승강설비, 대변기, 소변기"
+        "address": "서울특별시"
+      },
+      {
+        "id": 3,
+        "name": "하상장애인복지관",
+        "latitued": "37",
+        "longitude": "127",
+        "equipment": "계단 또는 승강설비, 대변기, 소변기"
+        "address": "서울특별시"
+      }
+    ]
+  } */
