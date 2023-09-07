@@ -57,11 +57,11 @@ const MyReviewScreen = () => {
           data={review}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <MyReviewCard review={item} />}
-          refreshControl={ // RefreshControl 추가
+          refreshControl={ 
             <RefreshControl
               refreshing={isRefreshing}
               onRefresh={onRefresh}
-              tintColor={PRIMARY.DEFAULT} // 새로고침 인디케이터 색상 설정
+              tintColor={PRIMARY.DEFAULT} 
             />
           }
         />

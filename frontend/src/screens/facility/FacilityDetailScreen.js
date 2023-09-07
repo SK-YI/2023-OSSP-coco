@@ -42,6 +42,7 @@ const FacilityDetailScreen = () => {
     equipment: '시설 정보',
     userFavoriteFacility: false,
     facilityReviewList: [],
+    avgReview: 0.0
   });
   const [token] = useUserContext();
 
@@ -79,6 +80,8 @@ const FacilityDetailScreen = () => {
 
   const toggleFavorite = () => {
     setIsFavorite((prevState) => !prevState);
+    // PostLikePUT API 호출
+    facilityLikePUT();
   };
 
   //리뷰 작성 모달 관련 함수들
@@ -110,6 +113,30 @@ const FacilityDetailScreen = () => {
     facilityInfoGetApi(facilityId);
     console.log(facilityId);
   }, [facilityId]);
+
+  const facilityLikePUT = () => {
+    console.log(token);
+    fetch(`${URL}/user/facilities/${facilityId}/like`, {
+      method: 'PUT', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        // 즐겨찾기 상태 업데이트
+
+        // 시설 정보 다시 불러오기
+        facilityInfoGetApi(facilityId);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
 
   return (
     <ScrollView
@@ -206,7 +233,7 @@ const FacilityDetailScreen = () => {
                     fontWeight: '700',
                   }}
                 >
-                  4.5
+                  {facilityId.avgReview}
                 </Text>
               </View>
 
