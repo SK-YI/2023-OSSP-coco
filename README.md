@@ -77,12 +77,12 @@
 </br>
 </br>
 </br>
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/aacb58ae-e290-41a4-9321-7507e9de35c4">
 <img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/7c0fc85b-7d70-4b81-8624-e840113a211c">
 <img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/9d84132e-fead-4927-be05-88671d656a2b">
 <img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/7d544b13-1a35-4c58-996e-36d436b11073">
-<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/75d8615c-bdbd-4f61-852c-37892a0913d0">
 </br>
-<b>　　　　마이페이지　　　　　　　내가 작성한 리뷰　　　　　　즐겨찾기 한 시설　　　　　맵 페이지 (현재 위치)　　　　</b>
+<b>　　　　회원가입　 　　　　　　　　마이페이지　　　　　　　내가 작성한 리뷰　　　　　　즐겨찾기 한 시설　　　　　</b>
 </br>
 </br>
 </br>
@@ -94,11 +94,12 @@
 </br>
 </br>
 </br>
+<img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/75d8615c-bdbd-4f61-852c-37892a0913d0">
 <img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/b022ddc7-0b89-4171-a580-c1e9e4e2f7f7">
 <img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/81f85d8f-f251-4257-a627-95f8fe38f973">
 <img width="180" alt="image" src = "https://github.com/SK-YI/2023-OSSP-coco/assets/114224596/7934c62b-1b6e-4979-957a-bc00a0ddf7b1">
 </br>
-<b>　　　특정 위치 검색　　　　　　위치 주변 시설 추천　　　　　해당 시설 정보 제공　</b>
+<b>　　맵 페이지 (현재 위치)　　　　특정 위치 검색　　　　　위치 주변 시설 추천(노란핑)　　해당 시설 정보 제공　</b>
 
 </br>
 </br>
