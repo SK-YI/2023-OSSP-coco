@@ -14,9 +14,9 @@ import { URL } from '../../../env';
 import { useUserContext } from '../../contexts/UserContext';
 import { useRoute } from '@react-navigation/native';
 
-const WriteReviewPopup = ({ onClose, onSave }) => {
+const WriteReviewPopup = ({ facilityId, onClose, onSave }) => {
   const route = useRoute(); // route 프롭스를 사용하여 facilityId를 받아옴
-  const facilityId = route.params.facilityId; // facilityId를 route.params에서 추출
+  //const facilityId = route.params.facilityId; // facilityId를 route.params에서 추출
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -104,6 +104,7 @@ const WriteReviewPopup = ({ onClose, onSave }) => {
 };
 
 WriteReviewPopup.propTypes = {
+  facilityId: PropTypes.number,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
 };

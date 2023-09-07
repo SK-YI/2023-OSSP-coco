@@ -42,7 +42,7 @@ const FacilityDetailScreen = () => {
     equipment: '시설 정보',
     userFavoriteFacility: false,
     facilityReviewList: [],
-    avgReview: 0.0
+    avgReview: 0.0,
   });
   const [token] = useUserContext();
 
@@ -136,7 +136,6 @@ const FacilityDetailScreen = () => {
         console.log(error);
       });
   };
-
 
   return (
     <ScrollView
@@ -382,7 +381,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingHorizontal: 25,
     paddingTop: 12,
-    lineHeight: '25%',
+    lineHeight: 25,
   },
 });
 export default FacilityDetailScreen;
