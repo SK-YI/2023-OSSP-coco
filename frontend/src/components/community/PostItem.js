@@ -10,15 +10,44 @@ import PropTypes from 'prop-types';
 import { GRAY, PRIMARY } from '../../colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useUserContext } from '../../contexts/UserContext';
+import { URL } from '../../../env';
 
 const PostItem = ({ post }) => {
+  const [token] = useUserContext();
+
   const navigation = useNavigation();
   const windowWidth = Dimensions.get('window').width;
 
+  const [image, setImage] = useState(null);
+
+  const getImageApi = (id) => {
+    fetch(`${URL}/thumbnail/${id}`, {
+      method: 'GET', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      //   .then((res) => res) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        // console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        setImage(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     console.log(post.user);
-  }, [post.user]);
+    if (post.thumbnailId !== 0) {
+      getImageApi(post.thumbnailId);
+    }
+  }, [post]);
 
   return (
     <Pressable
@@ -56,11 +85,9 @@ const PostItem = ({ post }) => {
         </View>
       </View>
       <View style={styles.imageContainer}>
-        <Image
-          source={require('../../../assets/comap.png')}
-          style={styles.image}
-          // resizeMode={'cover'}
-        />
+        {image && post.thumbnailId !== 0 && (
+          <Image source={image} style={styles.image} resizeMode={'cover'} />
+        )}
       </View>
     </Pressable>
   );

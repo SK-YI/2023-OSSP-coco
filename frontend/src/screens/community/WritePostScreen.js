@@ -14,7 +14,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import WriteSaveButton from '../../components/community/WriteSaveButton';
 import * as ImagePicker from 'expo-image-picker';
-// import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
 import { URL } from '../../../env';
 
@@ -25,7 +24,6 @@ const MAX_TEXT_LENGTH = 60;
 const WritePostScreen = () => {
   const [token] = useUserContext();
   const navigation = useNavigation();
-  // const { navigate } = useNavigation();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -62,16 +60,20 @@ const WritePostScreen = () => {
     // console.log(data);
     let formData = new FormData();
     image.length > 0 && image.map((v) => formData.append('files', v));
-    formData.append('postRequestDto', JSON.stringify(data));
+    //const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+    //formData.append('postRequestDto', JSON.stringify(data));
+    formData.append('title', title);
+    formData.append('content', text);
     console.log(token);
     console.log(formData);
     fetch(`${URL}/community`, {
       method: 'POST', //메소드 지정
-      headers: {
-        //데이터 타입 지정
-        'Content-Type': 'application/json; charset=utf-8',
-        Authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   //데이터 타입 지정
+      //'Content-Type': 'application/json; charset=utf-8',
+      'Content-Type': 'multipart/form-data',
+      //   Authorization: `Bearer ${token}`,
+      // },
       body: formData,
     })
       .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
@@ -121,7 +123,7 @@ const WritePostScreen = () => {
       <View style={styles.inputTitleContainer}>
         <TextInput
           value={title}
-          onChangeText={(title) => setTitle(title.trim())}
+          onChangeText={(title) => setTitle(title)}
           style={styles.inputTitle}
           placeholder={'게시글의 제목을 입력해주세요.'}
           maxLength={MAX_TITLE_LENGTH}
@@ -136,7 +138,7 @@ const WritePostScreen = () => {
       <View style={styles.inputTextContainer}>
         <TextInput
           value={text}
-          onChangeText={(text) => setText(text.trim())}
+          onChangeText={(text) => setText(text)}
           style={styles.inputText}
           placeholder={'게시글의 내용을 작성해주세요.'}
           maxLength={MAX_TEXT_LENGTH}

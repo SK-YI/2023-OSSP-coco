@@ -76,7 +76,7 @@ const PostListScreen = () => {
       ]);
     } else {
       // 검색 페이지로 이동
-      navigation.navigate('검색창', { searchText: text });
+      navigation.navigate('검색창', { text });
     }
   };
 

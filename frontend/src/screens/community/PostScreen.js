@@ -13,58 +13,39 @@ import PropTypes from 'prop-types';
 import Comment from '../../components/community/Comment';
 import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import axios from 'axios';
 import { useUserContext } from '../../contexts/UserContext';
 import { URL } from '../../../env';
-
-// 더미데이터
-const post = {
-  id: 1,
-  title: '제목1',
-  content: '내용1~~~~~',
-  createdDate: '22.02.02',
-  nickname: '닉네임1',
-  userLikePost: false,
-  liked: 0,
-  commentNumber: 0,
-  photo: null,
-  postReplyList: [
-    {
-      id: 1,
-      nickname: '닉네임11',
-      content: '내용11',
-      createdDate: '22.01.01',
-      myReply: false,
-    },
-    {
-      id: 2,
-      nickname: '닉네임22',
-      content: '내용22',
-      createdDate: '22.01.01',
-      myReply: true,
-    },
-    {
-      id: 3,
-      nickname: '닉네임33',
-      content: '내용33',
-      createdDate: '22.01.01',
-      myReply: true,
-    },
-  ],
-};
 
 const PostScreen = ({ route }) => {
   const [token] = useUserContext();
 
   const [postData, setPostData] = useState();
 
-  useEffect(() => {
-    console.log(post.user);
-  }, [post.user]);
-
   const [text, setText] = useState('');
   const [like, setLike] = useState(false);
+  const [imageList, setImageList] = useState([]);
   const [rerendering, setRerendering] = useState(false);
+
+  const getImageApi = (id) => {
+    fetch(`${URL}/fileId/${id}`, {
+      method: 'GET', //메소드 지정
+      headers: {
+        //데이터 타입 지정
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      //  .then((res) => res.json()) // 리턴값이 있으면 리턴값에 맞는 req 지정
+      .then((res) => {
+        // console.log(res); // 리턴값에 대한 처리
+        // 성공하면!
+        setImageList([res, ...imageList]);
+        console.log('성공');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const getPostApi = (postId) => {
     fetch(`${URL}/community/${postId}`, {
@@ -81,6 +62,9 @@ const PostScreen = ({ route }) => {
         // 성공하면!
         setPostData(res);
         setLike(res.userLikePost);
+        if (res.fileId[0] !== 0) {
+          res.fileId.map((v) => getImageApi(v));
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -117,30 +101,6 @@ const PostScreen = ({ route }) => {
       });
   };
 
-  // const writeCommentApi = async (postId) => {
-  //   const data = {
-  //     content: text,
-  //   };
-
-  //   try {
-  //     const response = await axios.post(
-  //       `${URL}/community/${postId}/reply`,
-  //       data,
-  //       {
-  //         headers: {
-  //           accessToken: token,
-  //         },
-  //       }
-  //     );
-  //     console.log(response.data);
-  //     // 실패하면 ..?
-  //     // 성공하면! 다시 리렌더링
-  //     setRerendering(!rerendering);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   const onSubmit = () => {
     if (!text) {
       Alert.alert('댓글 등록 실패', '댓글을 입력해주세요.', [
@@ -172,23 +132,6 @@ const PostScreen = ({ route }) => {
       });
   };
 
-  // const likeApi = async (postId) => {
-
-  //   try {
-  //     const response = await axios.put(`${URL}/community/${postId}/like`, {
-  //       headers: {
-  //         accessToken: token,
-  //       },
-  //     });
-  //     console.log(response.data);
-  //     // 실패하면 ..?
-  //     // 성공하면! 다시 리렌더링
-  //     setRerendering(!rerendering);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   const onClickLike = () => {
     setLike(!like);
     // 좋아요 api 호출
@@ -219,11 +162,15 @@ const PostScreen = ({ route }) => {
                 <Text style={styles.explain}>{postData.user.nickname}</Text>
               </View>
               <View style={styles.imageContainer}>
-                <Image
-                  source={require('../../../assets/comap.png')}
-                  style={styles.image}
-                  // resizeMode={'cover'}
-                />
+                {imageList.length > 0 &&
+                  imageList.map((item, index) => (
+                    <Image
+                      key={index}
+                      source={item}
+                      style={styles.image}
+                      // resizeMode={'cover'}
+                    />
+                  ))}
               </View>
               <Text style={styles.content}>{postData.content}</Text>
               <View style={styles.buttonContainer}>
@@ -255,7 +202,7 @@ const PostScreen = ({ route }) => {
                     color={GRAY.DARK}
                   />
                   <Text style={[styles.number, { color: '#991b1b' }]}>
-                    {post.liked ? post.liked : 0}
+                    {postData.liked ? postData.liked : 0}
                   </Text>
                   <MaterialCommunityIcons
                     style={[styles.icon, { color: '#075985' }]}
@@ -264,7 +211,7 @@ const PostScreen = ({ route }) => {
                     color={GRAY.DARK}
                   />
                   <Text style={[styles.number, { color: '#075985' }]}>
-                    {post.postReplyCount ? post.postReplyCount : 0}
+                    {postData.postReplyCount ? postData.postReplyCount : 0}
                   </Text>
                 </View>
               </View>
