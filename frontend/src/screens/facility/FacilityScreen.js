@@ -26,6 +26,18 @@ const FacilityScreen = () => {
   const navigation = useNavigation();
 
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [selectedFacilityType, setSelectedFacilityType] = useState([]);
+
+  const handleDropdownClose = (selectedValue) => {
+    // Handle the selected value from the dropdown here
+    setSelectedFacilityType(selectedValue);
+
+    console.log({selectedValue})
+    // Now you can navigate to FacilityTypeScreen with the selected value
+    navigation.navigate('타입 검색 결과', {
+      selectedValue,
+    });
+  };
 
   const handleSearch = () => {
     // 검색 아이콘을 눌렀을 때 호출되는 함수
@@ -80,7 +92,7 @@ const FacilityScreen = () => {
             />
           </TouchableOpacity>
         </View>
-        <FacilityDropdown />
+        <FacilityDropdown onDropdownClose={handleDropdownClose} />
       </View>
 
       <View style={styles.recommendFacilityContainer}>
@@ -108,8 +120,7 @@ const FacilityScreen = () => {
           renderItem={({ item }) => <FacilityCard facility={item} />}
         />
       ) : (
-        <ActivityIndicator
-        color={WHITE} />
+        <ActivityIndicator color={WHITE} />
       )}
     </View>
   );

@@ -3,7 +3,7 @@ import { View, Platform } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { GRAY } from '../../colors';
 
-const FacilityDropdown = () => {
+const FacilityDropdown = ({ onDropdownClose }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState();
 
@@ -17,6 +17,12 @@ const FacilityDropdown = () => {
   ];
 
   const [items, setItems] = useState(options);
+
+  const handleDropdownClose = () => {
+    if (value) {
+      onDropdownClose(value);
+    }
+  };
 
   return (
     <View style={{
@@ -35,7 +41,7 @@ const FacilityDropdown = () => {
         setItems={setItems}
         placeholder='시설 타입을 선택해주세요'
         placeholderStyle={{ color: GRAY.DARK }}
-        multiple={true}
+        multiple={false}
         mode="BADGE"
         badgeColors={GRAY.LIGHT}
         badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
@@ -53,9 +59,11 @@ const FacilityDropdown = () => {
             elevation: 7,
           },
         }),
-      }}
+        }}
+        onClose={handleDropdownClose}
       />
     </View>
   );
-}
-export default FacilityDropdown
+};
+
+export default FacilityDropdown;

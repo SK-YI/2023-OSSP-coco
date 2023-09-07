@@ -47,6 +47,7 @@ const FacilityDetailScreen = () => {
   const [token] = useUserContext();
 
   const equipment = facility.equipment || [];
+  
 
   //시설 상세정보 GET
   const facilityInfoGetApi = () => {
@@ -136,7 +137,6 @@ const FacilityDetailScreen = () => {
         console.log(error);
       });
   };
-
 
   return (
     <ScrollView

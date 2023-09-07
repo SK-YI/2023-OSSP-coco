@@ -42,12 +42,12 @@ const MyFacilityScreen = () => {
     <View style={{ paddingTop: top }}>
       {favoriteFacility !== null ? (
         <FlatList
-          data={favoriteFacility.content}
-          keyExtractor={(item) => item.facilityId.toString()}
+          data={favoriteFacility.likedFacilityList}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <MyFacilityCard facility={item} />}
         />
       ) : (
-        <ActivityIndicator /> // or a loading spinner
+        <ActivityIndicator />
       )}
     </View>
   );

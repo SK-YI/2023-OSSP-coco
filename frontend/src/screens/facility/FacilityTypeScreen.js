@@ -7,15 +7,15 @@ import { useUserContext } from '../../contexts/UserContext';
 import FacilityCard from '../../components/facility/facilityCard';
 import PropTypes from 'prop-types'; 
 
-const FacilitySearchScreen = ({ route }) => {
+const FacilityTypeScreen = ({ route }) => {
   const [searchResult, setSearchResult] = useState([]);
   const { token } = useUserContext();
 
-  const { searchKeyword } = route.params;
+  const { selectedValue  } = route.params;
 
-  const searchFacilityGetApi = () => {
+  const typeFacilityGetApi = () => {
     console.log(token);
-    fetch(`${URL}/main/search/${searchKeyword}`, {
+    fetch(`${URL}/main/type/${selectedValue}`, {
       method: 'GET', //메소드 지정
       headers: {
         //데이터 타입 지정
@@ -35,7 +35,8 @@ const FacilitySearchScreen = ({ route }) => {
   };
 
   useEffect(() => {
-    searchFacilityGetApi();
+    typeFacilityGetApi();
+    console.log({selectedValue})
   }, []);
 
   return (
@@ -50,7 +51,7 @@ const FacilitySearchScreen = ({ route }) => {
         }}
       >
         <Text style={{ color: WHITE, fontSize: 16, fontWeight: '500' }}>
-          검색어 '{searchKeyword}'에 대한 시설 검색 결과입니다.
+          시설 종류 '{selectedValue}'에 대한 시설 검색 결과입니다.
         </Text>
       </View>
       {searchResult !== null ? (
@@ -66,10 +67,10 @@ const FacilitySearchScreen = ({ route }) => {
   );
 };
 
-FacilitySearchScreen.propTypes = {
+FacilityTypeScreen.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
-      searchKeyword: PropTypes.string.isRequired, 
+      typeKeyword: PropTypes.string.isRequired, 
     }).isRequired,
   }).isRequired,
 };
@@ -86,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FacilitySearchScreen;
+export default FacilityTypeScreen;
