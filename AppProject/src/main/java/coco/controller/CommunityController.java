@@ -156,15 +156,15 @@ public class CommunityController {
 
 
 
-//    //게시글 수정 - 이미지 추가 가능 전 version
-//    @PutMapping("/community/{postId}")
-//    public ResponseEntity<PostDto> editPost(@PathVariable int postId,@RequestBody PostRequestDto postRequestDto){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if(authentication != null && authentication.getPrincipal() != "anonymousUser"){
-//            return ResponseEntity.ok(communityService.editPost(postId,postRequestDto));
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
+    //게시글 수정 - 이미지 추가 가능 전 version
+    @PutMapping("/community/{postId}")
+    public ResponseEntity<PostDto> editPost(@PathVariable int postId,@RequestBody PostRequestDto postRequestDto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && authentication.getPrincipal() != "anonymousUser"){
+            return ResponseEntity.ok(communityService.editPost(postId,postRequestDto));
+        }
+        return ResponseEntity.notFound().build();
+    }
 
     //게시글 좋아요 - 완료2
     @PutMapping("/community/{postId}/like")

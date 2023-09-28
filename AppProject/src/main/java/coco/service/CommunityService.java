@@ -99,20 +99,20 @@ public class CommunityService {
         return false;
     }
 
-//    //이미지를 안받는 버전
-//    @Transactional
-//    public PostDto editPost(int postId,PostRequestDto postRequestDto){
-//        Post post=postRepository.findById(postId);
-//
-//        if(postRequestDto.getTitle()!=null){
-//            post.setTitle(postRequestDto.getTitle());
-//        }
-//        if(postRequestDto.getContent()!=null){
-//            post.setContent(postRequestDto.getContent());
-//        }
-//        postRepository.save(post);
-//        return new PostDto(post);
-//    }
+    //이미지를 안받는 버전
+    @Transactional
+    public PostDto editPost(int postId,PostRequestDto postRequestDto){
+        Post post=postRepository.findById(postId);
+
+        if(postRequestDto.getTitle()!=null){
+            post.setTitle(postRequestDto.getTitle());
+        }
+        if(postRequestDto.getContent()!=null){
+            post.setContent(postRequestDto.getContent());
+        }
+        postRepository.save(post);
+        return new PostDto(post);
+    }
 
     //게시판 수정 이미지를 받는 버전
     @Transactional
