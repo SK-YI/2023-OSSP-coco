@@ -29,5 +29,6 @@ public interface PostRepository extends JpaRepository<Post,Integer> {
     Page<Post> findAllByTitleContaining(String title,Pageable pageable);
     //Page<Post> findAllByContentContaining(String content,Pageable pageable);
     List<Post> findAllByUserUserNumber(int userNumber);
+    List<Post> findAllByPostReplyListUserUserNumber(int userNumber);
 
 }
